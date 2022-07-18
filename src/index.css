@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .navlink {
+        @apply text-xl tracking-wide bg-gray-200 px-4 py-2 rounded-full 
+        dark:bg-gray-700 dark:text-white;
+    }
+
+    .navlink-active {
+        @apply text-xl tracking-wide bg-black text-white px-4 py-2 rounded-full 
+        dark:bg-white dark:text-black;
+    }
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #1618231f;
+    border-radius: 10px;
+}
