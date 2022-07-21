@@ -5,6 +5,8 @@ import App from './App';
 import { Provider } from 'react-redux';
 import store from './app/store';
 
+import './configs/i18n';
+
 ReactDOM.render(
     <React.StrictMode>
         <Provider store={store}>

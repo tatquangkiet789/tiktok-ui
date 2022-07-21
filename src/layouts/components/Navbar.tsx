@@ -1,42 +1,53 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { IoAdd, IoChatboxEllipsesOutline, IoPaperPlaneOutline } from 'react-icons/io5';
 import logo from '../../assets/images/logo.svg';
-import Search from '../../components/Search';
+import Search from './Search';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css'; // optional
+import Button from '../../components/Button';
+import { useTranslation } from 'react-i18next';
+import Menu from './menu/Menu';
 
 const Navbar: React.FC = () => {
+    const { t } = useTranslation();
+    const [currentUser, setCurrentUser] = useState(false);
+
     return (
         <div className='w-full h-[60px] shadow-[0px_1px_1px_rgba(0,0,0,0.12)]'>
-            <div className='max-w-[1150px] h-full mx-auto flex items-center justify-between'>
+            <div className='max-w-[1150px] h-[60px] mx-auto flex items-center justify-between'>
                 <img src={logo} alt='TikTok' />
                 <Search />
                 <div className='flex items-center'>
-                    <div
-                        className='border-[1px] border-[#f1f1f2] rounded-[2px] 
-                            min-w-[110px] flex items-center justify-center h-[36px]
-                            cursor-pointer hover:bg-[#16182308]'
-                    >
-                        <IoAdd size={20} className='mr-[8px]' />
-                        <span className='leading-[24px] text-[16px] font-semibold '>
-                            Upload
-                        </span>
-                    </div>
-                    <Tippy content='Messages'>
-                        <button className='ml-5 cursor-pointer'>
-                            <IoPaperPlaneOutline size={26} />
-                        </button>
-                    </Tippy>
-                    <Tippy content='Inbox'>
-                        <button className='ml-5 cursor-pointer'>
-                            <IoChatboxEllipsesOutline size={26} />
-                        </button>
-                    </Tippy>
-                    <img
-                        src='https://res.cloudinary.com/dnwauajh9/image/upload/v1653748550/raiden-crying_lr8dfp.jpg'
-                        alt='Avatar'
-                        className='ml-8 h-8 w-8 rounded-full cursor-pointer'
+                    <Button
+                        type='default'
+                        text={t('upload')}
+                        iconLeft={<IoAdd size={20} />}
+                        to='/upload'
                     />
+                    {currentUser ? (
+                        <React.Fragment>
+                            <Tippy content={t('messages')}>
+                                <button className='ml-5 cursor-pointer'>
+                                    <IoPaperPlaneOutline size={26} />
+                                </button>
+                            </Tippy>
+                            <Tippy content={t('inbox')}>
+                                <button className='ml-5 cursor-pointer'>
+                                    <IoChatboxEllipsesOutline size={26} />
+                                </button>
+                            </Tippy>
+                            <img
+                                src='https://res.cloudinary.com/dnwauajh9/image/upload/v1653748550/raiden-crying_lr8dfp.jpg'
+                                alt='Avatar'
+                                className='ml-8 h-8 w-8 rounded-full cursor-pointer'
+                            />
+                        </React.Fragment>
+                    ) : (
+                        <div className='flex items-center justify-center ml-4'>
+                            <Button type='primary' text={t('login')} />
+                            <Menu />
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

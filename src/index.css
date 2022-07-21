@@ -4,13 +4,43 @@
 
 @layer components {
     .navlink {
-        @apply text-xl tracking-wide bg-gray-200 px-4 py-2 rounded-full 
-        dark:bg-gray-700 dark:text-white;
+        @apply flex items-center p-2 hover:bg-[#16182308] transition ease-in-out 
+        delay-100;
     }
 
     .navlink-active {
-        @apply text-xl tracking-wide bg-black text-white px-4 py-2 rounded-full 
-        dark:bg-white dark:text-black;
+        @apply flex items-center p-2 hover:bg-[#16182308] text-primary transition 
+        ease-in-out delay-100;
+    }
+
+    .btn {
+        @apply rounded-[2px] flex items-center justify-center cursor-pointer;
+    }
+
+    .btn-primary {
+        @apply bg-primary text-white font-bold py-[6px] px-[8px] 
+        hover:bg-[#e4274c] rounded-[4px];
+    }
+
+    .btn-default {
+        @apply border-[1px] border-[#1816231f] hover:bg-[#16182308];
+    }
+
+    .btn-outlined {
+        @apply border-[1px] border-primary hover:bg-[#fe2c550f] rounded-[4px]
+        text-primary;
+    }
+
+    .lg {
+        @apply w-full text-[18px] min-h-[48px] font-semibold leading-[25px];
+    }
+
+    .md {
+        @apply min-w-[100px] h-[36px];
+    }
+
+    .sm {
+        @apply min-h-[28px] min-w-[88px];
     }
 }
 

@@ -3,9 +3,11 @@ import { IoCloseCircle, IoSearch } from 'react-icons/io5';
 // import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import HeadlessTippy from '@tippyjs/react/headless';
 import Wrapper from './Wrapper';
-import AccountItem from './AccountItem';
+import AccountItem from '../../components/AccountItem';
+import { useTranslation } from 'react-i18next';
 
 const Search: React.FC = () => {
+    const { t } = useTranslation();
     const [search, setSearch] = useState('');
     const [loading, setLoading] = useState(true);
 
@@ -13,15 +15,14 @@ const Search: React.FC = () => {
         <React.Fragment>
             <HeadlessTippy
                 interactive
-                visible={true}
                 render={(attrs) => (
-                    <div tabIndex={-1} {...attrs} className='w-[361px]'>
+                    <div tabIndex={-1} {...attrs} className='w-[361px] z-10'>
                         <Wrapper>
                             <p
                                 className='text-[#16182380] py-[5px] px-[12px] 
                                     font-semibold text-[16px]'
                             >
-                                Accounts
+                                {t('accounts')}
                             </p>
                             <AccountItem />
                             <AccountItem />
@@ -42,7 +43,7 @@ const Search: React.FC = () => {
                         type='text'
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
-                        placeholder='Search for account and videos'
+                        placeholder={t('searchForAccountsAndVideos')}
                         className='bg-transparent rounded-l-full focus:outline-none
                             text-[16px] pl-[20px] pr-[12px] caret-primary flex-1
                             leading-[22px] placeholder:text-[#16182399]'
