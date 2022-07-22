@@ -28,7 +28,7 @@ const MenuItem: React.FC<MenuItemProps> = ({ text, icon, languageCode, to, onCli
     return (
         <Frag
             className='flex items-center justify-start py-[10px] px-[16px] w-full 
-                cursor-pointer hover:bg-[#16182308]'
+                cursor-pointer hover:bg-gray003'
             onClick={onClick}
             {...passProps}
         >

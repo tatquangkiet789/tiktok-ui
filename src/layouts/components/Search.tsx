@@ -19,7 +19,7 @@ const Search: React.FC = () => {
                     <div tabIndex={-1} {...attrs} className='w-[361px] z-10'>
                         <Wrapper>
                             <p
-                                className='text-[#16182380] py-[5px] px-[12px] 
+                                className='text-gray05 py-[5px] px-[12px] 
                                     font-semibold text-[16px]'
                             >
                                 {t('accounts')}
@@ -35,9 +35,9 @@ const Search: React.FC = () => {
                 )}
             >
                 <div
-                    className='bg-[#f1f1f2] w-[361px] h-[46px] rounded-full flex 
+                    className='bg-gray241_241_242_1 w-[361px] h-[46px] rounded-full flex 
                         items-center justify-between border-[1px] border-transparent
-                        focus-within:border-[#1618234d]'
+                        focus-within:border-gray03'
                 >
                     <input
                         type='text'
@@ -46,12 +46,12 @@ const Search: React.FC = () => {
                         placeholder={t('searchForAccountsAndVideos')}
                         className='bg-transparent rounded-l-full focus:outline-none
                             text-[16px] pl-[20px] pr-[12px] caret-primary flex-1
-                            leading-[22px] placeholder:text-[#16182399]'
+                            leading-[22px] placeholder:text-gray06'
                     />
                     {search && loading !== false ? (
                         <IoCloseCircle
                             size={16}
-                            color='#16182357'
+                            color='rgba(22, 24, 35, 0.34)'
                             className='mr-[12px]'
                         />
                     ) : (
@@ -61,21 +61,25 @@ const Search: React.FC = () => {
                     {/* {loading ? (
                         <AiOutlineLoading3Quarters
                             size={16}
-                            color='#16182357'
+                            color='rgba(22, 24, 35, 0.34)'
                             className='mr-[12px] animate-spin'
                         />
                     ) : (
                         <></>
                     )} */}
 
-                    <span className='h-[28px] w-[1px] bg-[#1618231f]'></span>
+                    <span className='h-[28px] w-[1px] bg-gray012'></span>
                     <button
-                        className='py-[12px] pl-[12px] pr-[16px] hover:bg-[#16182308] 
-                            hover:cursor-pointer rounded-r-full active:bg-[#1618230f]'
+                        className='py-[12px] pl-[12px] pr-[16px] hover:bg-gray003 
+                            hover:cursor-pointer rounded-r-full active:bg-gray006'
                     >
                         <IoSearch
                             size={20}
-                            color={search ? '#161823bf' : 'rgba(22, 24, 35, 0.34)'}
+                            color={
+                                search
+                                    ? 'rgba(22, 24, 35, 0.75)'
+                                    : 'rgba(22, 24, 35, 0.34)'
+                            }
                         />
                     </button>
                 </div>

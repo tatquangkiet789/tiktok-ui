@@ -1,19 +1,33 @@
 import React from 'react';
 
-const AccountItem: React.FC = () => {
+interface AccountItemProps {
+    small?: boolean;
+}
+
+const AccountItem: React.FC<AccountItemProps> = ({ small }) => {
+    let padding = 'py-[6px] px-[16px]';
+    let image = 'w-[40px] h-[40px]';
+    let usernameFontSize = 'text-[14px]';
+
+    if (small) {
+        padding = 'p-2';
+        image = 'w-[32px] h-[32px]';
+        usernameFontSize = 'text-[12px]';
+    }
+
     return (
         <div
-            className='flex items-center py-[6px] px-[16px] cursor-pointer 
-                hover:bg-[#16182308]'
+            className={`flex items-center ${padding} cursor-pointer 
+                hover:bg-gray003`}
         >
             <img
                 src='https://res.cloudinary.com/dnwauajh9/image/upload/v1653748550/raiden-crying_lr8dfp.jpg'
                 alt='Raiden Shogun'
-                className='w-[40px] h-[40px] rounded-full object-cover'
+                className={`${image} rounded-full object-cover`}
             />
             <div className='flex-1 ml-[12px]'>
                 <p className='font-medium text-[16px]'>Raiden Shogun</p>
-                <p className='text-[#16182380] text-[14px]'>raiden.shogun</p>
+                <p className={`text-gray05 ${usernameFontSize}`}>raiden.shogun</p>
             </div>
         </div>
     );

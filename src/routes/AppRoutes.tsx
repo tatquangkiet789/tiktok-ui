@@ -1,8 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import HeaderOnlyLayout from '../layouts/HeaderOnlyLayout';
-import MainLayout from '../layouts/MainLayout';
-import Home from '../pages/Home';
+import { HeaderOnlyLayout, MainLayout } from '../layouts';
+import { Following, Home } from '../pages';
 import routes from './routes';
 
 const AppRoutes: React.FC = () => {
@@ -11,7 +10,7 @@ const AppRoutes: React.FC = () => {
             <Routes>
                 <Route path={`/`} element={<MainLayout />}>
                     <Route path={`${routes.home}`} element={<Home />} />
-                    <Route path={`${routes.following}`} element={<Home />} />
+                    <Route path={`${routes.following}`} element={<Following />} />
                 </Route>
                 <Route path={`/${routes.upload}`} element={<HeaderOnlyLayout />} />
             </Routes>

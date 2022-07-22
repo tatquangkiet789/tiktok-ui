@@ -38,7 +38,7 @@ const Button: React.FC<ButtonProps> = ({
     return (
         <Frag
             // className={type === 'primary' ? 'btn btn-primary' : 'btn btn-default'}
-            className={`btn btn-${type} ${size}`}
+            className={`btn ${type} ${size}`}
             {...otherProps}
         >
             {iconLeft ? (
@@ -60,4 +60,4 @@ const Button: React.FC<ButtonProps> = ({
     );
 };
 
-export default Button;
+export default memo(Button);

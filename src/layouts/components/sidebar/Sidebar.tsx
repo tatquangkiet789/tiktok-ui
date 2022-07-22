@@ -4,21 +4,31 @@ import { AiOutlineUsergroupDelete } from 'react-icons/ai';
 import { VscDeviceCameraVideo } from 'react-icons/vsc';
 import routes from '../../../routes/routes';
 import SidebarMenu from './SidebarMenu';
-import Button from '../../../components/Button';
+import { AccountItem, Button } from '../../../components';
+import { useAppDispatch, useAppSelector } from '../../../hooks';
+import { useTranslation } from 'react-i18next';
+import { login } from '../../../features/authSlice';
 
 const Sidebar: React.FC = () => {
+    const { currentUser } = useAppSelector((state) => state.auth);
+    const dispatch = useAppDispatch();
+    const { t } = useTranslation();
     const sidebarMenuItems = [
-        { to: `${routes.home}`, text: 'For You', icon: <IoHomeOutline size={32} /> },
+        { to: `${routes.home}`, text: t('forYou'), icon: <IoHomeOutline size={25} /> },
         {
             to: `${routes.following}`,
-            text: 'Following',
-            icon: <AiOutlineUsergroupDelete size={32} />,
+            text: t('following'),
+            icon: <AiOutlineUsergroupDelete size={25} />,
         },
-        { to: `/${routes.live}`, text: 'LIVE', icon: <VscDeviceCameraVideo size={32} /> },
+        {
+            to: `/${routes.live}`,
+            text: t('live').toUpperCase(),
+            icon: <VscDeviceCameraVideo size={25} />,
+        },
     ];
 
     return (
-        <div className='h-screen w-full pr-2'>
+        <div className='h-screen pr-2 fixed top-[65px] max-w-[356px] overflow-y-scroll'>
             <div className='mt-[20px] pb-2'>
                 {sidebarMenuItems.map((item, index) => (
                     <SidebarMenu
@@ -29,13 +39,35 @@ const Sidebar: React.FC = () => {
                     />
                 ))}
             </div>
-            <div className='pl-2 pt-[20px] pb-[24px] border-y-[0.5px] border-y-[#1618231f]'>
-                <p className='text-[16px] leading-[22px] text-[#16182380]'>
-                    Log in to follow creators, like videos, and view comments.
-                </p>
-                <div className='mt-[20px]'>
-                    <Button text='Log in' type='outlined' size='lg' />
+            {currentUser ? (
+                <></>
+            ) : (
+                <div
+                    className='pl-2 pt-[20px] pb-[24px] border-y-[0.5px] 
+                        border-y-gray012'
+                >
+                    <p className='text-[16px] leading-[22px] text-gray05'>
+                        {t('logInToFollowCreatorsLikeVideosAndViewComments')}
+                    </p>
+                    <div className='mt-[20px]'>
+                        <Button
+                            text={t('login')}
+                            type='outlined'
+                            size='lg'
+                            onClick={() => dispatch(login())}
+                        />
+                    </div>
                 </div>
+            )}
+
+            <div>
+                <p
+                    className='text-gray075 px-2 text-[14px] leading-[20px] mb-2 
+                    font-semibold mt-[24px]'
+                >
+                    {t('suggestedAccounts')}
+                </p>
+                <AccountItem small={true} />
             </div>
         </div>
     );

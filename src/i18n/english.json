@@ -9,5 +9,12 @@
     "keyboardShortcuts": "Keyboard shortcuts",
     "messages": "Messages",
     "inbox": "Inbox",
-    "language": "Language"
+    "language": "Language",
+    "logInToFollowCreatorsLikeVideosAndViewComments": "Log in to follow creators, like videos, and view comments.",
+    "forYou": "For You",
+    "following": "Following",
+    "live": "Live",
+    "suggestedAccounts": "Suggested accounts",
+    "seeAll": "See all",
+    "seeLess": "See less"
 }

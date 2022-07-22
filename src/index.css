@@ -4,12 +4,12 @@
 
 @layer components {
     .navlink {
-        @apply flex items-center p-2 hover:bg-[#16182308] transition ease-in-out 
+        @apply flex items-center p-[12px] hover:bg-gray003 transition ease-in-out 
         delay-100;
     }
 
     .navlink-active {
-        @apply flex items-center p-2 hover:bg-[#16182308] text-primary transition 
+        @apply flex items-center p-[12px] hover:bg-gray003 text-primary transition 
         ease-in-out delay-100;
     }
 
@@ -17,17 +17,17 @@
         @apply rounded-[2px] flex items-center justify-center cursor-pointer;
     }
 
-    .btn-primary {
-        @apply bg-primary text-white font-bold py-[6px] px-[8px] 
-        hover:bg-[#e4274c] rounded-[4px];
+    .primary {
+        @apply bg-primary text-white1 font-bold py-[6px] px-[8px] 
+        hover:bg-hoverPrimary rounded-[4px];
     }
 
-    .btn-default {
-        @apply border-[1px] border-[#1816231f] hover:bg-[#16182308];
+    .default {
+        @apply border-[1px] border-gray012 hover:bg-gray003;
     }
 
-    .btn-outlined {
-        @apply border-[1px] border-primary hover:bg-[#fe2c550f] rounded-[4px]
+    .outlined {
+        @apply border-[1px] border-primary hover:bg-hoverPink rounded-[4px]
         text-primary;
     }
 
@@ -50,6 +50,6 @@
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #1618231f;
+    background: rgba(22, 24, 35, 0.12);
     border-radius: 10px;
 }
