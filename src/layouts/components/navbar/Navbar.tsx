@@ -3,11 +3,11 @@ import { IoAdd, IoChatboxEllipsesOutline, IoPaperPlaneOutline } from 'react-icon
 import logo from '../../assets/images/logo.svg';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css'; // optional
-import { Button } from '../../components';
+import { Button } from '../../../components';
 import { useTranslation } from 'react-i18next';
 import Search from './Search';
 import Menu from './menu/Menu';
-import { useAppSelector } from '../../hooks';
+import { useAppSelector } from '../../../hooks';
 
 const Navbar: React.FC = () => {
     const { t } = useTranslation();

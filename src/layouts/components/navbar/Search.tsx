@@ -2,14 +2,23 @@ import React, { useState } from 'react';
 import { IoCloseCircle, IoSearch } from 'react-icons/io5';
 // import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import HeadlessTippy from '@tippyjs/react/headless';
-import Wrapper from './Wrapper';
-import AccountItem from '../../components/AccountItem';
+import Wrapper from '../Wrapper';
+import AccountItem from '../../../components/AccountItem';
 import { useTranslation } from 'react-i18next';
+import { IMAGES } from '../../../constants/constants';
 
 const Search: React.FC = () => {
     const { t } = useTranslation();
     const [search, setSearch] = useState('');
-    const [loading, setLoading] = useState(true);
+    const [loading] = useState(true);
+    const accounts = [
+        { name: 'Raiden Shogun', usename: 'raiden.shogun', image: IMAGES.raiden },
+        { name: 'Yae Miko', usename: 'yae.miko', image: IMAGES.yae },
+        { name: 'Angry Yae', usename: 'angry.yae', image: IMAGES.angryYae },
+        { name: 'Paimon', usename: 'paimon', image: IMAGES.paimon },
+        { name: 'Raiden Yae', usename: 'raiden.yae', image: IMAGES.raidenYae },
+        { name: 'Shiba Inu', usename: 'shiba.inu', image: IMAGES.shiba },
+    ];
 
     return (
         <React.Fragment>
@@ -24,12 +33,14 @@ const Search: React.FC = () => {
                             >
                                 {t('accounts')}
                             </p>
-                            <AccountItem />
-                            <AccountItem />
-                            <AccountItem />
-                            <AccountItem />
-                            <AccountItem />
-                            <AccountItem />
+                            {accounts.map((account, index) => (
+                                <AccountItem
+                                    key={index}
+                                    name={account.name}
+                                    username={account.usename}
+                                    image={account.image}
+                                />
+                            ))}
                         </Wrapper>
                     </div>
                 )}

@@ -3,7 +3,7 @@ import { BiHelpCircle } from 'react-icons/bi';
 import { RiKeyboardBoxLine } from 'react-icons/ri';
 import { HiDotsVertical } from 'react-icons/hi';
 import HeadlessTippy from '@tippyjs/react/headless';
-import Wrapper from '../Wrapper';
+import Wrapper from '../../Wrapper';
 import MenuItem from './MenuItem';
 import { IoLanguage } from 'react-icons/io5';
 import { useTranslation } from 'react-i18next';

@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { Link } from 'react-router-dom';
-import i18n from '../../../configs/i18n';
+import i18n from '../../../../configs/i18n';
 
 interface MenuItemProps {
     text: string;
