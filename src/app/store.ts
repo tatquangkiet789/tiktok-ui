@@ -2,12 +2,14 @@ import { configureStore } from '@reduxjs/toolkit';
 import counterReducer from '../features/counterSlice';
 import userReducer from '../features/userSlice';
 import authReducer from '../features/authSlice';
+import searchReducer from '../features/searchSlice';
 
 const store = configureStore({
     reducer: {
         counter: counterReducer,
         user: userReducer,
         auth: authReducer,
+        search: searchReducer,
     },
 });
 

@@ -1,8 +1,8 @@
 import axios from 'axios';
-import { HOST } from '../constants/constants';
+import { BASE_URL, HOST } from '../constants/constants';
 
 const axiosClient = axios.create({
-    baseURL: HOST,
+    baseURL: BASE_URL,
     timeout: 60000,
 });
 

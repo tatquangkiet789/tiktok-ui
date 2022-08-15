@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { User } from '../models/user';
-import axiosClient from '../lib/axiosClient';
+import { getAllUsers } from '../services/userService';
 
 // Define a type for the slice state
 interface UserState {
@@ -16,40 +16,39 @@ const initialState: UserState = {
     error: '',
 };
 
-// Workaround: cast state instead of declaring variable type
-// const initialState = {
-//     users: [],
-//     loading: false,
-//     error: '',
-// } as UserState
-
-// First, create the thunk
 export const fetchAllUsers = createAsyncThunk('user/fetchAllUsers', async () => {
-    const response = await axiosClient.get('/users');
-    return response.data;
+    const response = await getAllUsers();
+    return response;
 });
 
-// Then, handle actions in your reducers:
 const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
-        // standard reducer logic, with auto-generated action types per reducer
+        sliceFiveItems: (state) => {
+            state.users.splice(5, state.users.length);
+        },
     },
     extraReducers: (builder) => {
         builder
             .addCase(fetchAllUsers.pending, (state) => {
                 state.loading = true;
+                state.users = [];
+                state.error = '';
             })
             .addCase(fetchAllUsers.fulfilled, (state, action) => {
                 state.loading = false;
                 state.users = action.payload;
+                state.error = '';
             })
             .addCase(fetchAllUsers.rejected, (state, action) => {
                 state.loading = false;
+                state.users = [];
                 state.error = action.error.message!;
             });
     },
 });
+
+export const { sliceFiveItems } = userSlice.actions;
 
 export default userSlice.reducer;

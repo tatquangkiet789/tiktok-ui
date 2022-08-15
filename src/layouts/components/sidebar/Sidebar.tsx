@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { IoHomeOutline, IoMusicalNotes } from 'react-icons/io5';
 import { AiOutlineUsergroupDelete } from 'react-icons/ai';
 import { VscDeviceCameraVideo } from 'react-icons/vsc';
@@ -12,9 +12,11 @@ import { useTranslation } from 'react-i18next';
 import { login } from '../../../features/authSlice';
 import { IMAGES } from '../../../constants/constants';
 import SidebarDiscoverCard from './SidebarDiscoverCard';
+import { fetchAllUsers, sliceFiveItems } from '../../../features/userSlice';
 
 const Sidebar: React.FC = () => {
     const { currentUser } = useAppSelector((state) => state.auth);
+    const { users, loading, error } = useAppSelector((state) => state.user);
     const dispatch = useAppDispatch();
     const { t } = useTranslation();
     const sidebarMenuItems = [
@@ -30,13 +32,6 @@ const Sidebar: React.FC = () => {
             icon: <VscDeviceCameraVideo size={25} />,
         },
     ];
-    const accounts = [
-        { name: 'Raiden Shogun', usename: 'raiden.shogun', image: IMAGES.raiden },
-        { name: 'Yae Miko', usename: 'yae.miko', image: IMAGES.yae },
-        { name: 'Angry Yae', usename: 'angry.yae', image: IMAGES.angryYae },
-        { name: 'Paimon', usename: 'paimon', image: IMAGES.paimon },
-        { name: 'Raiden Yae', usename: 'raiden.yae', image: IMAGES.raidenYae },
-    ];
     const discover = [
         { name: 'Những Gì Anh Nói - BOZITT', icon: <IoMusicalNotes size={16} /> },
         { name: 'Suýt Nữa Thì - Andiez', icon: <IoMusicalNotes size={16} /> },
@@ -46,8 +41,15 @@ const Sidebar: React.FC = () => {
         { name: 'warframe', icon: <CgHashtag size={16} /> },
     ];
 
+    useEffect(() => {
+        // dispatch(fetchAllUsers());
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    console.log(users);
+
     return (
-        <div className='h-screen pr-2 fixed top-[65px] max-w-[356px] overflow-scroll'>
+        <React.Fragment>
             <div className='mt-[20px] pb-2'>
                 {sidebarMenuItems.map((item, index) => (
                     <SidebarMenu
@@ -58,6 +60,7 @@ const Sidebar: React.FC = () => {
                     />
                 ))}
             </div>
+
             {currentUser ? (
                 <></>
             ) : (
@@ -86,28 +89,30 @@ const Sidebar: React.FC = () => {
                 >
                     {t('suggestedAccounts')}
                 </p>
-                {accounts.map((account, index) => (
-                    <AccountItem
-                        key={index}
-                        name={account.name}
-                        username={account.usename}
-                        image={account.image}
-                        small={true}
-                    />
-                ))}
-                <p
-                    className='text-primary font-[14px] px-2 cursor-pointer font-semibold 
-                        mb-[20px]'
-                >
-                    {t('seeAll')}
-                </p>
+                {users.length > 5 ? (
+                    <p
+                        className='text-primary font-[14px] px-2 cursor-pointer 
+                        font-semibold mb-[20px]'
+                        onClick={() => dispatch(sliceFiveItems())}
+                    >
+                        {t('seeLess')}
+                    </p>
+                ) : (
+                    <p
+                        className='text-primary font-[14px] px-2 cursor-pointer 
+                            font-semibold mb-[20px]'
+                        onClick={() => dispatch(sliceFiveItems())}
+                    >
+                        {t('seeAll')}
+                    </p>
+                )}
                 <div
                     className='pl-2 pt-[20px] pb-[20px] border-y-[0.5px] 
-                        border-y-gray012'
+                    border-y-gray012'
                 >
                     <p
                         className='font-[14px] font-semibold text-gray05 
-                                leading-[20px] pb-4'
+                        leading-[20px] pb-4'
                     >
                         {t('discover')}
                     </p>
@@ -121,18 +126,8 @@ const Sidebar: React.FC = () => {
                         ))}
                     </div>
                 </div>
-                <div className='mb-[75px]'>
-                    <div className='flex items-center mt-[5px] mr-[6px]'>
-                        <span>
-                            <BiCopyright size={20} className='text-gray05' />
-                        </span>
-                        <p className='font-[12px] text-gray05 leading-[17px] font-semibold'>
-                            Tất Quảng Kiệt - 2022
-                        </p>
-                    </div>
-                </div>
             </div>
-        </div>
+        </React.Fragment>
     );
 };
 

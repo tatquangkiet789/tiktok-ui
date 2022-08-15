@@ -1,6 +1,6 @@
 import React from 'react';
 import { IoAdd, IoChatboxEllipsesOutline, IoPaperPlaneOutline } from 'react-icons/io5';
-import logo from '../../assets/images/logo.svg';
+import logo from '../../../assets/images/logo.svg';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css'; // optional
 import { Button } from '../../../components';

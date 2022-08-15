@@ -1,4 +1,6 @@
 export const HOST = 'https://jsonplaceholder.typicode.com';
+// export const BASE_URL = process.env.REACT_APP_BASE_URL;
+export const BASE_URL = 'https://tiktok.fullstack.edu.vn/api';
 
 export const IMAGES = {
     raiden: 'https://res.cloudinary.com/dnwauajh9/image/upload/v1653748550/raiden-crying_lr8dfp.jpg',
@@ -10,4 +12,8 @@ export const IMAGES = {
     cheem: 'https://res.cloudinary.com/dnwauajh9/image/upload/v1641046577/xlq16tk1iswnjeqfv4z4.jpg',
     raidenYae:
         'https://res.cloudinary.com/dnwauajh9/image/upload/v1658634282/FM6QVI6XEAIyOdK_xhwbnl.jpg',
+};
+
+export const VIDEOS = {
+    test: 'https://res.cloudinary.com/dnwauajh9/video/upload/v1660552944/testing_filiqb.mp4',
 };

@@ -1,29 +1,36 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { IoCloseCircle, IoSearch } from 'react-icons/io5';
 // import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import HeadlessTippy from '@tippyjs/react/headless';
 import Wrapper from '../Wrapper';
 import AccountItem from '../../../components/AccountItem';
 import { useTranslation } from 'react-i18next';
-import { IMAGES } from '../../../constants/constants';
+import { useAppDispatch, useAppSelector, useDebounce } from '../../../hooks';
+import { searchUserByName } from '../../../features/searchSlice';
+import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 
 const Search: React.FC = () => {
     const { t } = useTranslation();
     const [search, setSearch] = useState('');
-    const [loading] = useState(true);
-    const accounts = [
-        { name: 'Raiden Shogun', usename: 'raiden.shogun', image: IMAGES.raiden },
-        { name: 'Yae Miko', usename: 'yae.miko', image: IMAGES.yae },
-        { name: 'Angry Yae', usename: 'angry.yae', image: IMAGES.angryYae },
-        { name: 'Paimon', usename: 'paimon', image: IMAGES.paimon },
-        { name: 'Raiden Yae', usename: 'raiden.yae', image: IMAGES.raidenYae },
-        { name: 'Shiba Inu', usename: 'shiba.inu', image: IMAGES.shiba },
-    ];
+    const dispatch = useAppDispatch();
+    const { users, loading, error } = useAppSelector((state) => state.search);
+    const debounceValue = useDebounce(search, 500);
+
+    useEffect(() => {
+        if (!debounceValue) {
+            return;
+        }
+        dispatch(searchUserByName(debounceValue));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [debounceValue]);
+
+    console.log(users);
 
     return (
         <React.Fragment>
             <HeadlessTippy
                 interactive
+                visible={search !== ''}
                 render={(attrs) => (
                     <div tabIndex={-1} {...attrs} className='w-[361px] z-10'>
                         <Wrapper>
@@ -33,12 +40,12 @@ const Search: React.FC = () => {
                             >
                                 {t('accounts')}
                             </p>
-                            {accounts.map((account, index) => (
+                            {users.map((user) => (
                                 <AccountItem
-                                    key={index}
-                                    name={account.name}
-                                    username={account.usename}
-                                    image={account.image}
+                                    key={user.id}
+                                    name={user.full_name}
+                                    username={user.nickname}
+                                    image={user.avatar}
                                 />
                             ))}
                         </Wrapper>
@@ -59,17 +66,18 @@ const Search: React.FC = () => {
                             text-[16px] pl-[20px] pr-[12px] caret-primary flex-1
                             leading-[22px] placeholder:text-gray06'
                     />
-                    {search && loading !== false ? (
+                    {search ? (
                         <IoCloseCircle
                             size={16}
                             color='rgba(22, 24, 35, 0.34)'
-                            className='mr-[12px]'
+                            className='mr-[12px] cursor-pointer'
+                            onClick={() => setSearch('')}
                         />
                     ) : (
                         <></>
                     )}
 
-                    {/* {loading ? (
+                    {loading ? (
                         <AiOutlineLoading3Quarters
                             size={16}
                             color='rgba(22, 24, 35, 0.34)'
@@ -77,7 +85,7 @@ const Search: React.FC = () => {
                         />
                     ) : (
                         <></>
-                    )} */}
+                    )}
 
                     <span className='h-[28px] w-[1px] bg-gray012'></span>
                     <button
