@@ -1,6 +1,4 @@
-export const HOST = 'https://jsonplaceholder.typicode.com';
-// export const BASE_URL = process.env.REACT_APP_BASE_URL;
-export const BASE_URL = 'https://tiktok.fullstack.edu.vn/api';
+export const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 export const IMAGES = {
     raiden: 'https://res.cloudinary.com/dnwauajh9/image/upload/v1653748550/raiden-crying_lr8dfp.jpg',

@@ -27,22 +27,22 @@ const searchSlice = createSlice({
     initialState,
     reducers: {},
     extraReducers: (builder) => {
-        builder
-            .addCase(searchUserByName.pending, (state) => {
-                state.loading = true;
-                state.users = [];
-                state.error = '';
-            })
-            .addCase(searchUserByName.fulfilled, (state, action) => {
-                state.loading = false;
-                state.users = action.payload.data;
-                state.error = '';
-            })
-            .addCase(searchUserByName.rejected, (state, action) => {
-                state.loading = false;
-                state.users = [];
-                state.error = action.error.message!;
-            });
+        // builder
+        //     .addCase(searchUserByName.pending, (state) => {
+        //         state.loading = true;
+        //         state.users = [];
+        //         state.error = '';
+        //     })
+        //     .addCase(searchUserByName.fulfilled, (state, action) => {
+        //         state.loading = false;
+        //         state.users = action.payload;
+        //         state.error = '';
+        //     })
+        //     .addCase(searchUserByName.rejected, (state, action) => {
+        //         state.loading = false;
+        //         state.users = [];
+        //         state.error = action.error.message!;
+        //     });
     },
 });
 

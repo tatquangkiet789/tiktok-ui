@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { IoAdd, IoChatboxEllipsesOutline, IoPaperPlaneOutline } from 'react-icons/io5';
 import logo from '../../../assets/images/logo.svg';
 import Tippy from '@tippyjs/react';
@@ -9,16 +9,28 @@ import Search from './Search';
 import Menu from './menu/Menu';
 import { useAppSelector } from '../../../hooks';
 
-const Navbar: React.FC = () => {
+interface NavbarProps {
+    fullscreen?: boolean;
+}
+
+const Navbar: React.FC<NavbarProps> = ({ fullscreen = false }) => {
     const { t } = useTranslation();
     const { currentUser } = useAppSelector((state) => state.auth);
+    let navbarWidth = 'max-w-[1150px]';
+
+    if (fullscreen) {
+        navbarWidth = 'max-w-full mx-3';
+    }
 
     return (
         <div
             className='w-full h-[60px] shadow-[0px_1px_1px_rgba(0,0,0,0.12)] fixed z-10
             bg-white'
         >
-            <div className='max-w-[1150px] h-[60px] mx-auto flex items-center justify-between'>
+            <div
+                className={`${navbarWidth} h-[60px] mx-auto flex items-center 
+                    justify-between`}
+            >
                 <img src={logo} alt='TikTok' />
                 <Search />
                 <div className='flex items-center'>
@@ -58,4 +70,4 @@ const Navbar: React.FC = () => {
     );
 };
 
-export default Navbar;
+export default memo(Navbar);

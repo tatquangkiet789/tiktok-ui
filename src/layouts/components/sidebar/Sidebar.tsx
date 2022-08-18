@@ -42,11 +42,9 @@ const Sidebar: React.FC = () => {
     ];
 
     useEffect(() => {
-        // dispatch(fetchAllUsers());
+        dispatch(fetchAllUsers());
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
-    console.log(users);
 
     return (
         <React.Fragment>
@@ -66,7 +64,7 @@ const Sidebar: React.FC = () => {
             ) : (
                 <div
                     className='pl-2 pt-[20px] pb-[20px] border-y-[0.5px] 
-                        border-y-gray012'
+                        border-y-gray012 w-[340px]'
                 >
                     <p className='text-[16px] leading-[22px] text-gray05'>
                         {t('logInToFollowCreatorsLikeVideosAndViewComments')}
@@ -89,6 +87,14 @@ const Sidebar: React.FC = () => {
                 >
                     {t('suggestedAccounts')}
                 </p>
+                {users.map(({ name, id, username }) => (
+                    <AccountItem
+                        key={id}
+                        name={name}
+                        username={username}
+                        image={IMAGES.angryYae}
+                    />
+                ))}
                 {users.length > 5 ? (
                     <p
                         className='text-primary font-[14px] px-2 cursor-pointer 

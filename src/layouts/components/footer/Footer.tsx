@@ -1,5 +1,6 @@
 import React from 'react';
 import { BiCopyright } from 'react-icons/bi';
+import FooterItem from './FooterItem';
 
 const Footer: React.FC = () => {
     const item1 = [
@@ -18,21 +19,37 @@ const Footer: React.FC = () => {
         { content: 'TikTok Rewards', href: 'https://www.google.com.vn/' },
     ];
     const item3 = [
-        { content: 'About', href: 'https://www.google.com.vn/' },
-        { content: 'TikTok Browse', href: 'https://www.google.com.vn/' },
-        { content: 'Newsroom', href: 'https://www.google.com.vn/' },
-        { content: 'Contact', href: 'https://www.google.com.vn/' },
-        { content: 'Careers', href: 'https://www.google.com.vn/' },
-        { content: 'ByteDance', href: 'https://www.google.com.vn/' },
+        { content: 'Help', href: 'https://www.google.com.vn/' },
+        { content: 'Safety', href: 'https://www.google.com.vn/' },
+        { content: 'Terms', href: 'https://www.google.com.vn/' },
+        { content: 'Privacy', href: 'https://www.google.com.vn/' },
+        { content: 'Creator Portal', href: 'https://www.google.com.vn/' },
+        { content: 'Community', href: 'https://www.google.com.vn/' },
+        { content: 'Guidelines', href: 'https://www.google.com.vn/' },
     ];
 
     return (
-        <div className='mb-[75px]'>
-            <div className='flex items-center mt-[5px] mr-[6px]'>
+        <div className='flex flex-col mt-[18px] mr-[6px] mb-[20px]'>
+            <div className='flex flex-wrap'>
+                {item1.map(({ content, href }, index) => (
+                    <FooterItem key={index} content={content} to={href} />
+                ))}
+            </div>
+            <div className='flex flex-wrap mt-[10px]'>
+                {item2.map(({ content, href }, index) => (
+                    <FooterItem key={index} content={content} to={href} />
+                ))}
+            </div>
+            <div className='flex flex-wrap mt-[10px]'>
+                {item3.map(({ content, href }, index) => (
+                    <FooterItem key={index} content={content} to={href} />
+                ))}
+            </div>
+            <div className='flex items-center mt-[10px]'>
                 <span>
                     <BiCopyright size={10} className='text-gray05' />
                 </span>
-                <p className='font-[5px] text-gray05 leading-[5px] font-semibold'>
+                <p className='text-gray05 text-[12px] font-semibold'>
                     Tất Quảng Kiệt - 2022
                 </p>
             </div>

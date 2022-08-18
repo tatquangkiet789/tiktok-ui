@@ -8,29 +8,33 @@ import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector, useDebounce } from '../../../hooks';
 import { searchUserByName } from '../../../features/searchSlice';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
+import { IMAGES } from '../../../constants/constants';
+import { fetchAllUsers } from '../../../features/userSlice';
 
 const Search: React.FC = () => {
     const { t } = useTranslation();
     const [search, setSearch] = useState('');
     const dispatch = useAppDispatch();
-    const { users, loading, error } = useAppSelector((state) => state.search);
-    const debounceValue = useDebounce(search, 500);
+    // const { users, loading, error } = useAppSelector((state) => state.search);
+    const { users, loading } = useAppSelector((state) => state.user);
+    // const debounceValue = useDebounce(search, 500);
+
+    // useEffect(() => {
+    //     if (!debounceValue) {
+    //         return;
+    //     }
+    //     dispatch(searchUserByName(debounceValue));
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [debounceValue]);
 
     useEffect(() => {
-        if (!debounceValue) {
-            return;
-        }
-        dispatch(searchUserByName(debounceValue));
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [debounceValue]);
-
-    console.log(users);
+        dispatch(fetchAllUsers());
+    }, []);
 
     return (
         <React.Fragment>
             <HeadlessTippy
                 interactive
-                visible={search !== ''}
                 render={(attrs) => (
                     <div tabIndex={-1} {...attrs} className='w-[361px] z-10'>
                         <Wrapper>
@@ -43,9 +47,9 @@ const Search: React.FC = () => {
                             {users.map((user) => (
                                 <AccountItem
                                     key={user.id}
-                                    name={user.full_name}
-                                    username={user.nickname}
-                                    image={user.avatar}
+                                    name={user.name}
+                                    username={user.username}
+                                    image={IMAGES.raiden}
                                 />
                             ))}
                         </Wrapper>

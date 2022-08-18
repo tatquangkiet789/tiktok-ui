@@ -13,7 +13,7 @@ const SidebarDiscoverCard: React.FC<SidebarDiscoverCardProps> = ({ icon, name })
                 hover:bg-gray003'
         >
             <span>{icon}</span>
-            <p className='font-[14px] text-gray05 font-normal pl-[6px]'>{name}</p>
+            <p className='text-[14px] text-gray05 font-normal pl-[6px]'>{name}</p>
         </div>
     );
 };

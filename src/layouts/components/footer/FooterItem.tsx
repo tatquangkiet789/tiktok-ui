@@ -8,7 +8,12 @@ interface FooterItemProps {
 const FooterItem: React.FC<FooterItemProps> = ({ content, to }) => {
     return (
         <a href={to}>
-            <p className='text-gray05 mr-[6px]'>{content}</p>
+            <p
+                className='text-gray05 mr-[6px] p-[2px] text-[12px] font-semibold
+                hover:cursor-pointer hover:underline'
+            >
+                {content}
+            </p>
         </a>
     );
 };

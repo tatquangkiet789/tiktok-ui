@@ -9,11 +9,13 @@ const HeaderOnlyLayout = React.lazy(() => import('../layouts/HeaderOnlyLayout'))
 //Pages
 const Home = React.lazy(() => import('../pages/Home'));
 const Following = React.lazy(() => import('../pages/Following'));
+const Live = React.lazy(() => import('../pages/Live'));
 
 const AppRoutes: React.FC = () => {
     return (
         <BrowserRouter>
             <Routes>
+                {/* MainLayout */}
                 <Route
                     path={`/`}
                     element={
@@ -38,8 +40,18 @@ const AppRoutes: React.FC = () => {
                             </React.Suspense>
                         }
                     />
+                    <Route
+                        path={`${routes.live}`}
+                        element={
+                            <React.Suspense fallback={<div>Loading...</div>}>
+                                <Live />
+                            </React.Suspense>
+                        }
+                    />
                 </Route>
                 {/* End of MainLayout route */}
+
+                {/* NavbarOnlyLayout */}
                 <Route
                     path={`/${routes.upload}`}
                     element={
@@ -48,6 +60,7 @@ const AppRoutes: React.FC = () => {
                         </React.Suspense>
                     }
                 />
+                {/* End of NavbarOnlyLayout */}
             </Routes>
         </BrowserRouter>
     );
