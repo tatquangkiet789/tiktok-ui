@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { IoHomeOutline, IoMusicalNotes } from 'react-icons/io5';
 import { AiOutlineUsergroupDelete } from 'react-icons/ai';
 import { VscDeviceCameraVideo } from 'react-icons/vsc';
-import { BiCopyright } from 'react-icons/bi';
 import { CgHashtag } from 'react-icons/cg';
 import routes from '../../../routes/routes';
 import SidebarMenu from './SidebarMenu';

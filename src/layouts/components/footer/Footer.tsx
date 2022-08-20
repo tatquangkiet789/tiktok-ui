@@ -29,20 +29,20 @@ const Footer: React.FC = () => {
     ];
 
     return (
-        <div className='flex flex-col mt-[18px] mr-[6px] mb-[20px]'>
+        <React.Fragment>
             <div className='flex flex-wrap'>
                 {item1.map(({ content, href }, index) => (
-                    <FooterItem key={index} content={content} to={href} />
+                    <FooterItem key={index} content={content} href={href} />
                 ))}
             </div>
             <div className='flex flex-wrap mt-[10px]'>
                 {item2.map(({ content, href }, index) => (
-                    <FooterItem key={index} content={content} to={href} />
+                    <FooterItem key={index} content={content} href={href} />
                 ))}
             </div>
             <div className='flex flex-wrap mt-[10px]'>
                 {item3.map(({ content, href }, index) => (
-                    <FooterItem key={index} content={content} to={href} />
+                    <FooterItem key={index} content={content} href={href} />
                 ))}
             </div>
             <div className='flex items-center mt-[10px]'>
@@ -53,7 +53,7 @@ const Footer: React.FC = () => {
                     Tất Quảng Kiệt - 2022
                 </p>
             </div>
-        </div>
+        </React.Fragment>
     );
 };
 

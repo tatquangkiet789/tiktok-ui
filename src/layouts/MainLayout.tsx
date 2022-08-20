@@ -29,11 +29,13 @@ const MainLayout: React.FC = () => {
                         <Sidebar />
                     </React.Suspense>
 
-                    <React.Suspense fallback={<div>Loading...</div>}>
-                        <Footer />
-                    </React.Suspense>
+                    <div className='flex flex-col mt-[18px] mr-[6px] mb-[20px]'>
+                        <React.Suspense fallback={<div>Loading...</div>}>
+                            <Footer />
+                        </React.Suspense>
+                    </div>
                 </div>
-                <div className='flex-1 ml-[356px] mt-[60px]'>
+                <div className='flex-1 ml-[356px] mt-[60px] relative'>
                     <Outlet />
                 </div>
             </div>
