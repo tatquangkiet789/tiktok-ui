@@ -12,36 +12,6 @@
         @apply flex items-center p-[12px] hover:bg-gray003 text-primary transition 
         ease-in-out delay-100;
     }
-
-    .btn {
-        @apply rounded-[2px] flex items-center justify-center cursor-pointer;
-    }
-
-    .primary {
-        @apply bg-primary text-white1 font-bold py-[6px] px-[8px] 
-        hover:bg-hoverPrimary rounded-[4px];
-    }
-
-    .default {
-        @apply border-[1px] border-gray012 hover:bg-gray003;
-    }
-
-    .outlined {
-        @apply border-[1px] border-primary hover:bg-hoverPink rounded-[4px]
-        text-primary;
-    }
-
-    .lg {
-        @apply w-full text-[18px] min-h-[48px] font-semibold leading-[25px];
-    }
-
-    .md {
-        @apply min-w-[100px] h-[36px];
-    }
-
-    .sm {
-        @apply h-[28px] min-w-[88px];
-    }
 }
 
 /* width */

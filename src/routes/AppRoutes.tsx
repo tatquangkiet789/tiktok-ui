@@ -1,66 +1,18 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import MainLayout from '../layouts/MainLayout/MainLayout';
+import Home from '../pages/Home';
 import routes from './routes';
-
-//Layouts
-const MainLayout = React.lazy(() => import('../layouts/MainLayout'));
-const HeaderOnlyLayout = React.lazy(() => import('../layouts/HeaderOnlyLayout'));
-
-//Pages
-const Home = React.lazy(() => import('../pages/Home'));
-const Following = React.lazy(() => import('../pages/Following'));
-const Live = React.lazy(() => import('../pages/Live'));
 
 const AppRoutes: React.FC = () => {
     return (
         <BrowserRouter>
             <Routes>
                 {/* MainLayout */}
-                <Route
-                    path={`/`}
-                    element={
-                        <React.Suspense fallback={<div>Loading...</div>}>
-                            <MainLayout />
-                        </React.Suspense>
-                    }
-                >
-                    <Route
-                        path={`${routes.home}`}
-                        element={
-                            <React.Suspense fallback={<div>Loading...</div>}>
-                                <Home />
-                            </React.Suspense>
-                        }
-                    />
-                    <Route
-                        path={`${routes.following}`}
-                        element={
-                            <React.Suspense fallback={<div>Loading...</div>}>
-                                <Following />
-                            </React.Suspense>
-                        }
-                    />
-                    <Route
-                        path={`${routes.live}`}
-                        element={
-                            <React.Suspense fallback={<div>Loading...</div>}>
-                                <Live />
-                            </React.Suspense>
-                        }
-                    />
+                <Route path={`/`} element={<MainLayout />}>
+                    <Route path={`${routes.home}`} element={<Home />} />
                 </Route>
                 {/* End of MainLayout route */}
-
-                {/* NavbarOnlyLayout */}
-                <Route
-                    path={`/${routes.upload}`}
-                    element={
-                        <React.Suspense fallback={<div>Loading...</div>}>
-                            <HeaderOnlyLayout />
-                        </React.Suspense>
-                    }
-                />
-                {/* End of NavbarOnlyLayout */}
             </Routes>
         </BrowserRouter>
     );

@@ -1,3 +1,5 @@
+import { Content } from '../models/content';
+
 export const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 export const IMAGES = {
@@ -15,3 +17,50 @@ export const IMAGES = {
 export const VIDEOS = {
     test: 'https://res.cloudinary.com/dnwauajh9/video/upload/v1660552944/testing_filiqb.mp4',
 };
+
+export const URLS = {
+    placeholder: 'https://www.facebook.com/quangkiet.tat.1',
+};
+
+export const CONTENT: Content[] = [
+    {
+        avatar: IMAGES.angryYae,
+        name: 'Angry Yae',
+        username: 'angry.yae',
+        hashtag: 'hashtag',
+        originalSound: 'Original sound',
+        video: VIDEOS.test,
+    },
+    {
+        avatar: IMAGES.raiden,
+        name: 'Raiden Shogun',
+        username: 'raiden.shogun',
+        hashtag: 'hashtag',
+        originalSound: 'Original sound',
+        video: VIDEOS.test,
+    },
+    {
+        avatar: IMAGES.yae,
+        name: 'Yae Miko',
+        username: 'yae.miko',
+        hashtag: 'hashtag',
+        originalSound: 'Original sound',
+        video: VIDEOS.test,
+    },
+    {
+        avatar: IMAGES.shiba,
+        name: 'Đặng Thu Hà',
+        username: 'dangthuhaf',
+        hashtag: 'hashtag',
+        originalSound: 'Original sound',
+        video: VIDEOS.test,
+    },
+    {
+        avatar: IMAGES.raidenYae,
+        name: 'Nguyễn Thị Mỹ Loan',
+        username: 'loan.ntm',
+        hashtag: 'hashtag',
+        originalSound: 'Original sound',
+        video: VIDEOS.test,
+    },
+];

@@ -1,0 +1,12 @@
+.container {
+    z-index: 10;
+    position: fixed;
+    height: calc(100vh - var(--navbar-height));
+    max-width: var(--sidebar-width);
+    width: 100%;
+    margin-top: 1px;
+    padding-top: 20px;
+    padding-left: 8px;
+    padding-bottom: 26px;
+    background-color: aliceblue;
+}

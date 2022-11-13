@@ -1,5 +1,9 @@
+import classNames from 'classnames/bind';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import styles from './SidebarMenu.module.scss';
+
+const cx = classNames.bind(styles);
 
 interface SidebarMenuProps {
     to: string;
@@ -9,12 +13,9 @@ interface SidebarMenuProps {
 
 const SidebarMenu: React.FC<SidebarMenuProps> = ({ to, text, icon }) => {
     return (
-        <NavLink
-            to={to}
-            className={(nav) => (nav.isActive ? 'navlink-active' : 'navlink')}
-        >
-            <span>{icon}</span>
-            <p className='ml-2 text-[18px] leading-[25px] font-bold'>{text}</p>
+        <NavLink to={to} className={(nav) => cx('container', { active: nav.isActive })}>
+            {icon}
+            <p>{text}</p>
         </NavLink>
     );
 };

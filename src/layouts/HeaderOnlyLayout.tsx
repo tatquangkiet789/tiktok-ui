@@ -1,6 +1,6 @@
 import React from 'react';
 import Upload from '../pages/Upload';
-import Navbar from './components/navbar/Navbar';
+import Navbar from './components/Navbar/Navbar';
 
 const HeaderOnlyLayout: React.FC = () => {
     return (
