@@ -6,6 +6,9 @@ import { ReactComponent as HomeIcon } from '../../../assets/icons/home.svg';
 import { ReactComponent as FollowingIcon } from '../../../assets/icons/following.svg';
 import { ReactComponent as LiveIcon } from '../../../assets/icons/live.svg';
 import SidebarMenu from './SidebarMenu/SidebarMenu';
+import { USERS } from '../../../constants/constants';
+import Button from '../../../components/Button/Button';
+import AccountItem from '../../../components/AccoutItem/AccountItem';
 
 const cx = classNames.bind(styles);
 
@@ -23,6 +26,7 @@ const Sidebar: React.FC = () => {
             icon: <LiveIcon />,
         },
     ];
+    const users = [...USERS];
     // const discover = [
     //     { name: 'Những Gì Anh Nói - BOZITT', icon: <IoMusicalNotes size={16} /> },
     //     { name: 'Suýt Nữa Thì - Andiez', icon: <IoMusicalNotes size={16} /> },
@@ -123,6 +127,20 @@ const Sidebar: React.FC = () => {
         <div className={cx('container')}>
             {sidebarMenuItems.map((item, index) => (
                 <SidebarMenu key={index} to={item.to} text={item.text} icon={item.icon} />
+            ))}
+            <div className={cx('login')}>
+                <p>Đăng nhập để follow các tác giả, thích video và xem bình luận</p>
+                <Button text='Đăng nhập' type='outlined' size='lg' />
+            </div>
+            <p className={cx('suggested-accounts')}>Tài khoản được đề xuất</p>
+            {users.map(({ name, username, avatar, tick }, index) => (
+                <AccountItem
+                    key={index}
+                    name={name}
+                    username={username}
+                    avatar={avatar}
+                    tick={tick}
+                />
             ))}
         </div>
     );

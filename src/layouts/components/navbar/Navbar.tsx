@@ -1,15 +1,11 @@
 import React, { memo } from 'react';
-import { IoAdd, IoChatboxEllipsesOutline, IoPaperPlaneOutline } from 'react-icons/io5';
 import logo from '../../../assets/icons/logo.svg';
-import Tippy from '@tippyjs/react';
-import 'tippy.js/dist/tippy.css'; // optional
-import { Button } from '../../../components';
 import Search from './Search/Search';
-import Menu from './Menu/Menu';
 import styles from './Navbar.module.scss';
 import classNames from 'classnames/bind';
 import { ReactComponent as AddIcon } from '../../../assets/icons/add.svg';
 import { ReactComponent as ThreeDotIcon } from '../../../assets/icons/threedot.svg';
+import Button from '../../../components/Button/Button';
 
 const cx = classNames.bind(styles);
 

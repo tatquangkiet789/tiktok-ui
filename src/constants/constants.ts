@@ -64,3 +64,16 @@ export const CONTENT: Content[] = [
         video: VIDEOS.test,
     },
 ];
+
+export const USERS = [
+    {
+        name: 'Raiden Shogun',
+        username: 'raiden.shogun',
+        avatar: IMAGES.raiden,
+        tick: true,
+    },
+    { name: 'Yae Miko', username: 'yae.miko', avatar: IMAGES.angryYae, tick: true },
+    { name: 'Paimon', username: 'paimon', avatar: IMAGES.paimon, tick: true },
+    { name: 'Cheem', username: 'cheem', avatar: IMAGES.cheem, tick: true },
+    { name: 'Shiba Inu', username: 'shiba.inu', avatar: IMAGES.shiba, tick: true },
+];
