@@ -3,7 +3,7 @@
 
     --layout-width: 1150px;
 
-    --sidebar-width: 340px;
+    --sidebar-width: 358px;
 
     --search-height: 46px;
     --search-width: 361px;
@@ -30,4 +30,13 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(22, 24, 35, 0.12);
+    border-radius: 10px;
 }

@@ -1,7 +1,7 @@
 const routes = {
     home: '/',
-    following: 'following',
-    live: 'live',
+    friends: 'friends',
+    watch: 'watch',
     feedback: 'feedback',
     upload: 'upload',
 };

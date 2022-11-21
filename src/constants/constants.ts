@@ -1,4 +1,5 @@
 import { Content } from '../models/content';
+import { User } from '../models/user';
 
 export const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -12,6 +13,14 @@ export const IMAGES = {
     cheem: 'https://res.cloudinary.com/dnwauajh9/image/upload/v1641046577/xlq16tk1iswnjeqfv4z4.jpg',
     raidenYae:
         'https://res.cloudinary.com/dnwauajh9/image/upload/v1658634282/FM6QVI6XEAIyOdK_xhwbnl.jpg',
+};
+
+export const CURRENT_USER: User = {
+    id: 1,
+    name: 'Raiden Shogun',
+    username: 'raiden.shogun',
+    avatar: IMAGES.raiden,
+    tick: true,
 };
 
 export const VIDEOS = {
@@ -67,13 +76,37 @@ export const CONTENT: Content[] = [
 
 export const USERS = [
     {
+        id: 0,
         name: 'Raiden Shogun',
         username: 'raiden.shogun',
         avatar: IMAGES.raiden,
         tick: true,
     },
-    { name: 'Yae Miko', username: 'yae.miko', avatar: IMAGES.angryYae, tick: true },
-    { name: 'Paimon', username: 'paimon', avatar: IMAGES.paimon, tick: true },
-    { name: 'Cheem', username: 'cheem', avatar: IMAGES.cheem, tick: true },
-    { name: 'Shiba Inu', username: 'shiba.inu', avatar: IMAGES.shiba, tick: true },
+    {
+        id: 1,
+        name: 'Yae Miko',
+        username: 'yae.miko',
+        avatar: IMAGES.angryYae,
+        tick: true,
+    },
+    { id: 2, name: 'Paimon', username: 'paimon', avatar: IMAGES.paimon, tick: true },
+    { id: 3, name: 'Cheem', username: 'cheem', avatar: IMAGES.cheem, tick: true },
+    {
+        id: 4,
+        name: 'Yae Miko',
+        username: 'yae.miko',
+        avatar: IMAGES.angryYae,
+        tick: true,
+    },
+    { id: 5, name: 'Paimon', username: 'paimon', avatar: IMAGES.paimon, tick: true },
+    { id: 6, name: 'Cheem', username: 'cheem', avatar: IMAGES.cheem, tick: true },
+    {
+        id: 7,
+        name: 'Yae Miko',
+        username: 'yae.miko',
+        avatar: IMAGES.angryYae,
+        tick: true,
+    },
+    { id: 9, name: 'Paimon', username: 'paimon', avatar: IMAGES.paimon, tick: true },
+    { id: 9, name: 'Cheem', username: 'cheem', avatar: IMAGES.cheem, tick: true },
 ];

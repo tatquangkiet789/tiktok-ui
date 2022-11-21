@@ -1,27 +1,29 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { CURRENT_USER } from '../constants/constants';
+import { User } from '../models/user';
 
 interface AuthState {
-    currentUser: boolean;
+    currentUser: User;
 }
 
 const initialState: AuthState = {
-    currentUser: false,
+    currentUser: null as any,
 };
 
 const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
-        login: (state) => {
-            state.currentUser = true;
+        loginUser: (state) => {
+            state.currentUser = CURRENT_USER;
         },
-        logout: (state) => {
-            state.currentUser = false;
+        logoutUser: (state) => {
+            state.currentUser = null as any;
         },
     },
     extraReducers: (builder) => {},
 });
 
-export const { login, logout } = authSlice.actions;
+export const { loginUser, logoutUser } = authSlice.actions;
 
 export default authSlice.reducer;
