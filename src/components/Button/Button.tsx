@@ -5,7 +5,7 @@ import classNames from 'classnames/bind';
 
 const cx = classNames.bind(styles);
 
-interface ButtonProps {
+interface IButtonProps {
     type: string;
     text: string;
     size?: string;
@@ -15,7 +15,7 @@ interface ButtonProps {
     onClick?: () => void;
 }
 
-const Button: React.FC<ButtonProps> = ({
+const Button: React.FC<IButtonProps> = ({
     type = 'primary' || 'outlined' || 'default',
     text,
     size = 'md' || 'lg' || 'sm',

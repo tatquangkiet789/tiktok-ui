@@ -1,11 +1,11 @@
 import React from 'react';
 import './GlobalStyles.scss';
 
-interface GlobalStylesProps {
+interface IGlobalStylesProps {
     children: React.ReactNode;
 }
 
-const GlobalStyles: React.FC<GlobalStylesProps> = ({ children }) => {
+const GlobalStyles: React.FC<IGlobalStylesProps> = ({ children }) => {
     return <React.Fragment>{children}</React.Fragment>;
 };
 

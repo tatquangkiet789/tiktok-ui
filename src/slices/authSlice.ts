@@ -2,11 +2,17 @@ import { createSlice } from '@reduxjs/toolkit';
 import { CURRENT_USER } from '../constants/constants';
 import { User } from '../models/user';
 
-interface AuthState {
-    currentUser: User;
+interface IAuthState {
+    currentUser: {
+        id: number;
+        name: string;
+        username: string;
+        avatar: string;
+        tick: boolean;
+    };
 }
 
-const initialState: AuthState = {
+const initialState: IAuthState = {
     currentUser: null as any,
 };
 

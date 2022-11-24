@@ -15,7 +15,7 @@ export const IMAGES = {
         'https://res.cloudinary.com/dnwauajh9/image/upload/v1658634282/FM6QVI6XEAIyOdK_xhwbnl.jpg',
 };
 
-export const CURRENT_USER: User = {
+export const CURRENT_USER = {
     id: 1,
     name: 'Raiden Shogun',
     username: 'raiden.shogun',
@@ -107,6 +107,6 @@ export const USERS = [
         avatar: IMAGES.angryYae,
         tick: true,
     },
-    { id: 9, name: 'Paimon', username: 'paimon', avatar: IMAGES.paimon, tick: true },
+    { id: 10, name: 'Paimon', username: 'paimon', avatar: IMAGES.paimon, tick: true },
     { id: 9, name: 'Cheem', username: 'cheem', avatar: IMAGES.cheem, tick: true },
 ];

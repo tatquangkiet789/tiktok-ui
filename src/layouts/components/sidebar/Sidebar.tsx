@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import routes from '../../../routes/routes';
 import styles from './Sidebar.module.scss';
 import classNames from 'classnames/bind';
@@ -6,14 +6,14 @@ import { ReactComponent as HomeIcon } from '../../../assets/icons/home.svg';
 import { ReactComponent as FriendsIcon } from '../../../assets/icons/friends.svg';
 import { ReactComponent as WatchIcon } from '../../../assets/icons/watch.svg';
 import SidebarMenu from './SidebarMenu/SidebarMenu';
-import { USERS } from '../../../constants/constants';
 import Button from '../../../components/Button/Button';
 import AccountItem from '../../../components/AccoutItem/AccountItem';
 import { useAppDispatch } from '../../../hooks/useAppDispatch';
 import { useAppSelector } from '../../../hooks/useAppSelector';
 import { Link } from 'react-router-dom';
 import { loginUser } from '../../../slices/authSlice';
-import { showAllSuggestedUsers, showLessSuggestedUser } from '../../../slices/userSlice';
+import { findTop10SuggestedUsers } from '../../../slices/userSlice';
+import { User } from '../../../models/user';
 
 const cx = classNames.bind(styles);
 
@@ -21,6 +21,9 @@ const Sidebar: React.FC = () => {
     const { currentUser } = useAppSelector((state) => state.auth);
     const { users } = useAppSelector((state) => state.users);
     const dispatch = useAppDispatch();
+
+    const [suggestedUsers, SetSuggestedUsers] = useState<User[]>([...users]);
+
     const sidebarMenuItems = [
         { to: `${routes.home}`, text: 'Dành cho bạn', icon: <HomeIcon /> },
         {
@@ -43,8 +46,23 @@ const Sidebar: React.FC = () => {
     //     { name: 'warframe', icon: <CgHashtag size={16} /> },
     // ];
 
+    useEffect(() => {
+        if (users.length === 0) dispatch(findTop10SuggestedUsers());
+        SetSuggestedUsers(users);
+    }, [dispatch, users, users.length]);
+
     const handleLoginUser = () => {
         dispatch(loginUser());
+    };
+
+    const handleShowLessSuggestedUsers = () => {
+        SetSuggestedUsers((prev) => {
+            return [...prev].slice(0, 4);
+        });
+    };
+
+    const handleShowAllSuggestedUsers = () => {
+        SetSuggestedUsers(users);
     };
 
     return (
@@ -74,20 +92,21 @@ const Sidebar: React.FC = () => {
                 </div>
             )}
             <p className={cx('suggested-accounts')}>Tài khoản được đề xuất</p>
-            {users.map(({ name, username, avatar, tick }, index) => (
+            {suggestedUsers.map(({ firstName, lastName, id, username, avatar, tick }) => (
                 <AccountItem
-                    key={index}
-                    name={name}
+                    key={id}
+                    firstName={firstName}
+                    lastName={lastName}
                     username={username}
                     avatar={avatar}
                     tick={tick}
                 />
             ))}
             <div className={cx('see-all-button')}>
-                {users.length > 4 ? (
-                    <p onClick={() => dispatch(showLessSuggestedUser())}>Ẩn bớt</p>
+                {suggestedUsers.length > 4 ? (
+                    <p onClick={handleShowLessSuggestedUsers}>Ẩn bớt</p>
                 ) : (
-                    <p onClick={() => dispatch(showAllSuggestedUsers())}>Xem tất cả</p>
+                    <p onClick={handleShowAllSuggestedUsers}>Xem tất cả</p>
                 )}
             </div>
         </div>

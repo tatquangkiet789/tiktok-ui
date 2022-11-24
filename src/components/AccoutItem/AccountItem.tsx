@@ -5,20 +5,33 @@ import { ReactComponent as TickIcon } from '../../assets/icons/tick.svg';
 
 const cx = classNames.bind(styles);
 
-interface AccountItemProps {
-    name: string;
+interface IAccountItemProps {
+    firstName: string;
+    lastName: string;
     username: string;
     avatar: string;
     tick?: boolean;
+    size?: string;
 }
 
-const AccountItem: React.FC<AccountItemProps> = ({ name, username, avatar, tick }) => {
+const AccountItem: React.FC<IAccountItemProps> = ({
+    firstName,
+    lastName,
+    username,
+    avatar,
+    tick,
+    size,
+}) => {
     return (
-        <div className={cx('container')}>
-            <img src={avatar} alt={name} className={cx('image')} />
+        <div
+            className={cx('container', {
+                [`${size}`]: true,
+            })}
+        >
+            <img src={avatar} alt={`${lastName} ${firstName}`} className={cx('image')} />
             <div className={cx('wrapper')}>
                 <p className={cx('name')}>
-                    {name}
+                    {lastName} {firstName}
                     {tick ? <TickIcon /> : null}
                 </p>
                 <p className={cx('username')}>{username}</p>

@@ -36,3 +36,18 @@
         font-size: 12px;
     }
 }
+
+.container {
+    &.md {
+        & .image {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        & .username {
+            color: var(--gray05-color);
+            font-size: 14px;
+        }
+    }
+}
