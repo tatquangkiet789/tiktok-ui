@@ -1,0 +1,45 @@
+.container {
+    display: flex;
+    background-color: aquamarine;
+    padding: 16px 24px 10px 20px;
+}
+
+.back-icon {
+    background-color: red;
+    padding: 10px;
+    border-radius: 50%;
+    height: fit-content;
+}
+
+.sidebar {
+    background-color: white;
+    width: var(--sidebar-width);
+    box-shadow: rgb(0 0 0 / 6%) 0px 2px 8px;
+    border-radius: 8px;
+
+    & .sidebar-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 16px 0 24px;
+        height: var(--navbar-height);
+
+        & h3 {
+            font-size: 24px;
+            font-weight: bold;
+            line-height: 28px;
+        }
+
+        & span {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+    }
+}
+
+.message {
+    background-color: aqua;
+    flex: 1;
+    margin: 0 16px;
+}

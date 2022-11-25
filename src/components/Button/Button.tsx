@@ -5,10 +5,13 @@ import classNames from 'classnames/bind';
 
 const cx = classNames.bind(styles);
 
+type ButtonTypes = 'primary' | 'outlined' | 'default';
+type ButtonSizes = 'md' | 'lg' | 'sm';
+
 interface IButtonProps {
-    type: string;
+    type: ButtonTypes;
     text: string;
-    size?: string;
+    size: ButtonSizes;
     to?: string;
     iconLeft?: any;
     iconRight?: any;
@@ -16,9 +19,9 @@ interface IButtonProps {
 }
 
 const Button: React.FC<IButtonProps> = ({
-    type = 'primary' || 'outlined' || 'default',
+    type,
     text,
-    size = 'md' || 'lg' || 'sm',
+    size,
     to,
     iconLeft,
     iconRight,
@@ -33,10 +36,6 @@ const Button: React.FC<IButtonProps> = ({
         [`${type}`]: true,
         [`${size}`]: true,
     });
-
-    if (size === undefined) {
-        size = 'md';
-    }
 
     if (to) {
         props.to = to;

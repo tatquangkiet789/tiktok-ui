@@ -42,7 +42,12 @@ const Navbar: React.FC = () => {
                 <img src={logo} alt='TikTok' />
                 <Search />
                 <div className={cx('menu')}>
-                    <Button text='Tải lên' type='default' iconLeft={<AddIcon />} />
+                    <Button
+                        text='Tải lên'
+                        type='default'
+                        iconLeft={<AddIcon />}
+                        size='md'
+                    />
                     {currentUser ? (
                         <React.Fragment>
                             <Tippy content='Tin nhắn'>
@@ -81,6 +86,7 @@ const Navbar: React.FC = () => {
                                     text='Đăng nhập'
                                     type='primary'
                                     onClick={handleLoginUser}
+                                    size='md'
                                 />
                             </span>
                             <span className={cx('see-more')}>

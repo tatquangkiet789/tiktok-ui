@@ -48,16 +48,19 @@ const Search: React.FC = () => {
                 <div tabIndex={-1} {...attrs} className={cx('search-result')}>
                     <Wrapper>
                         <h4 className={cx('search-title')}>Tài khoản</h4>
-                        {result.map(({ id, firstName, lastName, avatar, username }) => (
-                            <AccountItem
-                                key={id}
-                                firstName={firstName}
-                                lastName={lastName}
-                                avatar={avatar}
-                                username={username}
-                                size='md'
-                            />
-                        ))}
+                        {result.map(
+                            ({ id, firstName, lastName, avatar, username, tick }) => (
+                                <AccountItem
+                                    key={id}
+                                    firstName={firstName}
+                                    lastName={lastName}
+                                    avatar={avatar}
+                                    username={username}
+                                    tick={tick}
+                                    size='md'
+                                />
+                            ),
+                        )}
                     </Wrapper>
                 </div>
             )}

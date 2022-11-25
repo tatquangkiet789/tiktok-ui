@@ -1,3 +1,8 @@
+.container {
+    background-color: var(--gray248-248-248-color);
+    overflow-y: scroll;
+}
+
 .wrapper {
     max-width: var(--layout-width);
     width: 100%;
@@ -10,7 +15,6 @@
     height: calc(100vh - var(--navbar-height));
     margin-top: 1px;
     margin-left: var(--sidebar-width);
-    background-color: beige;
 }
 
 .download-app {

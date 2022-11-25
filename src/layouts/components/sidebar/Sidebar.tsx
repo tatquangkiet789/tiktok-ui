@@ -37,18 +37,12 @@ const Sidebar: React.FC = () => {
             icon: <WatchIcon />,
         },
     ];
-    // const discover = [
-    //     { name: 'Những Gì Anh Nói - BOZITT', icon: <IoMusicalNotes size={16} /> },
-    //     { name: 'Suýt Nữa Thì - Andiez', icon: <IoMusicalNotes size={16} /> },
-    //     { name: 'Mãi Chẳng Thuộc về nhau - BOZITT', icon: <IoMusicalNotes size={16} /> },
-    //     { name: 'genshinimpact', icon: <CgHashtag size={16} /> },
-    //     { name: 'suthatmoingay', icon: <CgHashtag size={16} /> },
-    //     { name: 'warframe', icon: <CgHashtag size={16} /> },
-    // ];
 
     useEffect(() => {
-        if (users.length === 0) dispatch(findTop10SuggestedUsers());
-        SetSuggestedUsers(users);
+        if (users.length === 0) {
+            dispatch(findTop10SuggestedUsers());
+            SetSuggestedUsers(users);
+        }
     }, [dispatch, users, users.length]);
 
     const handleLoginUser = () => {
