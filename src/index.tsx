@@ -7,7 +7,6 @@ import { Provider } from 'react-redux';
 import store from './configs/store';
 import './configs/i18n';
 import GlobalStyles from './components/GlobalStyles/GlobalStyles';
-import 'tippy.js/dist/tippy.css';
 
 ReactDOM.render(
     <React.StrictMode>

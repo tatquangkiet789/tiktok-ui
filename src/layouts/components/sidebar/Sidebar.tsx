@@ -11,7 +11,6 @@ import AccountItem from '../../../components/AccoutItem/AccountItem';
 import { useAppDispatch } from '../../../hooks/useAppDispatch';
 import { useAppSelector } from '../../../hooks/useAppSelector';
 import { Link } from 'react-router-dom';
-import { loginUser } from '../../../slices/authSlice';
 import { findTop10SuggestedUsers } from '../../../slices/userSlice';
 import { User } from '../../../models/user';
 
@@ -21,8 +20,9 @@ const Sidebar: React.FC = () => {
     const { currentUser } = useAppSelector((state) => state.auth);
     const { users } = useAppSelector((state) => state.users);
     const dispatch = useAppDispatch();
+    console.log(users);
 
-    const [suggestedUsers, SetSuggestedUsers] = useState<User[]>([...users]);
+    const [suggestedUsers, SetSuggestedUsers] = useState<User[]>([...users]!);
 
     const sidebarMenuItems = [
         { to: `${routes.home}`, text: 'Dành cho bạn', icon: <HomeIcon /> },
@@ -41,12 +41,12 @@ const Sidebar: React.FC = () => {
     useEffect(() => {
         if (users.length === 0) {
             dispatch(findTop10SuggestedUsers());
-            SetSuggestedUsers(users);
         }
+        SetSuggestedUsers(users);
     }, [dispatch, users, users.length]);
 
     const handleLoginUser = () => {
-        dispatch(loginUser());
+        // dispatch(loginUser());
     };
 
     const handleShowLessSuggestedUsers = () => {
@@ -68,7 +68,9 @@ const Sidebar: React.FC = () => {
                         className={cx('image')}
                         alt='User Avatar'
                     />
-                    <p>{currentUser.name}</p>
+                    <p>
+                        {currentUser.lastName} {currentUser.firstName}
+                    </p>
                 </Link>
             ) : null}
             {sidebarMenuItems.map((item, index) => (

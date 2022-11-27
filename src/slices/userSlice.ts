@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { USERS } from '../constants/constants';
 import { User } from '../models/user';
 import axiosClient from '../utils/axiosClient';
 

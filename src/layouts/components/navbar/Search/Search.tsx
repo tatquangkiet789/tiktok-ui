@@ -9,7 +9,10 @@ import AccountItem from '../../../../components/AccoutItem/AccountItem';
 import { useAppSelector } from '../../../../hooks/useAppSelector';
 import useDebounce from '../../../../hooks/useDebounce';
 import { useAppDispatch } from '../../../../hooks/useAppDispatch';
-import { searchUsersByKeyword } from '../../../../slices/searchSlice';
+import {
+    search5UsersByKeyword,
+    searchUsersByKeyword,
+} from '../../../../slices/searchSlice';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 
 const cx = classNames.bind(styles);

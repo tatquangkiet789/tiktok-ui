@@ -23,7 +23,7 @@ const Navbar: React.FC = () => {
     const dispatch = useAppDispatch();
 
     const handleLoginUser = () => {
-        dispatch(loginUser());
+        // dispatch(loginUser());
     };
 
     const handleOpenNotification = () => {
