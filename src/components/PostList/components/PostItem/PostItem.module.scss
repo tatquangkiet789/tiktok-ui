@@ -67,6 +67,18 @@
 
     & span {
         flex: 1;
+        display: flex;
+        align-items: center;
+
+        & i {
+            background-color: var(--like-icon-color);
+            display: flex;
+            align-items: center;
+            width: fit-content;
+            margin-right: 8px;
+            border-radius: 50%;
+            padding: 3px;
+        }
     }
 
     & .comments {
@@ -76,9 +88,7 @@
 
 .action-buttons {
     padding: 6px 16px 12px 16px;
-
-    & button:hover {
-        cursor: pointer;
-        background-color: red;
-    }
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }

@@ -1,12 +1,12 @@
-import React, { memo, useState } from 'react';
+import React, { useState } from 'react';
 import logo from '../../../assets/icons/logo.svg';
-import Search from './Search/Search';
+import Search from './components/Search/Search';
 import styles from './Navbar.module.scss';
 import classNames from 'classnames/bind';
 import { ReactComponent as AddIcon } from '../../../assets/icons/add.svg';
 import { ReactComponent as ThreeDotIcon } from '../../../assets/icons/threedot.svg';
 import Button from '../../../components/Button/Button';
-import { loginUser, logoutUser } from '../../../slices/authSlice';
+import { loginUser } from '../../../reducers/authSlice';
 import { useAppSelector } from '../../../hooks/useAppSelector';
 import { useAppDispatch } from '../../../hooks/useAppDispatch';
 import { NavLink } from 'react-router-dom';
@@ -23,17 +23,18 @@ const Navbar: React.FC = () => {
     const dispatch = useAppDispatch();
 
     const handleLoginUser = () => {
-        // dispatch(loginUser());
+        dispatch(
+            loginUser({
+                username: 'user1',
+                password: '123',
+            }),
+        );
     };
 
     const handleOpenNotification = () => {
         setOpenNotification((prev) => {
             return !prev;
         });
-    };
-
-    const handleLogutUser = () => {
-        dispatch(logoutUser());
     };
 
     return (
@@ -100,4 +101,4 @@ const Navbar: React.FC = () => {
     );
 };
 
-export default memo(Navbar);
+export default Navbar;

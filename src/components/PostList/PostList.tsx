@@ -9,6 +9,8 @@ const PostList: React.FC = () => {
     return (
         <div className={cx('container')}>
             <PostItem />
+            <PostItem />
+            <PostItem />
         </div>
     );
 };

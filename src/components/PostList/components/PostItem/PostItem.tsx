@@ -1,7 +1,9 @@
 import classNames from 'classnames/bind';
 import React from 'react';
+import { AiOutlineLike } from 'react-icons/ai';
 import { CURRENT_USER } from '../../../../constants/constants';
 import Button from '../../../Button/Button';
+import ActionButton from '../ActionButton/ActionButton';
 import styles from './PostItem.module.scss';
 
 const cx = classNames.bind(styles);
@@ -38,12 +40,19 @@ const PostItem: React.FC = () => {
                 />
             </div>
             <div className={cx('like')}>
-                <span>2.1K</span>
+                <span>
+                    <i>
+                        <AiOutlineLike size={20} color='white' />
+                    </i>
+                    2.1K
+                </span>
                 <p className={cx('comments')}>95 bình luận</p>
                 <p>23 lượt chia sẻ</p>
             </div>
             <div className={cx('action-buttons')}>
-                <button>Thích</button>
+                <ActionButton content='Thích' icon={<AiOutlineLike size={18} />} />
+                <ActionButton content='Thích' icon={<AiOutlineLike size={18} />} />
+                <ActionButton content='Thích' icon={<AiOutlineLike size={18} />} />
             </div>
         </div>
     );

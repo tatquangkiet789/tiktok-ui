@@ -1,4 +1,6 @@
 :root {
+    --font-family: 'ProximaNova', sans-serif;
+
     --navbar-height: 60px;
 
     --layout-width: 1150px;
@@ -25,14 +27,37 @@
     --gray241-241-242-1-color: rgba(241, 241, 242, 1);
     --gray248-248-248-color: rgb(248, 248, 248);
 
+    --text-color: #161823;
+
     --white1-color: rgba(255, 255, 255, 1);
     --pink-hover-color: rgba(254, 44, 85, 0.06);
+
+    --like-icon-color: rgb(27, 116, 228);
 }
 
 * {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+
+    // font-size: 14px;
+}
+
+body {
+    font-family: var(--font-family);
+    font-size: 16px;
+}
+
+button,
+input {
+    outline: none;
+    border: none;
+    background-color: transparent;
+}
+
+a {
+    text-decoration: none;
+    color: var(--text-color);
 }
 
 ::-webkit-scrollbar {
@@ -42,4 +67,28 @@
 ::-webkit-scrollbar-thumb {
     background: rgba(22, 24, 35, 0.12);
     border-radius: 10px;
+}
+
+@font-face {
+    font-family: ProximaNova;
+    src: url('/assets/fonts/Proxima-Nova-Regular.woff2');
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: ProximaNova;
+    src: url('/assets/fonts/ProximaNova-Semibold.woff2');
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: ProximaNova;
+    src: url('/assets/fonts/Proxima-Nova-Bold.woff');
+    font-weight: 700;
+}
+
+@font-face {
+    font-family: SofiaPro;
+    src: url('/assets/fonts/sofiapro-bold.woff');
+    font-weight: 700;
 }

@@ -5,14 +5,16 @@ import classNames from 'classnames/bind';
 import { ReactComponent as HomeIcon } from '../../../assets/icons/home.svg';
 import { ReactComponent as FriendsIcon } from '../../../assets/icons/friends.svg';
 import { ReactComponent as WatchIcon } from '../../../assets/icons/watch.svg';
-import SidebarMenu from './SidebarMenu/SidebarMenu';
+import SidebarMenu from './components/SidebarMenu/SidebarMenu';
 import Button from '../../../components/Button/Button';
 import AccountItem from '../../../components/AccoutItem/AccountItem';
 import { useAppDispatch } from '../../../hooks/useAppDispatch';
 import { useAppSelector } from '../../../hooks/useAppSelector';
 import { Link } from 'react-router-dom';
-import { findTop10SuggestedUsers } from '../../../slices/userSlice';
+import { findTop10SuggestedUsers } from '../../../reducers/userSlice';
 import { User } from '../../../models/user';
+import HeadlessTippy from '@tippyjs/react/headless';
+import Wrapper from '../../../components/Wrapper/Wrapper';
 
 const cx = classNames.bind(styles);
 
@@ -20,7 +22,6 @@ const Sidebar: React.FC = () => {
     const { currentUser } = useAppSelector((state) => state.auth);
     const { users } = useAppSelector((state) => state.users);
     const dispatch = useAppDispatch();
-    console.log(users);
 
     const [suggestedUsers, SetSuggestedUsers] = useState<User[]>([...users]!);
 
@@ -51,7 +52,7 @@ const Sidebar: React.FC = () => {
 
     const handleShowLessSuggestedUsers = () => {
         SetSuggestedUsers((prev) => {
-            return [...prev].slice(0, 4);
+            return [...prev].slice(0, 5);
         });
     };
 
@@ -89,14 +90,25 @@ const Sidebar: React.FC = () => {
             )}
             <p className={cx('suggested-accounts')}>Tài khoản được đề xuất</p>
             {suggestedUsers.map(({ firstName, lastName, id, username, avatar, tick }) => (
-                <AccountItem
+                <HeadlessTippy
                     key={id}
-                    firstName={firstName}
-                    lastName={lastName}
-                    username={username}
-                    avatar={avatar}
-                    tick={tick}
-                />
+                    interactive
+                    render={(attrs) => (
+                        <div tabIndex={-1} {...attrs}>
+                            <Wrapper>
+                                <h1>Hello</h1>
+                            </Wrapper>
+                        </div>
+                    )}
+                >
+                    <AccountItem
+                        firstName={firstName}
+                        lastName={lastName}
+                        username={username}
+                        avatar={avatar}
+                        tick={tick}
+                    />
+                </HeadlessTippy>
             ))}
             <div className={cx('see-all-button')}>
                 {suggestedUsers.length > 4 ? (
