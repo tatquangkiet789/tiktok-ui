@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axiosClient from '../utils/axiosClient';
+import ENDPOINTS from '../../constants/endpoints';
+import axiosClient from '../../libs/axiosClient';
 
 interface ISearchState {
     result: any[];
@@ -17,20 +18,7 @@ const initialState: ISearchState = {
 export const searchUsersByKeyword = createAsyncThunk(
     'searchUsersByKeyword',
     async (keyword: string) => {
-        const response = await axiosClient.get(
-            `/v1/search/all?q=${encodeURIComponent(keyword)}`,
-        );
-        return response.data;
-    },
-);
-
-// [GET] /api/v1/search?q=:keyword
-export const search5UsersByKeyword = createAsyncThunk(
-    'search5UsersByKeyword',
-    async (keyword: string) => {
-        const response = await axiosClient.get(
-            `/v1/search?q=${encodeURIComponent(keyword)}`,
-        );
+        const response = await axiosClient.get(ENDPOINTS.searchUsersByKeyword(keyword));
         return response.data;
     },
 );
@@ -41,6 +29,7 @@ const searchSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
+            // Search Users By Keyword
             .addCase(searchUsersByKeyword.pending, (state) => {
                 state.loading = true;
                 state.erorr = '';
@@ -50,18 +39,6 @@ const searchSlice = createSlice({
                 state.result = action.payload.content;
             })
             .addCase(searchUsersByKeyword.rejected, (state, action) => {
-                state.loading = false;
-                state.erorr = action.error.message!;
-            })
-            .addCase(search5UsersByKeyword.pending, (state) => {
-                state.loading = true;
-                state.erorr = '';
-            })
-            .addCase(search5UsersByKeyword.fulfilled, (state, action) => {
-                state.loading = false;
-                state.result = action.payload.content;
-            })
-            .addCase(search5UsersByKeyword.rejected, (state, action) => {
                 state.loading = false;
                 state.erorr = action.error.message!;
             });

@@ -9,8 +9,8 @@ import AccountItem from '../../../../../components/AccoutItem/AccountItem';
 import { useAppSelector } from '../../../../../hooks/useAppSelector';
 import useDebounce from '../../../../../hooks/useDebounce';
 import { useAppDispatch } from '../../../../../hooks/useAppDispatch';
-import { searchUsersByKeyword } from '../../../../../reducers/searchSlice';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
+import { searchUsersByKeyword } from '../../../../../redux/reducers/searchSlice';
 
 const cx = classNames.bind(styles);
 
@@ -34,7 +34,7 @@ const Search: React.FC = () => {
         setIsShow(false);
     };
 
-    const handleCleanSearchValue = () => {
+    const handleClearSearchValue = () => {
         setIsShow(false);
         setSearch('');
     };
@@ -74,7 +74,7 @@ const Search: React.FC = () => {
                     onChange={(e) => setSearch(e.target.value)}
                 />
                 {search && loading !== true ? (
-                    <span onClick={handleCleanSearchValue}>
+                    <span onClick={handleClearSearchValue}>
                         <CloseIcon />
                     </span>
                 ) : null}

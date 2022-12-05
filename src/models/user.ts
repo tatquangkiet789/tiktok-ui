@@ -1,5 +1,5 @@
-export interface User {
-    id: number;
+export interface IUser {
+    id?: number;
     firstName: string;
     lastName: string;
     username: string;
@@ -8,7 +8,6 @@ export interface User {
     dateOfBirth: Date;
     email: string;
     createdDate: Date;
-    updatedDate: Date;
-    deletedDate: Date;
+    deletedDate?: Date;
     tick: boolean;
 }

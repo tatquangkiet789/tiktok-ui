@@ -1,12 +1,13 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { CURRENT_USER } from '../constants/constants';
-import { User } from '../models/user';
-import axiosClient from '../utils/axiosClient';
 import { toast } from 'react-toastify';
+import ENDPOINTS from '../../constants/endpoints';
+import axiosClient from '../../libs/axiosClient';
+import { IUser } from '../../models/user';
 
 interface IAuthState {
     loading: boolean;
-    currentUser: User;
+    currentUser: IUser;
+    accessToken: string;
     error: string;
     message: string;
 }
@@ -14,14 +15,16 @@ interface IAuthState {
 const initialState: IAuthState = {
     loading: false,
     currentUser: null as any,
+    accessToken: '',
     error: '',
     message: '',
 };
 
+// [POST] /api/v1/auth/login
 export const loginUser = createAsyncThunk(
     'loginUser',
     async ({ username, password }: { username: string; password: string }) => {
-        const response = await axiosClient.post('/v1/auth/login', { username, password });
+        const response = await axiosClient.post(ENDPOINTS.login, { username, password });
         return response.data;
     },
 );
@@ -36,14 +39,17 @@ const authSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
+            // Login User
             .addCase(loginUser.pending, (state) => {
                 state.loading = true;
                 state.error = '';
             })
             .addCase(loginUser.fulfilled, (state, action) => {
                 state.loading = false;
-                state.currentUser = action.payload.content;
+
                 state.message = action.payload.message;
+                state.currentUser = action.payload.content;
+                state.accessToken = action.payload.accessToken;
 
                 toast.success(state.message);
             })

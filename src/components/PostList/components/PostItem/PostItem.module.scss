@@ -45,44 +45,36 @@
 }
 
 .post-caption {
-    padding: 0 16px 12px 16px;
+    padding: 0 16px 0 16px;
     word-wrap: break-word;
+}
+
+.post-content-container {
+    max-width: var(--post-width);
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding-top: 12px;
 }
 
 .post-content {
     max-width: var(--post-width);
     width: 100%;
-    max-height: calc(var(--post-width) - 100px);
+    max-height: --post-width;
     object-fit: cover;
 }
 
 .like {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
     margin: 0 16px;
     padding: 12px 0;
     border-bottom: 1px solid var(--gray03-color);
     color: var(--gray075-color);
 
-    & span {
-        flex: 1;
-        display: flex;
-        align-items: center;
-
-        & i {
-            background-color: var(--like-icon-color);
-            display: flex;
-            align-items: center;
-            width: fit-content;
-            margin-right: 8px;
-            border-radius: 50%;
-            padding: 3px;
-        }
-    }
-
     & .comments {
-        padding-right: 16px;
+        padding: 0 16px;
     }
 }
 
@@ -90,5 +82,18 @@
     padding: 6px 16px 12px 16px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
+
+    & .icon-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        padding: 8px;
+
+        &:hover {
+            cursor: pointer;
+            background-color: var(--gray003-color);
+        }
+    }
 }

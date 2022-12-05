@@ -1,61 +1,88 @@
 import classNames from 'classnames/bind';
-import React from 'react';
-import { AiOutlineLike } from 'react-icons/ai';
-import { CURRENT_USER } from '../../../../constants/constants';
+import React, { memo, useState } from 'react';
+import { AiOutlineComment, AiOutlineHeart } from 'react-icons/ai';
+import ReactPlayer from 'react-player';
+import { toast } from 'react-toastify';
+import { IPost } from '../../../../models/post';
+import formatter from '../../../../utils/formatNumber';
 import Button from '../../../Button/Button';
-import ActionButton from '../ActionButton/ActionButton';
 import styles from './PostItem.module.scss';
 
 const cx = classNames.bind(styles);
 
-const PostItem: React.FC = () => {
+interface IPostItemProps {
+    post: IPost;
+}
+
+const PostItem: React.FC<IPostItemProps> = ({ post }) => {
+    const { caption, postUrl, likes, users, postTypeId } = post;
+    const [openSelectedPost, setOpenSelectedPost] = useState(false);
+    const [likePost, setLikePost] = useState(false);
+
+    const handleOpenSelectedPost = () => {
+        setOpenSelectedPost(true);
+        toast.success('Đã bấm vào icon bình luận');
+    };
+
+    const handleLikePost = () => {
+        setLikePost((prev) => {
+            if (prev === true) {
+                toast.warning('Đã không thích bài viết');
+                return !prev;
+            } else {
+                toast.success('Đã thích bài viết');
+                return !prev;
+            }
+        });
+    };
+
     return (
         <div className={cx('container')}>
             <div className={cx('user-container')}>
                 <div className={cx('user-info')}>
                     <img
                         className={cx('image')}
-                        src={CURRENT_USER.avatar}
-                        alt={CURRENT_USER.name}
+                        src={users.avatar}
+                        alt={`${users.lastName} ${users.firstName}`}
                     />
                     <div className={cx('post-detail')}>
-                        <p>{CURRENT_USER.name}</p>
+                        <p>{`${users.lastName} ${users.firstName}`}</p>
                         <span>2 giờ</span>
                     </div>
                 </div>
                 <Button text='Kết bạn' type='outlined' size='sm' />
             </div>
-            <div className={cx('post-caption')}>
-                There are many variations of passages of Lorem Ipsum available, but the
-                majority have suffered alteration in some form, by injected humour, or
-                randomised words which don't look even slightly believable. If you are
-                going to use a passage of Lorem Ipsum, you need to be sure there isn't
-                anything embarrassing hidden in the middle of text.
-            </div>
-            <div>
-                <img
-                    className={cx('post-content')}
-                    src={CURRENT_USER.avatar}
-                    alt={CURRENT_USER.name}
-                />
+            <div className={cx('post-caption')}>{caption}</div>
+            <div className={cx('post-content-container')}>
+                {postTypeId === 1 ? (
+                    <img className={cx('post-content')} src={postUrl} alt='Post URL' />
+                ) : null}
+                {postTypeId === 2 ? (
+                    <ReactPlayer width='400px' url={postUrl} controls />
+                ) : null}
             </div>
             <div className={cx('like')}>
-                <span>
-                    <i>
-                        <AiOutlineLike size={20} color='white' />
-                    </i>
-                    2.1K
-                </span>
-                <p className={cx('comments')}>95 bình luận</p>
-                <p>23 lượt chia sẻ</p>
+                <span>{formatter.format(likes)} lượt thích</span>
+                <p className={cx('comments')}>{formatter.format(1000)} bình luận</p>
             </div>
             <div className={cx('action-buttons')}>
-                <ActionButton content='Thích' icon={<AiOutlineLike size={18} />} />
-                <ActionButton content='Thích' icon={<AiOutlineLike size={18} />} />
-                <ActionButton content='Thích' icon={<AiOutlineLike size={18} />} />
+                <div className={cx('icon-button')} onClick={handleLikePost}>
+                    <span
+                        className={cx('icon', {
+                            active: likePost,
+                        })}
+                    >
+                        <AiOutlineHeart size={30} color={likePost ? 'red' : ''} />
+                    </span>
+                </div>
+                <div className={cx('icon-button')} onClick={handleOpenSelectedPost}>
+                    <span className={cx('icon')}>
+                        <AiOutlineComment size={30} />
+                    </span>
+                </div>
             </div>
         </div>
     );
 };
 
-export default PostItem;
+export default memo(PostItem);

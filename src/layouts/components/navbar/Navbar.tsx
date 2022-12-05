@@ -6,7 +6,7 @@ import classNames from 'classnames/bind';
 import { ReactComponent as AddIcon } from '../../../assets/icons/add.svg';
 import { ReactComponent as ThreeDotIcon } from '../../../assets/icons/threedot.svg';
 import Button from '../../../components/Button/Button';
-import { loginUser } from '../../../reducers/authSlice';
+import { loginUser } from '../../../redux/reducers/authSlice';
 import { useAppSelector } from '../../../hooks/useAppSelector';
 import { useAppDispatch } from '../../../hooks/useAppDispatch';
 import { NavLink } from 'react-router-dom';
@@ -38,66 +38,68 @@ const Navbar: React.FC = () => {
     };
 
     return (
-        <div className={cx('container')}>
-            <div className={cx('wrapper')}>
-                <img src={logo} alt='TikTok' />
-                <Search />
-                <div className={cx('menu')}>
-                    <Button
-                        text='Tải lên'
-                        type='default'
-                        iconLeft={<AddIcon />}
-                        size='md'
-                    />
-                    {currentUser ? (
-                        <React.Fragment>
-                            <Tippy content='Tin nhắn'>
-                                <NavLink
-                                    to={routes.messages}
-                                    className={(nav) =>
-                                        cx('message', { active: nav.isActive })
-                                    }
-                                >
-                                    <MessageIcon />
-                                </NavLink>
-                            </Tippy>
-                            <Tippy content='Hộp thư'>
-                                <div
-                                    className={cx('notification', {
-                                        active: openNotification,
-                                    })}
-                                    onClick={handleOpenNotification}
-                                >
-                                    <NotificationIcon />
-                                </div>
-                            </Tippy>
-                            <Tippy content='Tài khoản'>
-                                <div
-                                    className={cx('user')}
-                                    style={{
-                                        backgroundImage: `url(${currentUser.avatar})`,
-                                    }}
-                                ></div>
-                            </Tippy>
-                        </React.Fragment>
-                    ) : (
-                        <React.Fragment>
-                            <span className={cx('auth-button')}>
-                                <Button
-                                    text='Đăng nhập'
-                                    type='primary'
-                                    onClick={handleLoginUser}
-                                    size='md'
-                                />
-                            </span>
-                            <span className={cx('see-more')}>
-                                <ThreeDotIcon />
-                            </span>
-                        </React.Fragment>
-                    )}
+        <React.Fragment>
+            <div className={cx('container')}>
+                <div className={cx('wrapper')}>
+                    <img src={logo} alt='TikTok' />
+                    <Search />
+                    <div className={cx('menu')}>
+                        <Button
+                            text='Tải lên'
+                            type='default'
+                            iconLeft={<AddIcon />}
+                            size='md'
+                        />
+                        {currentUser ? (
+                            <React.Fragment>
+                                <Tippy content='Tin nhắn'>
+                                    <NavLink
+                                        to={routes.messages}
+                                        className={(nav) =>
+                                            cx('message', { active: nav.isActive })
+                                        }
+                                    >
+                                        <MessageIcon />
+                                    </NavLink>
+                                </Tippy>
+                                <Tippy content='Hộp thư'>
+                                    <div
+                                        className={cx('notification', {
+                                            active: openNotification,
+                                        })}
+                                        onClick={handleOpenNotification}
+                                    >
+                                        <NotificationIcon />
+                                    </div>
+                                </Tippy>
+                                <Tippy content='Tài khoản'>
+                                    <div
+                                        className={cx('user')}
+                                        style={{
+                                            backgroundImage: `url(${currentUser.avatar})`,
+                                        }}
+                                    ></div>
+                                </Tippy>
+                            </React.Fragment>
+                        ) : (
+                            <React.Fragment>
+                                <span className={cx('auth-button')}>
+                                    <Button
+                                        text='Đăng nhập'
+                                        type='primary'
+                                        onClick={handleLoginUser}
+                                        size='md'
+                                    />
+                                </span>
+                                <span className={cx('see-more')}>
+                                    <ThreeDotIcon />
+                                </span>
+                            </React.Fragment>
+                        )}
+                    </div>
                 </div>
             </div>
-        </div>
+        </React.Fragment>
     );
 };
 

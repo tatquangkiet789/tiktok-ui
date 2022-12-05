@@ -11,10 +11,10 @@ import AccountItem from '../../../components/AccoutItem/AccountItem';
 import { useAppDispatch } from '../../../hooks/useAppDispatch';
 import { useAppSelector } from '../../../hooks/useAppSelector';
 import { Link } from 'react-router-dom';
-import { findTop10SuggestedUsers } from '../../../reducers/userSlice';
-import { User } from '../../../models/user';
+import { IUser } from '../../../models/user';
 import HeadlessTippy from '@tippyjs/react/headless';
 import Wrapper from '../../../components/Wrapper/Wrapper';
+import { findTop10SuggestedUsers } from '../../../redux/reducers/userSlice';
 
 const cx = classNames.bind(styles);
 
@@ -23,7 +23,7 @@ const Sidebar: React.FC = () => {
     const { users } = useAppSelector((state) => state.users);
     const dispatch = useAppDispatch();
 
-    const [suggestedUsers, SetSuggestedUsers] = useState<User[]>([...users]!);
+    const [suggestedUsers, SetSuggestedUsers] = useState<IUser[]>([]);
 
     const sidebarMenuItems = [
         { to: `${routes.home}`, text: 'Dành cho bạn', icon: <HomeIcon /> },
@@ -40,11 +40,10 @@ const Sidebar: React.FC = () => {
     ];
 
     useEffect(() => {
-        if (users.length === 0) {
-            dispatch(findTop10SuggestedUsers());
-        }
+        dispatch(findTop10SuggestedUsers());
         SetSuggestedUsers(users);
-    }, [dispatch, users, users.length]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const handleLoginUser = () => {
         // dispatch(loginUser());

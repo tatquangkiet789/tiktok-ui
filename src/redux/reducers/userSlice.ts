@@ -1,10 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { User } from '../models/user';
-import axiosClient from '../utils/axiosClient';
+import ENDPOINTS from '../../constants/endpoints';
+import axiosClient from '../../libs/axiosClient';
+import { IUser } from '../../models/user';
 
 interface IUserState {
     loading: boolean;
-    users: User[];
+    users: IUser[];
     error: string;
 }
 
@@ -14,10 +15,11 @@ const initialState: IUserState = {
     error: '',
 };
 
+// [GET] /api/v1/users/suggested
 export const findTop10SuggestedUsers = createAsyncThunk(
     'findTop10SuggestedUsers',
     async () => {
-        const response = await axiosClient.get('/v1/users/suggested');
+        const response = await axiosClient.get(ENDPOINTS.findTop10SuggestedUsers);
         return response.data;
     },
 );
@@ -28,6 +30,7 @@ const userSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
+            // Find 10 Suggested Users
             .addCase(findTop10SuggestedUsers.pending, (state) => {
                 state.loading = true;
                 state.error = '';
