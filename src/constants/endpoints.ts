@@ -10,7 +10,10 @@ const ENDPOINTS = {
         `/v1/search?q=${encodeURIComponent(keyword)}`,
 
     // Posts endpoints
-    findAllPosts: '/v1/posts',
+    findAllPosts: (page: number) => `/v1/posts?page=${page}`,
+    findPostById: (id: number) => `/v1/posts/${id}`,
+    likePostById: (id: number) => `/v1/posts/${id}/like`,
+    unLikePostById: (id: number) => `/v1/posts/${id}/unlike`,
 };
 
 export default ENDPOINTS;

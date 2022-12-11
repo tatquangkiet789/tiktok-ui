@@ -2,12 +2,14 @@ import classNames from 'classnames/bind';
 import React from 'react';
 import { AiOutlineSetting } from 'react-icons/ai';
 import { IoArrowBackOutline } from 'react-icons/io5';
-import { CURRENT_USER } from '../../../../constants/constants';
+import { useAppSelector } from '../../../../hooks/useAppSelector';
 import styles from './MessagePage.module.scss';
 
 const cx = classNames.bind(styles);
 
 const MessagePage: React.FC = () => {
+    const { currentUser } = useAppSelector((state) => state.auth);
+
     return (
         <div className={cx('container')}>
             <span className={cx('back-icon')}>
@@ -22,9 +24,9 @@ const MessagePage: React.FC = () => {
                 </div>
                 <div className={cx('user-container')}>
                     <div className={cx('user-info')}>
-                        <img src={CURRENT_USER.avatar} alt='User Avatar' />
+                        <img src={currentUser.avatar} alt='User Avatar' />
                         <div>
-                            <span>{CURRENT_USER.username}</span>
+                            <span>{currentUser.username}</span>
                             <span>Tin nhắn mới nhất</span>
                         </div>
                     </div>

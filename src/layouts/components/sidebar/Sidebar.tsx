@@ -43,7 +43,7 @@ const Sidebar: React.FC = () => {
         dispatch(findTop10SuggestedUsers());
         SetSuggestedUsers(users);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [users.length === 0]);
 
     const handleLoginUser = () => {
         // dispatch(loginUser());
@@ -62,7 +62,7 @@ const Sidebar: React.FC = () => {
     return (
         <div className={cx('container')}>
             {currentUser ? (
-                <Link to={'/'} className={cx('user-detail-link')}>
+                <Link to='/' className={cx('user-detail-link')}>
                     <img
                         src={currentUser.avatar}
                         className={cx('image')}

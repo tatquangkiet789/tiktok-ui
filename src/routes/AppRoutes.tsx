@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import PostDetail from '../layouts/pages/PostDetail/PostDetail';
 import HeaderOnlyLayout from '../layouts/HeaderOnlyLayout/HeaderOnlyLayout';
 import MessagePage from '../layouts/HeaderOnlyLayout/pages/MessagePage/MessagePage';
 import MainLayout from '../layouts/MainLayout/MainLayout';
@@ -25,6 +26,10 @@ const AppRoutes: React.FC = () => {
                     <Route path={routes.messages} element={<MessagePage />} />
                 </Route>
                 {/* End Of HeaderOnlyLayout Routes */}
+
+                {/* Doesn't Use Layout */}
+                <Route path='@:username/post/:id' element={<PostDetail />}></Route>
+                {/* End Of Doesn't Use Layout */}
             </Routes>
         </BrowserRouter>
     );

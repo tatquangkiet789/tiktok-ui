@@ -1,9 +1,14 @@
 import classNames from 'classnames/bind';
-import React, { memo, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { AiOutlineComment, AiOutlineHeart } from 'react-icons/ai';
 import ReactPlayer from 'react-player';
+import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { useAppDispatch } from '../../../../hooks/useAppDispatch';
+import { useAppSelector } from '../../../../hooks/useAppSelector';
 import { IPost } from '../../../../models/post';
+import { likePostById, unLikePostById } from '../../../../redux/reducers/postSlice';
+import routes from '../../../../routes/routes';
 import formatter from '../../../../utils/formatNumber';
 import Button from '../../../Button/Button';
 import styles from './PostItem.module.scss';
@@ -15,25 +20,33 @@ interface IPostItemProps {
 }
 
 const PostItem: React.FC<IPostItemProps> = ({ post }) => {
-    const { caption, postUrl, likes, users, postTypeId } = post;
-    const [openSelectedPost, setOpenSelectedPost] = useState(false);
+    const { id, caption, postUrl, likes, userDetail, postTypeId, likeDetailList } = post;
+
+    const { currentUser, accessToken } = useAppSelector((state) => state.auth);
+    const dispatch = useAppDispatch();
+
     const [likePost, setLikePost] = useState(false);
 
-    const handleOpenSelectedPost = () => {
-        setOpenSelectedPost(true);
-        toast.success('Đã bấm vào icon bình luận');
-    };
+    useEffect(() => {
+        if (!currentUser) return;
 
-    const handleLikePost = () => {
-        setLikePost((prev) => {
-            if (prev === true) {
-                toast.warning('Đã không thích bài viết');
-                return !prev;
-            } else {
-                toast.success('Đã thích bài viết');
-                return !prev;
-            }
-        });
+        if (!likeDetailList) return;
+
+        const likeStatus = likeDetailList
+            .filter((status) => status.postId === id)
+            .find((status) => status.userLikeId === currentUser.id);
+
+        if (likeStatus) setLikePost(likeStatus.like);
+    }, [currentUser, id, likeDetailList]);
+
+    const handleLikeAndUnlikePost = () => {
+        const postId = id as number;
+        if (!likePost) {
+            dispatch(likePostById({ id: postId, accessToken }));
+            return;
+        }
+
+        dispatch(unLikePostById({ id: postId, accessToken }));
     };
 
     return (
@@ -42,11 +55,11 @@ const PostItem: React.FC<IPostItemProps> = ({ post }) => {
                 <div className={cx('user-info')}>
                     <img
                         className={cx('image')}
-                        src={users.avatar}
-                        alt={`${users.lastName} ${users.firstName}`}
+                        src={userDetail.avatar}
+                        alt={`${userDetail.lastName} ${userDetail.firstName}`}
                     />
                     <div className={cx('post-detail')}>
-                        <p>{`${users.lastName} ${users.firstName}`}</p>
+                        <p>{`${userDetail.lastName} ${userDetail.firstName}`}</p>
                         <span>2 giờ</span>
                     </div>
                 </div>
@@ -66,20 +79,19 @@ const PostItem: React.FC<IPostItemProps> = ({ post }) => {
                 <p className={cx('comments')}>{formatter.format(1000)} bình luận</p>
             </div>
             <div className={cx('action-buttons')}>
-                <div className={cx('icon-button')} onClick={handleLikePost}>
-                    <span
-                        className={cx('icon', {
-                            active: likePost,
-                        })}
-                    >
+                <div className={cx('icon-button')} onClick={handleLikeAndUnlikePost}>
+                    <span className={cx('icon')}>
                         <AiOutlineHeart size={30} color={likePost ? 'red' : ''} />
                     </span>
                 </div>
-                <div className={cx('icon-button')} onClick={handleOpenSelectedPost}>
+                <Link
+                    className={cx('icon-button')}
+                    to={routes.postDetail(userDetail.username, id!)}
+                >
                     <span className={cx('icon')}>
                         <AiOutlineComment size={30} />
                     </span>
-                </div>
+                </Link>
             </div>
         </div>
     );

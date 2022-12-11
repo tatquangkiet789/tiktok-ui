@@ -5,6 +5,7 @@ const routes = {
     feedback: 'feedback',
     upload: 'upload',
     messages: 'messages',
+    postDetail: (username: string, id: number) => `@${username}/post/${id}`,
 };
 
 export default routes;
