@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import styles from './Search.module.scss';
 import classNames from 'classnames/bind';
-import { ReactComponent as SearchIcon } from '../../../../../assets/icons/search.svg';
-import { ReactComponent as CloseIcon } from '../../../../../assets/icons/close.svg';
 import HeadlessTippy from '@tippyjs/react/headless';
-import Wrapper from '../../../../../components/Wrapper/Wrapper';
-import AccountItem from '../../../../../components/AccoutItem/AccountItem';
-import { useAppSelector } from '../../../../../hooks/useAppSelector';
-import useDebounce from '../../../../../hooks/useDebounce';
-import { useAppDispatch } from '../../../../../hooks/useAppDispatch';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
-import { searchUsersByKeyword } from '../../../../../redux/reducers/searchSlice';
+import { useAppSelector } from 'hooks/useAppSelector';
+import { useAppDispatch } from 'hooks/useAppDispatch';
+import useDebounce from 'hooks/useDebounce';
+import { searchUsersByKeyword } from 'redux/reducers/searchSlice';
+import Wrapper from 'components/Wrapper/Wrapper';
+import AccountItem from 'components/AccoutItem/AccountItem';
+import { CloseIcon, SearchIcon } from 'assets/icons';
 
 const cx = classNames.bind(styles);
 

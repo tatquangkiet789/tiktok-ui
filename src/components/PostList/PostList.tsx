@@ -1,7 +1,6 @@
 import classNames from 'classnames/bind';
-import React, { memo, useEffect, useState } from 'react';
-import { useAppSelector } from '../../hooks/useAppSelector';
-import { IPost } from '../../models/post';
+import { IPost } from 'models/post';
+import React, { memo } from 'react';
 import PostItem from './components/PostItem/PostItem';
 import styles from './PostList.module.scss';
 

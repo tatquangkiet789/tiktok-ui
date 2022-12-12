@@ -1,20 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import routes from '../../../routes/routes';
-import styles from './Sidebar.module.scss';
+import { FriendsIcon, HomeIcon, WatchIcon } from 'assets/icons';
 import classNames from 'classnames/bind';
-import { ReactComponent as HomeIcon } from '../../../assets/icons/home.svg';
-import { ReactComponent as FriendsIcon } from '../../../assets/icons/friends.svg';
-import { ReactComponent as WatchIcon } from '../../../assets/icons/watch.svg';
-import SidebarMenu from './components/SidebarMenu/SidebarMenu';
-import Button from '../../../components/Button/Button';
-import AccountItem from '../../../components/AccoutItem/AccountItem';
-import { useAppDispatch } from '../../../hooks/useAppDispatch';
-import { useAppSelector } from '../../../hooks/useAppSelector';
+import Button from 'components/Button/Button';
+import { useAppDispatch } from 'hooks/useAppDispatch';
+import { useAppSelector } from 'hooks/useAppSelector';
+import { IUser } from 'models/user';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { IUser } from '../../../models/user';
-import HeadlessTippy from '@tippyjs/react/headless';
-import Wrapper from '../../../components/Wrapper/Wrapper';
-import { findTop10SuggestedUsers } from '../../../redux/reducers/userSlice';
+import { findTop10SuggestedUsers } from 'redux/reducers/userSlice';
+import routes from 'routes/routes';
+import styles from './Sidebar.module.scss';
+import AccountItem from 'components/AccoutItem/AccountItem';
+import SidebarMenu from './components/SidebarMenu/SidebarMenu';
 
 const cx = classNames.bind(styles);
 
@@ -44,10 +40,6 @@ const Sidebar: React.FC = () => {
         SetSuggestedUsers(users);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [users.length === 0]);
-
-    const handleLoginUser = () => {
-        // dispatch(loginUser());
-    };
 
     const handleShowLessSuggestedUsers = () => {
         SetSuggestedUsers((prev) => {
@@ -83,31 +75,19 @@ const Sidebar: React.FC = () => {
                         text='Đăng nhập'
                         type='outlined'
                         size='lg'
-                        onClick={handleLoginUser}
+                        to={`${routes.auth}/${routes.login}`}
                     />
                 </div>
             )}
             <p className={cx('suggested-accounts')}>Tài khoản được đề xuất</p>
             {suggestedUsers.map(({ firstName, lastName, id, username, avatar, tick }) => (
-                <HeadlessTippy
-                    key={id}
-                    interactive
-                    render={(attrs) => (
-                        <div tabIndex={-1} {...attrs}>
-                            <Wrapper>
-                                <h1>Hello</h1>
-                            </Wrapper>
-                        </div>
-                    )}
-                >
-                    <AccountItem
-                        firstName={firstName}
-                        lastName={lastName}
-                        username={username}
-                        avatar={avatar}
-                        tick={tick}
-                    />
-                </HeadlessTippy>
+                <AccountItem
+                    firstName={firstName}
+                    lastName={lastName}
+                    username={username}
+                    avatar={avatar}
+                    tick={tick}
+                />
             ))}
             <div className={cx('see-all-button')}>
                 {suggestedUsers.length > 4 ? (

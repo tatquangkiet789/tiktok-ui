@@ -1,16 +1,15 @@
 import classNames from 'classnames/bind';
+import Button from 'components/Button/Button';
+import { useAppDispatch } from 'hooks/useAppDispatch';
+import { useAppSelector } from 'hooks/useAppSelector';
+import { IPost } from 'models/post';
 import React, { memo, useEffect, useState } from 'react';
 import { AiOutlineComment, AiOutlineHeart } from 'react-icons/ai';
 import ReactPlayer from 'react-player';
 import { Link } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { useAppDispatch } from '../../../../hooks/useAppDispatch';
-import { useAppSelector } from '../../../../hooks/useAppSelector';
-import { IPost } from '../../../../models/post';
-import { likePostById, unLikePostById } from '../../../../redux/reducers/postSlice';
-import routes from '../../../../routes/routes';
-import formatter from '../../../../utils/formatNumber';
-import Button from '../../../Button/Button';
+import { likePostById, unLikePostById } from 'redux/reducers/postSlice';
+import routes from 'routes/routes';
+import formatter from 'utils/formatNumber';
 import styles from './PostItem.module.scss';
 
 const cx = classNames.bind(styles);

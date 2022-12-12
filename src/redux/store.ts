@@ -1,15 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit';
-import authSlice from './reducers/authSlice';
-import postSlice from './reducers/postSlice';
-import searchSlice from './reducers/searchSlice';
-import userSlice from './reducers/userSlice';
+import authReducer from './reducers/authSlice';
+import postReducer from './reducers/postSlice';
+import searchReducer from './reducers/searchSlice';
+import userReducer from './reducers/userSlice';
 
 const store = configureStore({
     reducer: {
-        auth: authSlice,
-        users: userSlice,
-        search: searchSlice,
-        posts: postSlice,
+        auth: authReducer,
+        users: userReducer,
+        search: searchReducer,
+        posts: postReducer,
     },
 });
 

@@ -1,8 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import ENDPOINTS from 'constants/endpoints';
+import axiosClient from 'libs/axiosClient';
+import { IPost } from 'models/post';
 import { toast } from 'react-toastify';
-import ENDPOINTS from '../../constants/endpoints';
-import axiosClient from '../../libs/axiosClient';
-import { IPost } from '../../models/post';
 
 interface IPostState {
     loading: boolean;

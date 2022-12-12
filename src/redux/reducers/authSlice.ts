@@ -1,8 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import ENDPOINTS from 'constants/endpoints';
+import axiosClient from 'libs/axiosClient';
+import { IUser } from 'models/user';
 import { toast } from 'react-toastify';
-import ENDPOINTS from '../../constants/endpoints';
-import axiosClient from '../../libs/axiosClient';
-import { IUser } from '../../models/user';
 
 interface IAuthState {
     loading: boolean;

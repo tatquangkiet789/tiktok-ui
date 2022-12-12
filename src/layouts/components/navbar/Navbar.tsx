@@ -1,35 +1,29 @@
 import React, { useState } from 'react';
-import logo from '../../../assets/icons/logo.svg';
-import Search from './components/Search/Search';
 import styles from './Navbar.module.scss';
 import classNames from 'classnames/bind';
-import { ReactComponent as AddIcon } from '../../../assets/icons/add.svg';
-import { ReactComponent as ThreeDotIcon } from '../../../assets/icons/threedot.svg';
-import Button from '../../../components/Button/Button';
-import { loginUser } from '../../../redux/reducers/authSlice';
-import { useAppSelector } from '../../../hooks/useAppSelector';
-import { useAppDispatch } from '../../../hooks/useAppDispatch';
 import { NavLink } from 'react-router-dom';
-import routes from '../../../routes/routes';
-import { ReactComponent as MessageIcon } from '../../../assets/icons/messenger.svg';
-import { ReactComponent as NotificationIcon } from '../../../assets/icons/notification.svg';
 import Tippy from '@tippyjs/react';
+import { useAppSelector } from 'hooks/useAppSelector';
+import { useAppDispatch } from 'hooks/useAppDispatch';
+import { loginUser } from 'redux/reducers/authSlice';
+import Search from './components/Search/Search';
+import {
+    AddIcon,
+    LogoIcon,
+    MessageIcon,
+    NotificationIcon,
+    ThreeDotIcon,
+} from 'assets/icons';
+import Button from 'components/Button/Button';
+import routes from 'routes/routes';
 
 const cx = classNames.bind(styles);
 
 const Navbar: React.FC = () => {
     const { currentUser } = useAppSelector((state) => state.auth);
-    const [openNotification, setOpenNotification] = useState(false);
     const dispatch = useAppDispatch();
 
-    const handleLoginUser = () => {
-        dispatch(
-            loginUser({
-                username: 'user1',
-                password: '123',
-            }),
-        );
-    };
+    const [openNotification, setOpenNotification] = useState(false);
 
     const handleOpenNotification = () => {
         setOpenNotification((prev) => {
@@ -41,7 +35,8 @@ const Navbar: React.FC = () => {
         <React.Fragment>
             <div className={cx('container')}>
                 <div className={cx('wrapper')}>
-                    <img src={logo} alt='TikTok' />
+                    {/* <img src={logo} alt='TikTok' /> */}
+                    <LogoIcon />
                     <Search />
                     <div className={cx('menu')}>
                         <Button
@@ -87,8 +82,8 @@ const Navbar: React.FC = () => {
                                     <Button
                                         text='Đăng nhập'
                                         type='primary'
-                                        onClick={handleLoginUser}
                                         size='md'
+                                        to={`${routes.auth}/${routes.login}`}
                                     />
                                 </span>
                                 <span className={cx('see-more')}>

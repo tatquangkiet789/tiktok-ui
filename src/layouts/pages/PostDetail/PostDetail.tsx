@@ -1,21 +1,12 @@
 import classNames from 'classnames/bind';
-import React, { memo, useEffect } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
-import { useAppDispatch } from '../../../hooks/useAppDispatch';
-import { findPostById } from '../../../redux/reducers/postSlice';
 import styles from './PostDetail.module.scss';
 
 const cx = classNames.bind(styles);
 
 const PostDetail: React.FC = () => {
     const { id } = useParams();
-
-    // const dispatch = useAppDispatch();
-
-    // useEffect(() => {
-    //     dispatch(findPostById(parseInt(id!)));
-    //     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, []);
 
     return (
         <div className={cx('container')}>
@@ -29,4 +20,4 @@ const PostDetail: React.FC = () => {
     );
 };
 
-export default memo(PostDetail);
+export default PostDetail;

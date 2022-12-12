@@ -8,6 +8,8 @@ import FriendPage from '../layouts/MainLayout/pages/FriendPage/FriendPage';
 import HomePage from '../layouts/MainLayout/pages/HomePage/HomePage';
 import WatchPage from '../layouts/MainLayout/pages/WatchPage/WatchPage';
 import routes from './routes';
+import AuthLayout from 'layouts/AuthLayout/AuthLayout';
+import LoginPage from 'layouts/AuthLayout/pages/LoginPage/LoginPage';
 
 const AppRoutes: React.FC = () => {
     return (
@@ -30,6 +32,12 @@ const AppRoutes: React.FC = () => {
                 {/* Doesn't Use Layout */}
                 <Route path='@:username/post/:id' element={<PostDetail />}></Route>
                 {/* End Of Doesn't Use Layout */}
+
+                {/* AuthLayout Routes */}
+                <Route path={routes.auth} element={<AuthLayout />}>
+                    <Route path={routes.login} element={<LoginPage />} />
+                </Route>
+                {/* End Of AuthLayout Routes */}
             </Routes>
         </BrowserRouter>
     );

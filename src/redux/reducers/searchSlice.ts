@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import ENDPOINTS from '../../constants/endpoints';
-import axiosClient from '../../libs/axiosClient';
+import ENDPOINTS from 'constants/endpoints';
+import axiosClient from 'libs/axiosClient';
 
 interface ISearchState {
     result: any[];

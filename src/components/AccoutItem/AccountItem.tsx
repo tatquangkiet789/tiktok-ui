@@ -1,7 +1,7 @@
+import { TickIcon } from 'assets/icons';
 import classNames from 'classnames/bind';
 import React from 'react';
 import styles from './AccountItem.module.scss';
-import { ReactComponent as TickIcon } from '../../assets/icons/tick.svg';
 
 const cx = classNames.bind(styles);
 

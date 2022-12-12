@@ -1,8 +1,8 @@
 import classNames from 'classnames/bind';
+import { useAppSelector } from 'hooks/useAppSelector';
 import React from 'react';
 import { AiOutlineSetting } from 'react-icons/ai';
 import { IoArrowBackOutline } from 'react-icons/io5';
-import { useAppSelector } from '../../../../hooks/useAppSelector';
 import styles from './MessagePage.module.scss';
 
 const cx = classNames.bind(styles);
