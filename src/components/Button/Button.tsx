@@ -5,11 +5,11 @@ import classNames from 'classnames/bind';
 
 const cx = classNames.bind(styles);
 
-type ButtonTypes = 'primary' | 'outlined' | 'default';
+type ButtonVariants = 'primary' | 'outlined' | 'default';
 type ButtonSizes = 'md' | 'lg' | 'sm';
 
 interface IButtonProps {
-    type: ButtonTypes;
+    variant: ButtonVariants;
     text: string;
     size: ButtonSizes;
     to?: string;
@@ -19,7 +19,7 @@ interface IButtonProps {
 }
 
 const Button: React.FC<IButtonProps> = ({
-    type,
+    variant,
     text,
     size,
     to,
@@ -33,7 +33,7 @@ const Button: React.FC<IButtonProps> = ({
         to,
     };
     const btnClass = cx('container', {
-        [`${type}`]: true,
+        [`${variant}`]: true,
         [`${size}`]: true,
     });
 

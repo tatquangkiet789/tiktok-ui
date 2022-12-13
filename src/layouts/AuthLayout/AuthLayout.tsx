@@ -4,6 +4,7 @@ import { Link, Outlet, useLocation } from 'react-router-dom';
 import routes from 'routes/routes';
 import styles from './AuthLayout.module.scss';
 import { IoMdClose } from 'react-icons/io';
+import waves from 'assets/images/waves.svg';
 
 const cx = classNames.bind(styles);
 
@@ -11,7 +12,7 @@ const AuthLayout: React.FC = () => {
     const { pathname } = useLocation();
 
     return (
-        <div className={cx('container')}>
+        <div className={cx('container')} style={{ backgroundImage: `url(${waves})` }}>
             <div className={cx('wrapper')}>
                 <Link to={routes.home} className={cx('close')}>
                     <IoMdClose size={24} />

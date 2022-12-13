@@ -1,0 +1,36 @@
+.container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.label {
+    font-size: 15px;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.input-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 9px;
+    background-color: var(--gray006-color);
+    border-color: var(--gray012-color);
+
+    & .input {
+        border-radius: 2px;
+        caret-color: var(--primary-color);
+        background-color: transparent;
+        padding: 12px;
+        font-size: 16px;
+        flex: 1;
+    }
+
+    & span {
+        display: flex;
+        align-items: center;
+        padding-right: 12px;
+        cursor: pointer;
+    }
+}

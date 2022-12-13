@@ -1,16 +1,19 @@
 .container {
     width: 100%;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.4);
     position: fixed;
     z-index: 100;
     display: flex;
     align-items: center;
     justify-content: center;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 .wrapper {
     background-color: white;
+    box-shadow: var(--gray012-color) 0px 2px 8px 0px;
     height: min(100% - 96px, 570px);
     max-width: var(--auth-pages-width);
     width: 100%;

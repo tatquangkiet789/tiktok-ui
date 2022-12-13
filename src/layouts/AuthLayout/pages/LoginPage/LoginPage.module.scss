@@ -9,22 +9,6 @@
     display: flex;
     flex-direction: column;
 
-    & .label {
-        font-size: 15px;
-        margin-bottom: 5px;
-        font-weight: 600;
-    }
-
-    & .input {
-        border-radius: 2px;
-        margin-bottom: 9px;
-        caret-color: var(--primary-color);
-        border-color: var(--gray012-color);
-        background-color: var(--gray006-color);
-        padding: 12px;
-        font-size: 16px;
-    }
-
     & .forgot-password {
         color: var(--gray075-color);
         font-weight: 600;

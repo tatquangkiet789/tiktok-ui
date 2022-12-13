@@ -10,6 +10,7 @@ import WatchPage from '../layouts/MainLayout/pages/WatchPage/WatchPage';
 import routes from './routes';
 import AuthLayout from 'layouts/AuthLayout/AuthLayout';
 import LoginPage from 'layouts/AuthLayout/pages/LoginPage/LoginPage';
+import RegisterPage from 'layouts/AuthLayout/pages/RegisterPage/RegisterPage';
 
 const AppRoutes: React.FC = () => {
     return (
@@ -36,6 +37,7 @@ const AppRoutes: React.FC = () => {
                 {/* AuthLayout Routes */}
                 <Route path={routes.auth} element={<AuthLayout />}>
                     <Route path={routes.login} element={<LoginPage />} />
+                    <Route path={routes.register} element={<RegisterPage />} />
                 </Route>
                 {/* End Of AuthLayout Routes */}
             </Routes>

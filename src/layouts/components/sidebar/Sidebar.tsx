@@ -73,7 +73,7 @@ const Sidebar: React.FC = () => {
                     <p>Đăng nhập để follow các tác giả, thích video và xem bình luận</p>
                     <Button
                         text='Đăng nhập'
-                        type='outlined'
+                        variant='outlined'
                         size='lg'
                         to={`${routes.auth}/${routes.login}`}
                     />
@@ -82,6 +82,7 @@ const Sidebar: React.FC = () => {
             <p className={cx('suggested-accounts')}>Tài khoản được đề xuất</p>
             {suggestedUsers.map(({ firstName, lastName, id, username, avatar, tick }) => (
                 <AccountItem
+                    key={id}
                     firstName={firstName}
                     lastName={lastName}
                     username={username}

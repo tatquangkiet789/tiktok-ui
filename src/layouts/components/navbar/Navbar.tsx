@@ -41,7 +41,7 @@ const Navbar: React.FC = () => {
                     <div className={cx('menu')}>
                         <Button
                             text='Tải lên'
-                            type='default'
+                            variant='default'
                             iconLeft={<AddIcon />}
                             size='md'
                         />
@@ -81,7 +81,7 @@ const Navbar: React.FC = () => {
                                 <span className={cx('auth-button')}>
                                     <Button
                                         text='Đăng nhập'
-                                        type='primary'
+                                        variant='primary'
                                         size='md'
                                         to={`${routes.auth}/${routes.login}`}
                                     />

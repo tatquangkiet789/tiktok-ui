@@ -62,7 +62,7 @@ const PostItem: React.FC<IPostItemProps> = ({ post }) => {
                         <span>2 giờ</span>
                     </div>
                 </div>
-                <Button text='Kết bạn' type='outlined' size='sm' />
+                <Button text='Kết bạn' variant='outlined' size='sm' />
             </div>
             <div className={cx('post-caption')}>{caption}</div>
             <div className={cx('post-content-container')}>
