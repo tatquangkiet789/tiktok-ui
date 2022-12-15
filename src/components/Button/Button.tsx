@@ -7,14 +7,17 @@ const cx = classNames.bind(styles);
 
 type ButtonVariants = 'primary' | 'outlined' | 'default';
 type ButtonSizes = 'md' | 'lg' | 'sm';
+type ButtonTypes = 'button' | 'submit';
 
 interface IButtonProps {
     variant: ButtonVariants;
     text: string;
     size: ButtonSizes;
+    type?: ButtonTypes;
     to?: string;
     iconLeft?: any;
     iconRight?: any;
+    disabled?: boolean;
     onClick?: () => void;
 }
 
@@ -22,15 +25,19 @@ const Button: React.FC<IButtonProps> = ({
     variant,
     text,
     size,
+    type,
     to,
     iconLeft,
     iconRight,
+    disabled,
     onClick,
 }) => {
     let Element: any = 'button';
     const props = {
         onClick,
         to,
+        type,
+        disabled,
     };
     const btnClass = cx('container', {
         [`${variant}`]: true,

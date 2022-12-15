@@ -7,36 +7,37 @@ const cx = classNames.bind(styles);
 type InputTypes = 'text' | 'email' | 'password' | 'number';
 
 interface IInputProps {
+    name?: string;
     label: string;
     value: string;
     inputType: InputTypes;
     placeholder?: string;
-    onChangeValue: (value: string) => void;
+    error?: string;
+    onChangeValue: (value: any) => void;
 }
 
 const InputField: React.FC<IInputProps> = ({
+    name,
     label,
     value,
     inputType,
     placeholder,
+    error,
     onChangeValue,
 }) => {
-    const handleChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
-        onChangeValue(e.target.value);
-    };
-
     return (
         <div className={cx('container')}>
             <label className={cx('label')}>{label}</label>
-            <div className={cx('input-container')}>
-                <input
-                    type={inputType}
-                    className={cx('input')}
-                    placeholder={placeholder}
-                    value={value}
-                    onChange={handleChangeValue}
-                />
-            </div>
+            <input
+                id={name}
+                name={name}
+                type={inputType}
+                className={cx('input')}
+                placeholder={placeholder}
+                value={value}
+                onChange={onChangeValue}
+            />
+            {error ? <span className={cx('error')}>{error}</span> : null}
         </div>
     );
 };
