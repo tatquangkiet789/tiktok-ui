@@ -16,6 +16,7 @@ import {
 } from 'assets/icons';
 import Button from 'components/Button/Button';
 import routes from 'routes/routes';
+import Menu from './components/Menu/Menu';
 
 const cx = classNames.bind(styles);
 
@@ -86,11 +87,9 @@ const Navbar: React.FC = () => {
                                         to={`${routes.auth}/${routes.login}`}
                                     />
                                 </span>
-                                <span className={cx('see-more')}>
-                                    <ThreeDotIcon />
-                                </span>
                             </React.Fragment>
                         )}
+                        <Menu />
                     </div>
                 </div>
             </div>

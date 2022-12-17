@@ -2,6 +2,12 @@
     width: 100%;
     display: flex;
     flex-direction: column;
+
+    &.error {
+        & .input {
+            border: 1px solid red;
+        }
+    }
 }
 
 .label {

@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 import { findTop10SuggestedUsers } from 'redux/reducers/userSlice';
 import routes from 'routes/routes';
 import styles from './Sidebar.module.scss';
-import AccountItem from 'components/AccoutItem/AccountItem';
+import AccountItem from 'layouts/components/shared/components/AccoutItem/AccountItem';
 import SidebarMenu from './components/SidebarMenu/SidebarMenu';
 
 const cx = classNames.bind(styles);

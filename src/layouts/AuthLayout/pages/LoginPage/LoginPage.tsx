@@ -5,15 +5,15 @@ import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { loginUser } from 'redux/reducers/authSlice';
 import routes from 'routes/routes';
 import styles from './LoginPage.module.scss';
 import * as Yup from 'yup';
 import { Formik, Field } from 'formik';
+import { loginUser } from 'redux/reducers/authSlice';
 
 const cx = classNames.bind(styles);
 
-interface IFormValues {
+interface ILoginFormValue {
     username: string;
     password: string;
 }
@@ -22,7 +22,7 @@ const LoginPage: React.FC = () => {
     const { currentUser } = useAppSelector((state) => state.auth);
     const dispatch = useAppDispatch();
 
-    const initialValues: IFormValues = {
+    const initialValues: ILoginFormValue = {
         username: '',
         password: '',
     };

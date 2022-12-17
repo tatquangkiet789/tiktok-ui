@@ -7,7 +7,7 @@ const cx = classNames.bind(styles);
 type InputTypes = 'text' | 'email' | 'password' | 'number';
 
 interface IInputProps {
-    name?: string;
+    name: string;
     label: string;
     value: string;
     inputType: InputTypes;
@@ -26,7 +26,11 @@ const InputField: React.FC<IInputProps> = ({
     onChangeValue,
 }) => {
     return (
-        <div className={cx('container')}>
+        <div
+            className={cx('container', {
+                error: error,
+            })}
+        >
             <label className={cx('label')}>{label}</label>
             <input
                 id={name}

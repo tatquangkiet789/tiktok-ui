@@ -8,7 +8,7 @@ import { useAppDispatch } from 'hooks/useAppDispatch';
 import useDebounce from 'hooks/useDebounce';
 import { searchUsersByKeyword } from 'redux/reducers/searchSlice';
 import Wrapper from 'components/Wrapper/Wrapper';
-import AccountItem from 'components/AccoutItem/AccountItem';
+import AccountItem from 'layouts/components/shared/components/AccoutItem/AccountItem';
 import { CloseIcon, SearchIcon } from 'assets/icons';
 
 const cx = classNames.bind(styles);
