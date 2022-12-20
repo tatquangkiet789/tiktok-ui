@@ -1,3 +1,6 @@
+import authRoutes from 'features/authentication/routes';
+import postRoutes from 'features/post/routes';
+
 const routes = {
     home: '/',
     friends: 'friends',
@@ -11,5 +14,7 @@ const routes = {
     login: 'login',
     register: 'register',
 };
+
+export const testing = [...authRoutes, ...postRoutes];
 
 export default routes;

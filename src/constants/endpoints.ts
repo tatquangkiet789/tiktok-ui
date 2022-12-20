@@ -1,6 +1,7 @@
 const ENDPOINTS = {
     // Authentication endpoints
     login: '/v1/auth/login',
+    register: 'v1/auth/register',
 
     // Users endpoints
     findTop10SuggestedUsers: '/v1/users/suggested',

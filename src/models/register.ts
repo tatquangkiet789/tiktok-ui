@@ -5,4 +5,5 @@ export interface IRegisterFormValue {
     password: string;
     confirmPassword: string;
     email: string;
+    avatar: any;
 }

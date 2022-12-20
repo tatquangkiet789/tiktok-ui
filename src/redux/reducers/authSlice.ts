@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import ENDPOINTS from 'constants/endpoints';
 import axiosClient from 'libs/axiosClient';
+import { IRegisterFormValue } from 'models/register';
 import { IUser } from 'models/user';
 import { toast } from 'react-toastify';
 
@@ -9,7 +10,8 @@ interface IAuthState {
     currentUser: IUser;
     accessToken: string;
     error: string;
-    message: string;
+    loginMessage: string;
+    registerMessage: string;
 }
 
 const initialState: IAuthState = {
@@ -17,7 +19,8 @@ const initialState: IAuthState = {
     currentUser: null as any,
     accessToken: '',
     error: '',
-    message: '',
+    loginMessage: '',
+    registerMessage: '',
 };
 
 // [POST] /api/v1/auth/login
@@ -29,12 +32,25 @@ export const loginUser = createAsyncThunk(
     },
 );
 
+// [POST] /api/v1/auth/register
+export const registerUser = createAsyncThunk('registerUser', async (user: FormData) => {
+    const response = await axiosClient.post(ENDPOINTS.register, user, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    });
+    return response.data;
+});
+
 const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
         logoutUser: (state) => {
             state.currentUser = null as any;
+        },
+        resetRegisterMessage: (state) => {
+            state.registerMessage = '';
         },
     },
     extraReducers: (builder) => {
@@ -48,13 +64,31 @@ const authSlice = createSlice({
             .addCase(loginUser.fulfilled, (state, action) => {
                 state.loading = false;
 
-                state.message = action.payload.message;
+                state.loginMessage = action.payload.message;
                 state.currentUser = action.payload.content;
                 state.accessToken = action.payload.accessToken;
 
-                toast.success(state.message);
+                toast.success(state.loginMessage);
             })
             .addCase(loginUser.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message!;
+
+                toast.error(state.error);
+            })
+            // Register User
+            .addCase(registerUser.pending, (state) => {
+                state.loading = true;
+                state.error = '';
+                state.registerMessage = '';
+            })
+            .addCase(registerUser.fulfilled, (state, action) => {
+                state.loading = false;
+                state.registerMessage = action.payload.message;
+
+                toast.success(state.registerMessage);
+            })
+            .addCase(registerUser.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message!;
 
@@ -63,6 +97,6 @@ const authSlice = createSlice({
     },
 });
 
-export const { logoutUser } = authSlice.actions;
+export const { logoutUser, resetRegisterMessage } = authSlice.actions;
 
 export default authSlice.reducer;

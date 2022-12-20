@@ -1,10 +1,14 @@
 import classNames from 'classnames/bind';
 import Button from 'components/Button/Button';
 import InputField from 'components/InputField/InputField';
-import React from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import styles from './RegisterPage.module.scss';
 import * as Yup from 'yup';
 import { Field, Formik } from 'formik';
+import { useAppDispatch } from 'hooks/useAppDispatch';
+import { useAppSelector } from 'hooks/useAppSelector';
+import { Navigate } from 'react-router-dom';
+import { registerUser, resetRegisterMessage } from 'redux/reducers/authSlice';
 
 const cx = classNames.bind(styles);
 
@@ -15,9 +19,13 @@ interface IRegisterFormValue {
     password: string;
     confirmPassword: string;
     email: string;
+    avatar: File;
 }
 
 const RegisterPage: React.FC = () => {
+    const { registerMessage, loading } = useAppSelector((state) => state.auth);
+    const dispatch = useAppDispatch();
+
     const initialValues: IRegisterFormValue = {
         lastName: '',
         firstName: '',
@@ -25,7 +33,12 @@ const RegisterPage: React.FC = () => {
         password: '',
         confirmPassword: '',
         email: '',
+        avatar: null as any,
     };
+
+    useEffect(() => {
+        if (registerMessage) dispatch(resetRegisterMessage());
+    }, [dispatch, registerMessage]);
 
     const validationSchema = Yup.object({
         lastName: Yup.string()
@@ -52,20 +65,38 @@ const RegisterPage: React.FC = () => {
             .matches(/^[\w-\\.]+@([\w-]+\.)+[\w-]{2,4}$/, 'Email không hợp lệ'),
     });
 
+    if (registerMessage) return <Navigate to='/auth/login' replace />;
+
     return (
         <React.Fragment>
             <h1 className={cx('register-text')}>Đăng ký</h1>
             <Formik
                 initialValues={initialValues}
                 onSubmit={(values) => {
-                    console.log(values);
+                    const { firstName, lastName, username, password, email, avatar } =
+                        values;
+                    const formData = new FormData();
+
+                    formData.append('avatar', avatar);
+                    formData.append('firstName', firstName);
+                    formData.append('lastName', lastName);
+                    formData.append('username', username);
+                    formData.append('password', password);
+                    formData.append('email', email);
+
+                    dispatch(registerUser(formData));
                 }}
                 validationSchema={validationSchema}
             >
                 {(formikProps) => {
-                    const { errors, values, handleChange, handleSubmit } = formikProps;
+                    const { errors, values, handleChange, handleSubmit, setFieldValue } =
+                        formikProps;
                     return (
-                        <form className={cx('form')} onSubmit={handleSubmit}>
+                        <form
+                            className={cx('form')}
+                            onSubmit={handleSubmit}
+                            encType='multipart/form-data'
+                        >
                             <Field
                                 as={InputField}
                                 name='lastName'
@@ -126,9 +157,22 @@ const RegisterPage: React.FC = () => {
                                 placeholder='Nhập email của bạn'
                                 error={errors.email}
                             />
+                            <Field
+                                as={InputField}
+                                name='avatar'
+                                label='Ảnh đại diện'
+                                value={undefined}
+                                inputType='file'
+                                onChangeValue={(e: ChangeEvent<HTMLInputElement>) => {
+                                    if (!e.currentTarget.files) return;
+                                    setFieldValue('avatar', e.currentTarget.files[0]);
+                                }}
+                                error={errors.avatar}
+                            />
                             <div className={cx('register-button')}>
                                 <Button
                                     text='Đăng ký'
+                                    loading={loading}
                                     variant='primary'
                                     size='lg'
                                     type='submit'

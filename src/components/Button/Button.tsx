@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './Button.module.scss';
 import classNames from 'classnames/bind';
+import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 
 const cx = classNames.bind(styles);
 
@@ -12,6 +13,7 @@ type ButtonTypes = 'button' | 'submit';
 interface IButtonProps {
     variant: ButtonVariants;
     text: string;
+    loading?: boolean;
     size: ButtonSizes;
     type?: ButtonTypes;
     to?: string;
@@ -24,6 +26,7 @@ interface IButtonProps {
 const Button: React.FC<IButtonProps> = ({
     variant,
     text,
+    loading,
     size,
     type,
     to,
@@ -53,7 +56,13 @@ const Button: React.FC<IButtonProps> = ({
         <Element className={btnClass} {...props}>
             {iconLeft ? <span className={cx('icon-left')}>{iconLeft}</span> : null}
             {iconRight ? <span className={cx('icon-right')}>{iconRight}</span> : null}
-            <span className={cx('text')}>{text}</span>
+            {loading ? (
+                <span className={cx('loading-icon')}>
+                    <AiOutlineLoading3Quarters size={20} />
+                </span>
+            ) : (
+                <span className={cx('text')}>{text}</span>
+            )}
         </Element>
     );
 };

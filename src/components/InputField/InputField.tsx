@@ -4,12 +4,12 @@ import styles from './InputField.module.scss';
 
 const cx = classNames.bind(styles);
 
-type InputTypes = 'text' | 'email' | 'password' | 'number';
+type InputTypes = 'text' | 'email' | 'password' | 'number' | 'file';
 
 interface IInputProps {
     name: string;
     label: string;
-    value: string;
+    value: any;
     inputType: InputTypes;
     placeholder?: string;
     error?: string;

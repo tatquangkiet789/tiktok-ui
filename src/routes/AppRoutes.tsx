@@ -12,6 +12,8 @@ import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import routes from './routes';
 
+import { testing } from './routes';
+
 const AppRoutes: React.FC = () => {
     return (
         <BrowserRouter>
@@ -41,6 +43,17 @@ const AppRoutes: React.FC = () => {
                         <Route path={routes.register} element={<RegisterPage />} />
                     </Route>
                     {/* End Of AuthLayout Routes */}
+
+                    {/* Testing Area */}
+                    {testing.map(({ path, component, layout }) => {
+                        const Page = component;
+                        const Layout = layout;
+                        return (
+                            <Route element={<Layout />} key={path}>
+                                <Route path={path} element={<Page />} />
+                            </Route>
+                        );
+                    })}
                 </Routes>
             </React.Suspense>
         </BrowserRouter>
