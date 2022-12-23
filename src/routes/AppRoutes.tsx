@@ -7,7 +7,8 @@ import MainLayout from 'layouts/MainLayout/MainLayout';
 import FriendPage from 'layouts/MainLayout/pages/FriendPage/FriendPage';
 import HomePage from 'layouts/MainLayout/pages/HomePage/HomePage';
 import WatchPage from 'layouts/MainLayout/pages/WatchPage/WatchPage';
-import PostDetail from 'layouts/pages/PostDetail/PostDetail';
+import PostDetailPage from 'layouts/pages/PostDetailPage/PostDetailPage';
+import UnauthorizedPage from 'layouts/pages/UnauthorizedPage/UnauthorizedPage';
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import routes from './routes';
@@ -34,7 +35,11 @@ const AppRoutes: React.FC = () => {
                     {/* End Of HeaderOnlyLayout Routes */}
 
                     {/* Doesn't Use Layout */}
-                    <Route path='@:username/post/:id' element={<PostDetail />}></Route>
+                    <Route
+                        path='@:username/post/:id'
+                        element={<PostDetailPage />}
+                    ></Route>
+                    <Route path={routes.unauthorized} element={<UnauthorizedPage />} />
                     {/* End Of Doesn't Use Layout */}
 
                     {/* AuthLayout Routes */}

@@ -1,7 +1,4 @@
-import authRoutes from 'features/authentication/routes';
-import postRoutes from 'features/post/routes';
-
-const routes = {
+const appRoutes = {
     home: '/',
     friends: 'friends',
     watch: 'watch',
@@ -13,10 +10,6 @@ const routes = {
     auth: 'auth',
     login: 'login',
     register: 'register',
-
-    unauthorized: 'unauthorized',
 };
 
-export const testing = [...authRoutes, ...postRoutes];
-
-export default routes;
+export default appRoutes;

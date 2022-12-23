@@ -23,29 +23,25 @@
     justify-content: space-between;
     align-items: center;
 
-    & .user-info {
-        display: flex;
+    & .image {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+    }
 
-        & .image {
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
+    & .post-detail {
+        padding-left: 16px;
+
+        & p {
+            font-size: 18px;
+            font-weight: bold;
+            line-height: 25px;
         }
 
-        & .post-detail {
-            padding-left: 16px;
-
-            & p {
-                font-size: 18px;
-                font-weight: bold;
-                line-height: 25px;
-            }
-
-            & span {
-                font-size: 14px;
-                font-weight: 400;
-                color: var(--gray075-color);
-            }
+        & span {
+            font-size: 14px;
+            font-weight: 400;
+            color: var(--gray075-color);
         }
     }
 
@@ -55,8 +51,13 @@
 }
 
 .comment-list {
+    display: flex;
+    flex-direction: column;
     border-top: 1px solid var(--gray03-color);
     border-bottom: 1px solid var(--gray03-color);
+    overflow-y: overlay;
+    background-color: var(--gray248-248-248-color);
+    height: 50%;
 }
 
 .comment-input {
