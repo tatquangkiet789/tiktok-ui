@@ -17,6 +17,11 @@ const HomePage: React.FC = () => {
     useEffect(() => {
         dispatch(findAllPosts(page));
         // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    useEffect(() => {
+        dispatch(findAllPosts(page));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [updateLikeStatus]);
 
     return (

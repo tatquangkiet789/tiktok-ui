@@ -10,7 +10,7 @@ interface ISearchState {
 
 const initialState: ISearchState = {
     result: [],
-    loading: false,
+    loading: true,
     erorr: '',
 };
 

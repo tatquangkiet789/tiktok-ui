@@ -1,11 +1,11 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import ENDPOINTS from 'constants/endpoints';
 import axiosClient from 'libs/axiosClient';
 import { IPost } from 'models/post';
 import { toast } from 'react-toastify';
 
 interface IPostState {
-    loading: boolean;
+    postLoading: boolean;
     posts: IPost[];
     selectedPost: IPost;
     error: string;
@@ -15,7 +15,7 @@ interface IPostState {
 }
 
 const initialState: IPostState = {
-    loading: false,
+    postLoading: true,
     posts: [],
     selectedPost: null as any,
     error: '',
@@ -31,7 +31,7 @@ export const findAllPosts = createAsyncThunk('findAllPosts', async (page: number
 });
 
 // [GET] /api/v1/posts/:id
-export const findPostById = createAsyncThunk('findPostById', async (id: number) => {
+export const findPostByIdAPI = createAsyncThunk('findPostByIdAPI', async (id: number) => {
     const response = await axiosClient.get(ENDPOINTS.findPostById(id));
     return response.data;
 });
@@ -65,38 +65,44 @@ export const unLikePostById = createAsyncThunk(
 const postSlice = createSlice({
     name: 'posts',
     initialState,
-    reducers: {},
+    reducers: {
+        findPostById: (state, action: PayloadAction<number>) => {
+            state.selectedPost = state.posts.filter(
+                (post) => post.id === action.payload,
+            )[0];
+        },
+    },
     extraReducers: (builder) => {
         builder
             // Find All Posts
             .addCase(findAllPosts.pending, (state) => {
-                state.loading = true;
+                state.postLoading = true;
                 state.error = '';
             })
             .addCase(findAllPosts.fulfilled, (state, action) => {
-                state.loading = false;
+                state.postLoading = false;
                 // state.posts = state.posts.concat(action.payload.content)
                 // state.posts = [...new Set([...state.posts, ...action.payload.content])];
                 state.posts = action.payload.content;
                 state.hasNextPage = Boolean(action.payload.content.length);
             })
             .addCase(findAllPosts.rejected, (state, action) => {
-                state.loading = false;
+                state.postLoading = false;
                 state.error = action.error.message!;
 
                 toast.error(state.error);
             })
             // Find Post By Id
-            .addCase(findPostById.pending, (state) => {
-                state.loading = true;
+            .addCase(findPostByIdAPI.pending, (state) => {
+                state.postLoading = true;
                 state.error = '';
             })
-            .addCase(findPostById.fulfilled, (state, action) => {
-                state.loading = false;
+            .addCase(findPostByIdAPI.fulfilled, (state, action) => {
+                state.postLoading = false;
                 state.selectedPost = action.payload.content;
             })
-            .addCase(findPostById.rejected, (state, action) => {
-                state.loading = false;
+            .addCase(findPostByIdAPI.rejected, (state, action) => {
+                state.postLoading = false;
                 state.error = action.error.message!;
 
                 toast.error(state.error);
@@ -133,5 +139,7 @@ const postSlice = createSlice({
             });
     },
 });
+
+export const { findPostById } = postSlice.actions;
 
 export default postSlice.reducer;

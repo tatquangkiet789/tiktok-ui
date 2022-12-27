@@ -10,13 +10,9 @@ import styles from './LoginPage.module.scss';
 import * as Yup from 'yup';
 import { Formik, Field } from 'formik';
 import { loginUser } from 'redux/reducers/authSlice';
+import { ILoginFormValue } from 'models/login';
 
 const cx = classNames.bind(styles);
-
-interface ILoginFormValue {
-    username: string;
-    password: string;
-}
 
 const LoginPage: React.FC = () => {
     const { currentUser } = useAppSelector((state) => state.auth);

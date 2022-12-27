@@ -1,11 +1,38 @@
 import classNames from 'classnames/bind';
-import React from 'react';
+import { IComment } from 'models/comment';
+import React, { useEffect, useMemo, useState } from 'react';
 import styles from './CommentList.module.scss';
+import CommentItem from './components/CommentItem';
 
 const cx = classNames.bind(styles);
 
-const CommentList: React.FC = () => {
-    return <div className={cx('container')}>CommentList</div>;
+interface ICommentListProps {
+    comments: IComment[];
+}
+
+const CommentList: React.FC<ICommentListProps> = ({ comments }) => {
+    const [commentsWithChildren, setCommentsWithChildren] = useState<IComment[]>([]);
+
+    useEffect(() => {
+        const rootComments = [...comments].filter((comment) => comment.parentId === null);
+        setCommentsWithChildren(rootComments);
+    }, [comments]);
+
+    return (
+        <div className={cx('container')}>
+            {commentsWithChildren.map(({ id, userDetail, content, createdDate }) => (
+                <CommentItem
+                    key={id}
+                    id={id}
+                    avatar={userDetail.avatar}
+                    content={content}
+                    userFirstName={userDetail.firstName}
+                    userLastName={userDetail.lastName}
+                    createdDate={createdDate}
+                />
+            ))}
+        </div>
+    );
 };
 
 export default CommentList;

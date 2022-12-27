@@ -1,5 +1,6 @@
 import classNames from 'classnames/bind';
 import Button from 'components/Button/Button';
+import { POST_TYPE } from 'constants/constants';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import { IPost } from 'models/post';
@@ -9,7 +10,7 @@ import ReactPlayer from 'react-player';
 import { Link } from 'react-router-dom';
 import { likePostById, unLikePostById } from 'redux/reducers/postSlice';
 import routes from 'routes/routes';
-import formatter from 'utils/formatNumber';
+import numberFormat from 'utils/numberFormat';
 import styles from './PostItem.module.scss';
 
 const cx = classNames.bind(styles);
@@ -66,16 +67,16 @@ const PostItem: React.FC<IPostItemProps> = ({ post }) => {
             </div>
             <div className={cx('post-caption')}>{caption}</div>
             <div className={cx('post-content-container')}>
-                {postTypeId === 1 ? (
+                {postTypeId === POST_TYPE.IMAGE ? (
                     <img className={cx('post-content')} src={postUrl} alt='Post URL' />
                 ) : null}
-                {postTypeId === 2 ? (
+                {postTypeId === POST_TYPE.VIDEO ? (
                     <ReactPlayer width='400px' url={postUrl} controls />
                 ) : null}
             </div>
             <div className={cx('like')}>
-                <span>{formatter.format(likes)} lượt thích</span>
-                <p className={cx('comments')}>{formatter.format(1000)} bình luận</p>
+                <span>{numberFormat.format(likes)} lượt thích</span>
+                <p className={cx('comments')}>{numberFormat.format(1000)} bình luận</p>
             </div>
             <div className={cx('action-buttons')}>
                 <div className={cx('icon-button')} onClick={handleLikeAndUnlikePost}>

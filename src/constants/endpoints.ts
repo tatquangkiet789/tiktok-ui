@@ -15,6 +15,7 @@ const ENDPOINTS = {
     findPostById: (id: number) => `/v1/posts/${id}`,
     likePostById: (id: number) => `/v1/posts/${id}/like`,
     unLikePostById: (id: number) => `/v1/posts/${id}/unlike`,
+    findAllCommentsByPostId: (id: number) => `/v1/posts/${id}/comments`,
 };
 
 export default ENDPOINTS;

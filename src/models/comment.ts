@@ -1,10 +1,12 @@
+import { IUser } from './user';
+
 export interface IComment {
     id?: number;
     content: string;
     postId: number;
-    userId: number;
     likes: number;
-    replyId: number;
+    parentId: number;
     createdDate: Date;
     deletedDate?: Date;
+    userDetail: IUser;
 }

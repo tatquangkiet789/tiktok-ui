@@ -10,7 +10,7 @@ interface IUserState {
 }
 
 const initialState: IUserState = {
-    loading: false,
+    loading: true,
     users: [],
     error: '',
 };

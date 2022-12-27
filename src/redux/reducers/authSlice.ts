@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import ENDPOINTS from 'constants/endpoints';
 import axiosClient from 'libs/axiosClient';
-import { IRegisterFormValue } from 'models/register';
+import { ILoginFormValue } from 'models/login';
 import { IUser } from 'models/user';
 import { toast } from 'react-toastify';
 
@@ -15,7 +15,7 @@ interface IAuthState {
 }
 
 const initialState: IAuthState = {
-    loading: false,
+    loading: true,
     currentUser: null as any,
     accessToken: '',
     error: '',
@@ -24,13 +24,11 @@ const initialState: IAuthState = {
 };
 
 // [POST] /api/v1/auth/login
-export const loginUser = createAsyncThunk(
-    'loginUser',
-    async ({ username, password }: { username: string; password: string }) => {
-        const response = await axiosClient.post(ENDPOINTS.login, { username, password });
-        return response.data;
-    },
-);
+export const loginUser = createAsyncThunk('loginUser', async (user: ILoginFormValue) => {
+    const { username, password } = user;
+    const response = await axiosClient.post(ENDPOINTS.login, { username, password });
+    return response.data;
+});
 
 // [POST] /api/v1/auth/register
 export const registerUser = createAsyncThunk('registerUser', async (user: FormData) => {

@@ -9,18 +9,9 @@ import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import { Navigate } from 'react-router-dom';
 import { registerUser, resetRegisterMessage } from 'redux/reducers/authSlice';
+import { IRegisterFormValue } from 'models/register';
 
 const cx = classNames.bind(styles);
-
-interface IRegisterFormValue {
-    lastName: string;
-    firstName: string;
-    username: string;
-    password: string;
-    confirmPassword: string;
-    email: string;
-    avatar: File;
-}
 
 const RegisterPage: React.FC = () => {
     const { registerMessage, loading } = useAppSelector((state) => state.auth);
