@@ -8,8 +8,8 @@ import { useAppDispatch } from 'hooks/useAppDispatch';
 import useDebounce from 'hooks/useDebounce';
 import { searchUsersByKeyword } from 'redux/reducers/searchSlice';
 import Wrapper from 'components/Wrapper/Wrapper';
-import AccountItem from 'layouts/components/shared/components/AccoutItem/AccountItem';
 import { CloseIcon, SearchIcon } from 'assets/icons';
+import AccountItem from 'layouts/components/components/AccoutItem/AccountItem';
 
 const cx = classNames.bind(styles);
 

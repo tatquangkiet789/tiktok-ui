@@ -1,15 +1,19 @@
-const appRoutes = {
+const routes = {
+    // MainLayout
     home: '/',
-    friends: 'friends',
-    watch: 'watch',
-    feedback: 'feedback',
-    upload: 'upload',
-    messages: 'messages',
-    postDetail: (username: string, id: number) => `@${username}/post/${id}`,
+    friends: '/friends',
+    watch: '/watch',
 
-    auth: 'auth',
-    login: 'login',
-    register: 'register',
+    // HeaderOnlyLayout
+    messages: '/messages',
+
+    // AuthLayout
+    login: '/auth/login',
+    register: '/auth/register',
+
+    // Don't have layout
+    postDetail: '/post/:id',
+    unauthorized: '/unauthorized',
 };
 
-export default appRoutes;
+export default routes;

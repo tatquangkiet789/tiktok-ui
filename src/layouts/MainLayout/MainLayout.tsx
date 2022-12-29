@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind';
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Outlet } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Navbar from '../components/Navbar/Navbar';

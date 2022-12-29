@@ -3,11 +3,22 @@
     height: 100vh;
     position: relative;
     display: flex;
+    justify-content: center;
+    background-color: var(--gray248-248-248-color);
 }
 
 .post-content {
-    background-color: antiquewhite;
+    background-color: var(--gray248-248-248-color);
+    display: flex;
+    justify-content: center;
     flex: 1;
+
+    & .content {
+        width: 70%;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
 }
 
 .post-detail {
@@ -15,13 +26,16 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
+    border: 2px solid var(--gray006-color);
+    box-shadow: 1px 1px 1px var(--gray012-color);
 }
 
 .user-container {
     padding: 12px 32px;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
+    width: 100%;
 
     & .image {
         width: 56px;
@@ -29,8 +43,9 @@
         border-radius: 50%;
     }
 
-    & .post-detail {
+    & .username {
         padding-left: 16px;
+        width: 100%;
 
         & p {
             font-size: 18px;
@@ -50,13 +65,22 @@
     }
 }
 
+.caption {
+    padding: 0 12px 12px 32px;
+    font-size: 18px;
+    font-weight: 500;
+    background-color: antiquewhite;
+    max-height: 20%;
+    overflow-y: overlay;
+}
+
 .comment-list {
     display: flex;
     flex-direction: column;
     border-top: 1px solid var(--gray03-color);
     border-bottom: 1px solid var(--gray03-color);
     overflow-y: overlay;
-    background-color: var(--gray248-248-248-color);
+    background-color: var(--gray241-241-242-1-color);
     height: 50%;
     padding: 24px 32px;
 }

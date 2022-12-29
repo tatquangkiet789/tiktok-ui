@@ -7,10 +7,10 @@ import { IUser } from 'models/user';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { findTop10SuggestedUsers } from 'redux/reducers/userSlice';
-import routes from 'routes/routes';
 import styles from './Sidebar.module.scss';
-import AccountItem from 'layouts/components/shared/components/AccoutItem/AccountItem';
 import SidebarMenu from './components/SidebarMenu/SidebarMenu';
+import routes from 'constants/routes';
+import AccountItem from '../components/AccoutItem/AccountItem';
 
 const cx = classNames.bind(styles);
 
@@ -29,17 +29,16 @@ const Sidebar: React.FC = () => {
             icon: <FriendsIcon />,
         },
         {
-            to: `/${routes.watch}`,
+            to: `${routes.watch}`,
             text: 'Watch',
             icon: <WatchIcon />,
         },
     ];
 
     useEffect(() => {
-        dispatch(findTop10SuggestedUsers());
+        if (users.length === 0) dispatch(findTop10SuggestedUsers());
         SetSuggestedUsers(users);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [users.length === 0]);
+    }, [dispatch, users]);
 
     const handleShowLessSuggestedUsers = () => {
         SetSuggestedUsers((prev) => {
@@ -54,7 +53,7 @@ const Sidebar: React.FC = () => {
     return (
         <div className={cx('container')}>
             {currentUser ? (
-                <Link to='/' className={cx('user-detail-link')}>
+                <Link to={routes.home} className={cx('user-detail-link')}>
                     <img
                         src={currentUser.avatar}
                         className={cx('image')}
@@ -75,7 +74,7 @@ const Sidebar: React.FC = () => {
                         text='Đăng nhập'
                         variant='outlined'
                         size='lg'
-                        to={`${routes.auth}/${routes.login}`}
+                        to={`${routes.login}`}
                     />
                 </div>
             )}

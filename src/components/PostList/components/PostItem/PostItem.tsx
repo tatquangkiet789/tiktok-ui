@@ -1,15 +1,16 @@
 import classNames from 'classnames/bind';
 import Button from 'components/Button/Button';
 import { POST_TYPE } from 'constants/constants';
+import routes from 'constants/routes';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import { IPost } from 'models/post';
 import React, { memo, useEffect, useState } from 'react';
 import { AiOutlineComment, AiOutlineHeart } from 'react-icons/ai';
 import ReactPlayer from 'react-player';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { likePostById, unLikePostById } from 'redux/reducers/postSlice';
-import routes from 'routes/routes';
 import numberFormat from 'utils/numberFormat';
 import styles from './PostItem.module.scss';
 
@@ -27,6 +28,9 @@ const PostItem: React.FC<IPostItemProps> = ({ post }) => {
 
     const [likePost, setLikePost] = useState(false);
 
+    const location = useLocation();
+    const navigate = useNavigate();
+
     useEffect(() => {
         if (!currentUser) return;
 
@@ -40,6 +44,13 @@ const PostItem: React.FC<IPostItemProps> = ({ post }) => {
     }, [currentUser, id, likeDetailList]);
 
     const handleLikeAndUnlikePost = () => {
+        if (!currentUser) {
+            toast.info('Vui lòng đăng nhập để thích bài viết');
+            return navigate(routes.login, {
+                replace: true,
+                state: { from: location },
+            });
+        }
         const postId = id as number;
         if (!likePost) {
             dispatch(likePostById({ id: postId, accessToken }));
@@ -84,10 +95,7 @@ const PostItem: React.FC<IPostItemProps> = ({ post }) => {
                         <AiOutlineHeart size={30} color={likePost ? 'red' : ''} />
                     </span>
                 </div>
-                <Link
-                    className={cx('icon-button')}
-                    to={routes.postDetail(userDetail.username, id!)}
-                >
+                <Link className={cx('icon-button')} to={`/post/${id}`}>
                     <span className={cx('icon')}>
                         <AiOutlineComment size={30} />
                     </span>

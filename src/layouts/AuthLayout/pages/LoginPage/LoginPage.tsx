@@ -5,12 +5,12 @@ import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import routes from 'routes/routes';
 import styles from './LoginPage.module.scss';
 import * as Yup from 'yup';
 import { Formik, Field } from 'formik';
 import { loginUser } from 'redux/reducers/authSlice';
 import { ILoginFormValue } from 'models/login';
+import routes from 'constants/routes';
 
 const cx = classNames.bind(styles);
 

@@ -1,22 +1,58 @@
-import authRoutes from 'features/authentication/routes';
-import postRoutes from 'features/post/routes';
+import { ROLES } from 'constants/constants';
+import routes from 'constants/routes';
+import { lazy } from 'react';
 
-const routes = {
-    home: '/',
-    friends: 'friends',
-    watch: 'watch',
-    feedback: 'feedback',
-    upload: 'upload',
-    messages: 'messages',
-    postDetail: (username: string, id: number) => `@${username}/post/${id}`,
+// Layouts
+const MainLayout = lazy(() => import('layouts/MainLayout/MainLayout'));
+const AuthLayout = lazy(() => import('layouts/AuthLayout/AuthLayout'));
+const HeaderOnlyLayout = lazy(() => import('layouts/HeaderOnlyLayout/HeaderOnlyLayout'));
+const NoLayout = lazy(() => import('layouts/NoLayout/NoLayout'));
 
-    auth: 'auth',
-    login: 'login',
-    register: 'register',
+// Pages
+const HomePage = lazy(() => import('layouts/MainLayout/pages/HomePage/HomePage'));
+const FriendPage = lazy(() => import('layouts/MainLayout/pages/FriendPage/FriendPage'));
+const WatchPage = lazy(() => import('layouts/MainLayout/pages/WatchPage/WatchPage'));
 
-    unauthorized: 'unauthorized',
-};
+const LoginPage = lazy(() => import('layouts/AuthLayout/pages/LoginPage/LoginPage'));
+const RegisterPage = lazy(
+    () => import('layouts/AuthLayout/pages/RegisterPage/RegisterPage'),
+);
 
-export const testing = [...authRoutes, ...postRoutes];
+const MessagePage = lazy(
+    () => import('layouts/HeaderOnlyLayout/pages/MessagePage/MessagePage'),
+);
 
-export default routes;
+const PostDetailPage = lazy(
+    () => import('layouts/NoLayout/pages/PostDetailPage/PostDetailPage'),
+);
+const UnauthorizedPage = lazy(
+    () => import('layouts/NoLayout/pages/UnauthorizedPage/UnauthorizedPage'),
+);
+
+const publicRoutes = [
+    { path: routes.home, component: HomePage, layout: MainLayout },
+    { path: routes.friends, component: FriendPage, layout: MainLayout },
+    { path: routes.watch, component: WatchPage, layout: MainLayout },
+
+    { path: routes.login, component: LoginPage, layout: AuthLayout },
+    { path: routes.register, component: RegisterPage, layout: AuthLayout },
+
+    { path: routes.unauthorized, component: UnauthorizedPage, layout: NoLayout },
+];
+
+const privateRoutes = [
+    {
+        path: routes.messages,
+        component: MessagePage,
+        layout: HeaderOnlyLayout,
+        allowRoles: [ROLES.USER, ROLES.ADMIN],
+    },
+    {
+        path: routes.postDetail,
+        component: PostDetailPage,
+        layout: NoLayout,
+        allowRoles: [ROLES.USER, ROLES.ADMIN],
+    },
+];
+
+export { publicRoutes, privateRoutes };

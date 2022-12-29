@@ -1,10 +1,10 @@
 import classNames from 'classnames/bind';
 import React from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
-import routes from 'routes/routes';
 import styles from './AuthLayout.module.scss';
 import { IoMdClose } from 'react-icons/io';
 import waves from 'assets/images/waves.svg';
+import routes from 'constants/routes';
 
 const cx = classNames.bind(styles);
 

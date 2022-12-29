@@ -1,6 +1,6 @@
 import classNames from 'classnames/bind';
 import { IComment } from 'models/comment';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './CommentList.module.scss';
 import CommentItem from './components/CommentItem';
 

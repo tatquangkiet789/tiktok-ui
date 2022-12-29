@@ -11,4 +11,5 @@ export interface IPost {
     active: boolean;
     postTypeId: number;
     likeDetailList?: ILike[];
+    comments: number;
 }

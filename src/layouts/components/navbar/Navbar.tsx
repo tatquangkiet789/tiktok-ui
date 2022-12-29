@@ -4,25 +4,16 @@ import classNames from 'classnames/bind';
 import { NavLink } from 'react-router-dom';
 import Tippy from '@tippyjs/react';
 import { useAppSelector } from 'hooks/useAppSelector';
-import { useAppDispatch } from 'hooks/useAppDispatch';
-import { loginUser } from 'redux/reducers/authSlice';
 import Search from './components/Search/Search';
-import {
-    AddIcon,
-    LogoIcon,
-    MessageIcon,
-    NotificationIcon,
-    ThreeDotIcon,
-} from 'assets/icons';
+import { AddIcon, LogoIcon, MessageIcon, NotificationIcon } from 'assets/icons';
 import Button from 'components/Button/Button';
-import routes from 'routes/routes';
 import Menu from './components/Menu/Menu';
+import routes from 'constants/routes';
 
 const cx = classNames.bind(styles);
 
 const Navbar: React.FC = () => {
     const { currentUser } = useAppSelector((state) => state.auth);
-    const dispatch = useAppDispatch();
 
     const [openNotification, setOpenNotification] = useState(false);
 
@@ -84,7 +75,7 @@ const Navbar: React.FC = () => {
                                         text='Đăng nhập'
                                         variant='primary'
                                         size='md'
-                                        to={`${routes.auth}/${routes.login}`}
+                                        to={`${routes.login}`}
                                     />
                                 </span>
                             </React.Fragment>
