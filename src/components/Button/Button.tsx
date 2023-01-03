@@ -6,7 +6,7 @@ import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 
 const cx = classNames.bind(styles);
 
-type ButtonVariants = 'primary' | 'outlined' | 'default';
+type ButtonVariants = 'primary' | 'outlined' | 'default' | 'base';
 type ButtonSizes = 'md' | 'lg' | 'sm';
 type ButtonTypes = 'button' | 'submit';
 
@@ -45,6 +45,7 @@ const Button: React.FC<IButtonProps> = ({
     const btnClass = cx('container', {
         [`${variant}`]: true,
         [`${size}`]: true,
+        disabled: disabled,
     });
 
     if (to) {

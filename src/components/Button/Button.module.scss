@@ -5,7 +5,19 @@
     justify-content: center;
     cursor: pointer;
 
+    &.disabled {
+        &:hover {
+            cursor: not-allowed;
+        }
+    }
+
     &.primary {
+        &.disabled {
+            &:hover {
+                background-color: var(--primary-color);
+            }
+        }
+
         background-color: var(--primary-color);
         color: var(--white1-color);
         border-radius: 4px;
@@ -16,7 +28,22 @@
         }
     }
 
+    &.base {
+        color: var(--primary-color);
+
+        &.disabled {
+            cursor: not-allowed;
+            color: var(--gray034-color);
+        }
+    }
+
     &.outlined {
+        &.disabled {
+            &:hover {
+                background-color: white;
+            }
+        }
+
         border: 1px solid var(--primary-color);
         border-radius: 4px;
         color: var(--primary-color);
@@ -27,6 +54,12 @@
     }
 
     &.default {
+        &.disabled {
+            &:hover {
+                background-color: white;
+            }
+        }
+
         border: 1px solid var(--gray012-color);
 
         &:hover {

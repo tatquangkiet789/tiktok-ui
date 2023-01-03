@@ -15,7 +15,7 @@ import routes from 'constants/routes';
 const cx = classNames.bind(styles);
 
 const LoginPage: React.FC = () => {
-    const { currentUser } = useAppSelector((state) => state.auth);
+    const { currentUser, loading } = useAppSelector((state) => state.auth);
     const dispatch = useAppDispatch();
 
     const initialValues: ILoginFormValue = {
@@ -47,7 +47,8 @@ const LoginPage: React.FC = () => {
                 validationSchema={validationSchema}
             >
                 {(formikProps) => {
-                    const { errors, values, handleChange, handleSubmit } = formikProps;
+                    const { errors, values, handleChange, handleSubmit, isSubmitting } =
+                        formikProps;
                     return (
                         <form className={cx('form')} onSubmit={handleSubmit}>
                             <Field
@@ -76,6 +77,8 @@ const LoginPage: React.FC = () => {
                                 variant='primary'
                                 type='submit'
                                 size='lg'
+                                disabled={isSubmitting}
+                                loading={loading}
                             />
                         </form>
                     );

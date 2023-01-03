@@ -3,6 +3,7 @@ const routes = {
     home: '/',
     friends: '/friends',
     watch: '/watch',
+    userDetail: '/@:username',
 
     // HeaderOnlyLayout
     messages: '/messages',

@@ -24,11 +24,17 @@
 
         & .post-detail {
             padding-left: 16px;
+            display: flex;
+            flex-direction: column;
 
-            & p {
+            & a {
                 font-size: 18px;
                 font-weight: bold;
                 line-height: 25px;
+
+                &:hover {
+                    opacity: 0.5;
+                }
             }
 
             & span {

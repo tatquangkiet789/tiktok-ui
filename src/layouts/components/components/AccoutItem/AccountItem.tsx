@@ -1,6 +1,7 @@
 import { TickIcon } from 'assets/icons';
 import classNames from 'classnames/bind';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styles from './AccountItem.module.scss';
 
 const cx = classNames.bind(styles);
@@ -23,10 +24,11 @@ const AccountItem: React.FC<IAccountItemProps> = ({
     size,
 }) => {
     return (
-        <div
+        <Link
             className={cx('container', {
                 [`${size}`]: true,
             })}
+            to={`/${username}`}
         >
             <img src={avatar} alt={`${lastName} ${firstName}`} className={cx('image')} />
             <div className={cx('wrapper')}>
@@ -36,7 +38,7 @@ const AccountItem: React.FC<IAccountItemProps> = ({
                 </p>
                 <p className={cx('username')}>{username}</p>
             </div>
-        </div>
+        </Link>
     );
 };
 

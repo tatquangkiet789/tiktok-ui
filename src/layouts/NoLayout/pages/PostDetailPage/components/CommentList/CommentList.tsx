@@ -10,29 +10,35 @@ interface ICommentListProps {
     comments: IComment[];
 }
 
-const CommentList: React.FC<ICommentListProps> = ({ comments }) => {
-    const [commentsWithChildren, setCommentsWithChildren] = useState<IComment[]>([]);
+const CommentList = React.forwardRef<HTMLDivElement, ICommentListProps>(
+    ({ comments }, ref) => {
+        // const CommentList: React.FC<ICommentListProps> = ({ comments }) => {
+        const [commentsWithChildren, setCommentsWithChildren] = useState<IComment[]>([]);
 
-    useEffect(() => {
-        const rootComments = [...comments].filter((comment) => comment.parentId === null);
-        setCommentsWithChildren(rootComments);
-    }, [comments]);
+        useEffect(() => {
+            const rootComments = [...comments].filter(
+                (comment) => comment.parentId === null,
+            );
+            setCommentsWithChildren(rootComments);
+        }, [comments]);
 
-    return (
-        <div className={cx('container')}>
-            {commentsWithChildren.map(({ id, userDetail, content, createdDate }) => (
-                <CommentItem
-                    key={id}
-                    id={id}
-                    avatar={userDetail.avatar}
-                    content={content}
-                    userFirstName={userDetail.firstName}
-                    userLastName={userDetail.lastName}
-                    createdDate={createdDate}
-                />
-            ))}
-        </div>
-    );
-};
+        return (
+            <div className={cx('container')}>
+                {commentsWithChildren.map(({ id, userDetail, content, createdDate }) => (
+                    <CommentItem
+                        key={id}
+                        id={id}
+                        avatar={userDetail.avatar}
+                        content={content}
+                        userFirstName={userDetail.firstName}
+                        userLastName={userDetail.lastName}
+                        createdDate={createdDate}
+                    />
+                ))}
+                <div ref={ref} style={{ backgroundColor: 'red', height: '2px' }}></div>
+            </div>
+        );
+    },
+);
 
 export default CommentList;

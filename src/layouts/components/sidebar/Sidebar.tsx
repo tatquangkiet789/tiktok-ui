@@ -53,7 +53,7 @@ const Sidebar: React.FC = () => {
     return (
         <div className={cx('container')}>
             {currentUser ? (
-                <Link to={routes.home} className={cx('user-detail-link')}>
+                <Link to={`/${currentUser.username}`} className={cx('user-detail-link')}>
                     <img
                         src={currentUser.avatar}
                         className={cx('image')}

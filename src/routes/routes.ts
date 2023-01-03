@@ -12,6 +12,9 @@ const NoLayout = lazy(() => import('layouts/NoLayout/NoLayout'));
 const HomePage = lazy(() => import('layouts/MainLayout/pages/HomePage/HomePage'));
 const FriendPage = lazy(() => import('layouts/MainLayout/pages/FriendPage/FriendPage'));
 const WatchPage = lazy(() => import('layouts/MainLayout/pages/WatchPage/WatchPage'));
+const UserDetailPage = lazy(
+    () => import('layouts/MainLayout/pages/UserDetailPage/UserDetailPage'),
+);
 
 const LoginPage = lazy(() => import('layouts/AuthLayout/pages/LoginPage/LoginPage'));
 const RegisterPage = lazy(
@@ -33,6 +36,7 @@ const publicRoutes = [
     { path: routes.home, component: HomePage, layout: MainLayout },
     { path: routes.friends, component: FriendPage, layout: MainLayout },
     { path: routes.watch, component: WatchPage, layout: MainLayout },
+    { path: '/:username', component: UserDetailPage, layout: MainLayout },
 
     { path: routes.login, component: LoginPage, layout: AuthLayout },
     { path: routes.register, component: RegisterPage, layout: AuthLayout },

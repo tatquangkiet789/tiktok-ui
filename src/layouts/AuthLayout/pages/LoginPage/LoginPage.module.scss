@@ -8,6 +8,7 @@
     width: 100%;
     display: flex;
     flex-direction: column;
+    gap: 9px;
 
     & .forgot-password {
         color: var(--gray075-color);

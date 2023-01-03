@@ -80,8 +80,14 @@ const RegisterPage: React.FC = () => {
                 validationSchema={validationSchema}
             >
                 {(formikProps) => {
-                    const { errors, values, handleChange, handleSubmit, setFieldValue } =
-                        formikProps;
+                    const {
+                        errors,
+                        values,
+                        handleChange,
+                        handleSubmit,
+                        setFieldValue,
+                        isSubmitting,
+                    } = formikProps;
                     return (
                         <form
                             className={cx('form')}
@@ -167,6 +173,7 @@ const RegisterPage: React.FC = () => {
                                     variant='primary'
                                     size='lg'
                                     type='submit'
+                                    disabled={isSubmitting}
                                 />
                             </div>
                         </form>

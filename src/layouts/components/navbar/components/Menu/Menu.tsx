@@ -8,16 +8,23 @@ import { useAppSelector } from 'hooks/useAppSelector';
 import MenuItem from './components/MenuItem/MenuItem';
 import MenuHeader from './components/MenuHeader/MenuHeader';
 import { IoLanguage, IoLogOutOutline } from 'react-icons/io5';
+import { useAppDispatch } from 'hooks/useAppDispatch';
+import { logoutUser } from 'redux/reducers/authSlice';
 
 const cx = classNames.bind(styles);
 
 const Menu: React.FC = () => {
     const { currentUser } = useAppSelector((state) => state.auth);
+    const dispatch = useAppDispatch();
 
     const [openLanguage, setOpenLanguage] = useState(false);
 
     const handleOpenLanguageMenu = () => {
         setOpenLanguage(true);
+    };
+
+    const handleLogoutUser = () => {
+        dispatch(logoutUser());
     };
 
     const menuItems = [
@@ -59,6 +66,7 @@ const Menu: React.FC = () => {
                                     <MenuItem
                                         content='Đăng xuất'
                                         icon={<IoLogOutOutline size={20} />}
+                                        onClick={handleLogoutUser}
                                     />
                                 ) : null}
                             </React.Fragment>

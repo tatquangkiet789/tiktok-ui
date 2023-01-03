@@ -1,23 +1,38 @@
 import classNames from 'classnames/bind';
+import Button from 'components/Button/Button';
+import InputField from 'components/InputField/InputField';
 import { POST_TYPE } from 'constants/constants';
+import { Field, Formik } from 'formik';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
-import React, { useEffect } from 'react';
+import { INewComment } from 'models/newComment';
+import React, { MutableRefObject, useEffect, useRef } from 'react';
 import ReactPlayer from 'react-player';
 import { useParams } from 'react-router-dom';
-import { findAllCommentsByPostId } from 'redux/reducers/commentSlice';
+import { createNewComment, findAllCommentsByPostId } from 'redux/reducers/commentSlice';
 import { findPostById, findPostByIdAPI } from 'redux/reducers/postSlice';
+import numberFormat from 'utils/numberFormat';
 import CommentList from './components/CommentList/CommentList';
 import styles from './PostDetailPage.module.scss';
 
 const cx = classNames.bind(styles);
 
+interface ICommentFormValue {
+    comment: string;
+}
+
 const PostDetailPage: React.FC = () => {
     const { id } = useParams();
+    const lastCommentRef = useRef() as MutableRefObject<HTMLDivElement>;
 
     const dispatch = useAppDispatch();
     const { selectedPost, posts } = useAppSelector((state) => state.posts);
     const { comments, commentLoading } = useAppSelector((state) => state.comments);
+    const { accessToken } = useAppSelector((state) => state.auth);
+
+    const initialValues: ICommentFormValue = {
+        comment: '',
+    };
 
     useEffect(() => {
         if (id === undefined) return;
@@ -31,6 +46,14 @@ const PostDetailPage: React.FC = () => {
         dispatch(findAllCommentsByPostId(selectedId));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    useEffect(() => {
+        if (id === undefined) return;
+
+        const selectedId = parseInt(id);
+        dispatch(findPostByIdAPI(selectedId));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [comments]);
 
     if (!selectedPost) return <h1>Loading...</h1>;
 
@@ -61,15 +84,10 @@ const PostDetailPage: React.FC = () => {
                         <span>2 giờ</span>
                     </div>
                 </div>
-                <p className={cx('caption')}>
-                    {selectedPost.caption} Lorem ipsum dolor sit amet consectetur
-                    adipisicing elit. Velit, ratione placeat. Voluptates odio dicta quo
-                    earum illum eum neque atque eveniet magnam voluptatibus expedita, nemo
-                    officiis necessitatibus vero obcaecati accusamus.{' '}
-                </p>
-                <div>
-                    <div>{selectedPost.likes} lượt thích</div>
-                    <div>{selectedPost.comments} bình luận</div>
+                <p className={cx('caption')}>{selectedPost.caption}</p>
+                <div className={cx('like-comment-container')}>
+                    <div>{numberFormat.format(selectedPost.likes)} lượt thích</div>
+                    <div>{numberFormat.format(selectedPost.comments)} bình luận</div>
                 </div>
                 <div className={cx('comment-list')}>
                     {commentLoading ? (
@@ -77,17 +95,44 @@ const PostDetailPage: React.FC = () => {
                     ) : comments.length === 0 ? (
                         <h1>Không có bình luận</h1>
                     ) : (
-                        <CommentList comments={comments} />
+                        <CommentList comments={comments} ref={lastCommentRef} />
                     )}
                 </div>
-                <div className={cx('comment-input')}>
-                    <input
-                        type='text'
-                        className={cx('input')}
-                        placeholder='Thêm bình luận...'
-                    />
-                    <button className={cx('add-comment-button')}>Đăng</button>
-                </div>
+                <Formik
+                    initialValues={initialValues}
+                    onSubmit={(values, { resetForm }) => {
+                        const data: INewComment = {
+                            postId: parseInt(id!),
+                            content: values.comment,
+                            accessToken: accessToken,
+                        };
+                        dispatch(createNewComment(data));
+                        resetForm();
+                    }}
+                >
+                    {(formikProps) => {
+                        const { values, handleChange, handleSubmit } = formikProps;
+                        return (
+                            <form className={cx('comment-input')} onSubmit={handleSubmit}>
+                                <Field
+                                    as={InputField}
+                                    name='comment'
+                                    inputType='text'
+                                    value={values.comment}
+                                    onChangeValue={handleChange}
+                                    placeholder='Thêm bình luận'
+                                />
+                                <Button
+                                    text='Đăng'
+                                    disabled={Boolean(!values.comment)}
+                                    variant='base'
+                                    size='md'
+                                    type='submit'
+                                />
+                            </form>
+                        );
+                    }}
+                </Formik>
             </div>
         </div>
     );

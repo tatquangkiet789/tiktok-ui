@@ -8,7 +8,7 @@ type InputTypes = 'text' | 'email' | 'password' | 'number' | 'file';
 
 interface IInputProps {
     name: string;
-    label: string;
+    label?: string;
     value: any;
     inputType: InputTypes;
     placeholder?: string;
@@ -31,7 +31,7 @@ const InputField: React.FC<IInputProps> = ({
                 error: error,
             })}
         >
-            <label className={cx('label')}>{label}</label>
+            {label ? <label className={cx('label')}>{label}</label> : null}
             <input
                 id={name}
                 name={name}

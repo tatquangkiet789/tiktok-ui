@@ -21,7 +21,16 @@ interface IPostItemProps {
 }
 
 const PostItem: React.FC<IPostItemProps> = ({ post }) => {
-    const { id, caption, postUrl, likes, userDetail, postTypeId, likeDetailList } = post;
+    const {
+        id,
+        caption,
+        postUrl,
+        likes,
+        userDetail,
+        postTypeId,
+        likeDetailList,
+        comments,
+    } = post;
 
     const { currentUser, accessToken } = useAppSelector((state) => state.auth);
     const dispatch = useAppDispatch();
@@ -70,7 +79,10 @@ const PostItem: React.FC<IPostItemProps> = ({ post }) => {
                         alt={`${userDetail.lastName} ${userDetail.firstName}`}
                     />
                     <div className={cx('post-detail')}>
-                        <p>{`${userDetail.lastName} ${userDetail.firstName}`}</p>
+                        <Link
+                            className={cx('username')}
+                            to={`/${userDetail.username}`}
+                        >{`${userDetail.lastName} ${userDetail.firstName}`}</Link>
                         <span>2 giờ</span>
                     </div>
                 </div>
@@ -87,7 +99,9 @@ const PostItem: React.FC<IPostItemProps> = ({ post }) => {
             </div>
             <div className={cx('like')}>
                 <span>{numberFormat.format(likes)} lượt thích</span>
-                <p className={cx('comments')}>{numberFormat.format(1000)} bình luận</p>
+                <p className={cx('comments')}>
+                    {numberFormat.format(comments)} bình luận
+                </p>
             </div>
             <div className={cx('action-buttons')}>
                 <div className={cx('icon-button')} onClick={handleLikeAndUnlikePost}>

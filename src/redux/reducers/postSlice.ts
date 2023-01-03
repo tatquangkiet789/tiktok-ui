@@ -70,7 +70,6 @@ const postSlice = createSlice({
             state.selectedPost = state.posts.filter(
                 (post) => post.id === action.payload,
             )[0];
-            console.log('Get post in redux store');
         },
     },
     extraReducers: (builder) => {
@@ -101,7 +100,6 @@ const postSlice = createSlice({
             .addCase(findPostByIdAPI.fulfilled, (state, action) => {
                 state.postLoading = false;
                 state.selectedPost = action.payload.content;
-                console.log('findPostByIdAPI.fulfilled');
             })
             .addCase(findPostByIdAPI.rejected, (state, action) => {
                 state.postLoading = false;

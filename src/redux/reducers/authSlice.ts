@@ -46,6 +46,9 @@ const authSlice = createSlice({
     reducers: {
         logoutUser: (state) => {
             state.currentUser = null as any;
+            state.accessToken = '';
+
+            toast.success('Đăng xuất thành công');
         },
         resetRegisterMessage: (state) => {
             state.registerMessage = '';
