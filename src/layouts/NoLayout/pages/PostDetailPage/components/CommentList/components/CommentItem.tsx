@@ -1,7 +1,9 @@
 import classNames from 'classnames/bind';
+import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import { IComment } from 'models/comment';
 import React, { useEffect, useState } from 'react';
+import { setRepliedUserFullName } from 'redux/reducers/commentSlice';
 import styles from './CommentItem.module.scss';
 
 const cx = classNames.bind(styles);
@@ -26,12 +28,19 @@ const CommentItem: React.FC<ICommentItemProps> = ({
     disabledReply,
 }) => {
     const { comments } = useAppSelector((state) => state.comments);
+    const dispatch = useAppDispatch();
+
     const [childComments, setChildComments] = useState<IComment[]>([]);
 
     useEffect(() => {
         const replyComments = [...comments].filter((comment) => comment.parentId === id);
         setChildComments(replyComments);
     }, []);
+
+    const handleSetRepliedUserFullName = () => {
+        const fullName = `${userLastName} ${userFirstName}`;
+        dispatch(setRepliedUserFullName(fullName));
+    };
 
     return (
         <div className={cx('container')}>
@@ -47,7 +56,14 @@ const CommentItem: React.FC<ICommentItemProps> = ({
                     <p className={cx('comment-content')}>{content}</p>
                     <div className={cx('action-container')}>
                         <span>{createdDate}</span>
-                        {!disabledReply ? <button>Phản hồi</button> : null}
+                        {!disabledReply ? (
+                            <button
+                                className={cx('reply-button')}
+                                onClick={handleSetRepliedUserFullName}
+                            >
+                                Phản hồi
+                            </button>
+                        ) : null}
                     </div>
                 </div>
             </div>

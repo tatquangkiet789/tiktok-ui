@@ -1,0 +1,36 @@
+.container {
+    padding: 12px 32px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+
+    & .image {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+    }
+
+    & .username {
+        padding-left: 16px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+
+        & .fullname {
+            font-size: 18px;
+            font-weight: bold;
+            line-height: 25px;
+
+            &:hover {
+                opacity: 0.7;
+            }
+        }
+
+        & .created-date {
+            font-size: 14px;
+            font-weight: 400;
+            color: var(--gray075-color);
+        }
+    }
+}

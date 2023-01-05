@@ -1,6 +1,7 @@
 .container {
     display: flex;
     flex-direction: column;
+    word-break: break-all;
 }
 
 .root-comment {
@@ -41,10 +42,15 @@
         color: var(--gray05-color);
     }
 
-    & button {
+    & .reply-button {
         color: var(--gray05-color);
         margin-left: 10px;
         font-size: 16px;
+
+        &:hover {
+            cursor: pointer;
+            text-decoration: underline;
+        }
     }
 }
 

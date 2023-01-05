@@ -1,12 +1,13 @@
 import classNames from 'classnames/bind';
+import AccountInfo from 'components/AccountInfo/AccountInfo';
 import Button from 'components/Button/Button';
 import InputField from 'components/InputField/InputField';
-import { POST_TYPE } from 'constants/constants';
+import { MAX_INPUT_LENGTH, POST_TYPE } from 'constants/constants';
 import { Field, Formik } from 'formik';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import { INewComment } from 'models/newComment';
-import React, { MutableRefObject, useEffect, useRef } from 'react';
+import React, { MutableRefObject, useEffect, useRef, useState } from 'react';
 import ReactPlayer from 'react-player';
 import { useParams } from 'react-router-dom';
 import { createNewComment, findAllCommentsByPostId } from 'redux/reducers/commentSlice';
@@ -27,7 +28,9 @@ const PostDetailPage: React.FC = () => {
 
     const dispatch = useAppDispatch();
     const { selectedPost, posts } = useAppSelector((state) => state.posts);
-    const { comments, commentLoading } = useAppSelector((state) => state.comments);
+    const { comments, commentLoading, repliedUserFullName } = useAppSelector(
+        (state) => state.comments,
+    );
     const { accessToken } = useAppSelector((state) => state.auth);
 
     const initialValues: ICommentFormValue = {
@@ -52,6 +55,9 @@ const PostDetailPage: React.FC = () => {
 
         const selectedId = parseInt(id);
         dispatch(findPostByIdAPI(selectedId));
+        setTimeout(() => {
+            lastCommentRef.current.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [comments]);
 
@@ -73,17 +79,12 @@ const PostDetailPage: React.FC = () => {
                 </div>
             )}
             <div className={cx('post-detail')}>
-                <div className={cx('user-container')}>
-                    <img
-                        className={cx('image')}
-                        src={selectedPost.userDetail.avatar}
-                        alt={`${selectedPost.userDetail.lastName} ${selectedPost.userDetail.firstName}`}
-                    />
-                    <div className={cx('username')}>
-                        <p>{`${selectedPost.userDetail.lastName} ${selectedPost.userDetail.firstName}`}</p>
-                        <span>2 giờ</span>
-                    </div>
-                </div>
+                <AccountInfo
+                    firstName={selectedPost.userDetail.firstName}
+                    lastName={selectedPost.userDetail.lastName}
+                    avatar={selectedPost.userDetail.avatar}
+                    username={selectedPost.userDetail.username}
+                />
                 <p className={cx('caption')}>{selectedPost.caption}</p>
                 <div className={cx('like-comment-container')}>
                     <div>{numberFormat.format(selectedPost.likes)} lượt thích</div>
@@ -114,21 +115,39 @@ const PostDetailPage: React.FC = () => {
                         const { values, handleChange, handleSubmit } = formikProps;
                         return (
                             <form className={cx('comment-input')} onSubmit={handleSubmit}>
-                                <Field
-                                    as={InputField}
-                                    name='comment'
-                                    inputType='text'
-                                    value={values.comment}
-                                    onChangeValue={handleChange}
-                                    placeholder='Thêm bình luận'
-                                />
-                                <Button
-                                    text='Đăng'
-                                    disabled={Boolean(!values.comment)}
-                                    variant='base'
-                                    size='md'
-                                    type='submit'
-                                />
+                                {repliedUserFullName ? (
+                                    <p className={cx('reply-username')}>
+                                        Trả lời @{repliedUserFullName}
+                                    </p>
+                                ) : null}
+                                <div className={cx('input')}>
+                                    <Field
+                                        as={InputField}
+                                        name='comment'
+                                        inputType='text'
+                                        value={values.comment}
+                                        onChangeValue={handleChange}
+                                        placeholder='Thêm bình luận'
+                                    />
+                                    <Button
+                                        text='Đăng'
+                                        disabled={Boolean(!values.comment)}
+                                        variant='base'
+                                        size='md'
+                                        type='submit'
+                                    />
+                                </div>
+                                {values.comment.length > 30 ? (
+                                    <p
+                                        className={cx('input-length', {
+                                            max:
+                                                values.comment.length ===
+                                                MAX_INPUT_LENGTH,
+                                        })}
+                                    >
+                                        {values.comment.length} / {MAX_INPUT_LENGTH}
+                                    </p>
+                                ) : null}
                             </form>
                         );
                     }}

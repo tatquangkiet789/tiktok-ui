@@ -35,7 +35,7 @@ const CommentList = React.forwardRef<HTMLDivElement, ICommentListProps>(
                         createdDate={createdDate}
                     />
                 ))}
-                <div ref={ref} style={{ backgroundColor: 'red', height: '2px' }}></div>
+                <div ref={ref}></div>
             </div>
         );
     },

@@ -1,4 +1,5 @@
 import classNames from 'classnames/bind';
+import { MAX_INPUT_LENGTH } from 'constants/constants';
 import React, { memo } from 'react';
 import styles from './InputField.module.scss';
 
@@ -40,6 +41,7 @@ const InputField: React.FC<IInputProps> = ({
                 placeholder={placeholder}
                 value={value}
                 onChange={onChangeValue}
+                maxLength={MAX_INPUT_LENGTH}
             />
             {error ? <span className={cx('error')}>{error}</span> : null}
         </div>

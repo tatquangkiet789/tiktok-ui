@@ -10,6 +10,7 @@ interface ICommentState {
     comments: IComment[];
     commentError: string;
     commentSubmitLoading: boolean;
+    repliedUserFullName: string;
 }
 
 const initialState: ICommentState = {
@@ -17,6 +18,7 @@ const initialState: ICommentState = {
     comments: [],
     commentError: '',
     commentSubmitLoading: false,
+    repliedUserFullName: '',
 };
 
 // [GET] /api/v1/posts/:postId/comments
@@ -49,7 +51,11 @@ export const createNewComment = createAsyncThunk(
 const commentSlice = createSlice({
     name: 'comments',
     initialState,
-    reducers: {},
+    reducers: {
+        setRepliedUserFullName: (state, action) => {
+            state.repliedUserFullName = action.payload;
+        },
+    },
     extraReducers: (builder) => {
         builder
             .addCase(findAllCommentsByPostId.pending, (state) => {
@@ -82,5 +88,7 @@ const commentSlice = createSlice({
             });
     },
 });
+
+export const { setRepliedUserFullName } = commentSlice.actions;
 
 export default commentSlice.reducer;

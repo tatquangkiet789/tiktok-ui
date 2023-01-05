@@ -10,3 +10,5 @@ export const POST_TYPE = {
     VIDEO: 2,
     TEXT: 3,
 };
+
+export const MAX_INPUT_LENGTH = 150;
