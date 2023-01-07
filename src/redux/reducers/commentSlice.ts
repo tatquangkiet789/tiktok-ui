@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import ENDPOINTS from 'constants/endpoints';
 import axiosClient from 'libs/axiosClient';
 import { IComment } from 'models/comment';
@@ -10,7 +10,7 @@ interface ICommentState {
     comments: IComment[];
     commentError: string;
     commentSubmitLoading: boolean;
-    repliedUserFullName: string;
+    selectedComment: IComment;
 }
 
 const initialState: ICommentState = {
@@ -18,7 +18,7 @@ const initialState: ICommentState = {
     comments: [],
     commentError: '',
     commentSubmitLoading: false,
-    repliedUserFullName: '',
+    selectedComment: null as any,
 };
 
 // [GET] /api/v1/posts/:postId/comments
@@ -34,10 +34,10 @@ export const findAllCommentsByPostId = createAsyncThunk(
 export const createNewComment = createAsyncThunk(
     'createNewComment',
     async (data: INewComment) => {
-        const { postId, content, accessToken } = data;
+        const { postId, content, accessToken, parentId } = data;
         const response = await axiosClient.post(
             ENDPOINTS.createNewComment(postId),
-            { content: content },
+            { content: content, parentId: parentId },
             {
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
@@ -52,8 +52,10 @@ const commentSlice = createSlice({
     name: 'comments',
     initialState,
     reducers: {
-        setRepliedUserFullName: (state, action) => {
-            state.repliedUserFullName = action.payload;
+        findSelectedCommentById: (state, action: PayloadAction<number>) => {
+            state.selectedComment = state.comments.filter(
+                (comment) => comment.id === action.payload,
+            )[0];
         },
     },
     extraReducers: (builder) => {
@@ -78,7 +80,9 @@ const commentSlice = createSlice({
             })
             .addCase(createNewComment.fulfilled, (state, action) => {
                 state.commentSubmitLoading = false;
+                console.log(`Before: ${state.comments.length}`);
                 state.comments.push(action.payload.content);
+                console.log(`After: ${state.comments.length}`);
             })
             .addCase(createNewComment.rejected, (state, action) => {
                 state.commentSubmitLoading = false;
@@ -89,6 +93,6 @@ const commentSlice = createSlice({
     },
 });
 
-export const { setRepliedUserFullName } = commentSlice.actions;
+export const { findSelectedCommentById } = commentSlice.actions;
 
 export default commentSlice.reducer;

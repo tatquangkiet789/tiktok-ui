@@ -28,7 +28,7 @@ const PostDetailPage: React.FC = () => {
 
     const dispatch = useAppDispatch();
     const { selectedPost, posts } = useAppSelector((state) => state.posts);
-    const { comments, commentLoading, repliedUserFullName } = useAppSelector(
+    const { comments, commentLoading, selectedComment } = useAppSelector(
         (state) => state.comments,
     );
     const { accessToken } = useAppSelector((state) => state.auth);
@@ -50,18 +50,21 @@ const PostDetailPage: React.FC = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    useEffect(() => {
-        if (id === undefined) return;
+    // useEffect(() => {
+    //     if (id === undefined) return;
 
-        const selectedId = parseInt(id);
-        dispatch(findPostByIdAPI(selectedId));
-        setTimeout(() => {
-            lastCommentRef.current.scrollIntoView({ behavior: 'smooth' });
-        }, 100);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [comments]);
+    //     const selectedId = parseInt(id);
+    //     dispatch(findPostByIdAPI(selectedId));
+    //     // dispatch(findAllCommentsByPostId(selectedId));
+    //     setTimeout(() => {
+    //         lastCommentRef.current.scrollIntoView({ behavior: 'smooth' });
+    //     }, 100);
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [comments]);
 
     if (!selectedPost) return <h1>Loading...</h1>;
+
+    console.log(`Replied comment: `, selectedComment);
 
     return (
         <div className={cx('container')}>
@@ -96,7 +99,11 @@ const PostDetailPage: React.FC = () => {
                     ) : comments.length === 0 ? (
                         <h1>Không có bình luận</h1>
                     ) : (
-                        <CommentList comments={comments} ref={lastCommentRef} />
+                        <CommentList
+                            userIdInPost={selectedPost.userDetail.id!}
+                            comments={comments}
+                            ref={lastCommentRef}
+                        />
                     )}
                 </div>
                 <Formik
@@ -106,6 +113,7 @@ const PostDetailPage: React.FC = () => {
                             postId: parseInt(id!),
                             content: values.comment,
                             accessToken: accessToken,
+                            parentId: selectedComment.id,
                         };
                         dispatch(createNewComment(data));
                         resetForm();
@@ -115,9 +123,10 @@ const PostDetailPage: React.FC = () => {
                         const { values, handleChange, handleSubmit } = formikProps;
                         return (
                             <form className={cx('comment-input')} onSubmit={handleSubmit}>
-                                {repliedUserFullName ? (
+                                {selectedComment ? (
                                     <p className={cx('reply-username')}>
-                                        Trả lời @{repliedUserFullName}
+                                        Trả lời @{selectedComment.userDetail.lastName}{' '}
+                                        {selectedComment.userDetail.firstName}
                                     </p>
                                 ) : null}
                                 <div className={cx('input')}>

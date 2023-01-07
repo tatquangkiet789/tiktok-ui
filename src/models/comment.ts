@@ -5,7 +5,7 @@ export interface IComment {
     content: string;
     postId: number;
     likes: number;
-    parentId: number;
+    parentId?: number;
     createdDate: Date;
     deletedDate?: Date;
     userDetail: IUser;

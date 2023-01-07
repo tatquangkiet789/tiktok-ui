@@ -8,33 +8,37 @@ const cx = classNames.bind(styles);
 
 interface ICommentListProps {
     comments: IComment[];
+    userIdInPost: number;
 }
 
 const CommentList = React.forwardRef<HTMLDivElement, ICommentListProps>(
-    ({ comments }, ref) => {
+    ({ comments, userIdInPost }, ref) => {
         // const CommentList: React.FC<ICommentListProps> = ({ comments }) => {
-        const [commentsWithChildren, setCommentsWithChildren] = useState<IComment[]>([]);
+        const [commentsWithoutChildren, setCommentsWithoutChildren] = useState<
+            IComment[]
+        >([]);
 
         useEffect(() => {
             const rootComments = [...comments].filter(
                 (comment) => comment.parentId === null,
             );
-            setCommentsWithChildren(rootComments);
+            setCommentsWithoutChildren(rootComments);
         }, [comments]);
 
         return (
             <div className={cx('container')}>
-                {commentsWithChildren.map(({ id, userDetail, content, createdDate }) => (
-                    <CommentItem
-                        key={id}
-                        id={id}
-                        avatar={userDetail.avatar}
-                        content={content}
-                        userFirstName={userDetail.firstName}
-                        userLastName={userDetail.lastName}
-                        createdDate={createdDate}
-                    />
-                ))}
+                {commentsWithoutChildren.map(
+                    ({ id, userDetail, content, createdDate }) => (
+                        <CommentItem
+                            key={id}
+                            id={id}
+                            content={content}
+                            createdDate={createdDate}
+                            userIdInPost={userIdInPost}
+                            userDetail={userDetail}
+                        />
+                    ),
+                )}
                 <div ref={ref}></div>
             </div>
         );

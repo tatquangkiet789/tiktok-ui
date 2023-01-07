@@ -2,31 +2,32 @@ import classNames from 'classnames/bind';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import { IComment } from 'models/comment';
+import { IUser } from 'models/user';
 import React, { useEffect, useState } from 'react';
-import { setRepliedUserFullName } from 'redux/reducers/commentSlice';
+import { Link } from 'react-router-dom';
+import { findSelectedCommentById } from 'redux/reducers/commentSlice';
 import styles from './CommentItem.module.scss';
 
 const cx = classNames.bind(styles);
 
 interface ICommentItemProps {
     id?: number;
-    avatar: string;
-    userFirstName: string;
-    userLastName: string;
     content: string;
     createdDate: Date;
     disabledReply?: boolean;
+    userIdInPost: number;
+    userDetail: IUser;
 }
 
 const CommentItem: React.FC<ICommentItemProps> = ({
     id,
-    avatar,
-    userFirstName,
-    userLastName,
     content,
     createdDate,
     disabledReply,
+    userIdInPost,
+    userDetail,
 }) => {
+    const { avatar, lastName, firstName, id: userId, username } = userDetail;
     const { comments } = useAppSelector((state) => state.comments);
     const dispatch = useAppDispatch();
 
@@ -35,11 +36,10 @@ const CommentItem: React.FC<ICommentItemProps> = ({
     useEffect(() => {
         const replyComments = [...comments].filter((comment) => comment.parentId === id);
         setChildComments(replyComments);
-    }, []);
+    }, [comments]);
 
     const handleSetRepliedUserFullName = () => {
-        const fullName = `${userLastName} ${userFirstName}`;
-        dispatch(setRepliedUserFullName(fullName));
+        dispatch(findSelectedCommentById(id!));
     };
 
     return (
@@ -50,9 +50,14 @@ const CommentItem: React.FC<ICommentItemProps> = ({
                     style={{ backgroundImage: `url(${avatar})` }}
                 ></div>
                 <div className={cx('wrapper')}>
-                    <p className={cx('username')}>
-                        {userLastName} {userFirstName}
-                    </p>
+                    <Link to={`/${username}`} className={cx('username')}>
+                        <p className={cx('fullname')}>
+                            {lastName} {firstName}
+                        </p>
+                        {userId === userIdInPost ? (
+                            <p className={cx('author')}>Tác giả</p>
+                        ) : null}
+                    </Link>
                     <p className={cx('comment-content')}>{content}</p>
                     <div className={cx('action-container')}>
                         <span>{createdDate}</span>
@@ -73,12 +78,11 @@ const CommentItem: React.FC<ICommentItemProps> = ({
                         <CommentItem
                             key={id}
                             id={id}
-                            avatar={userDetail.avatar}
                             content={content}
-                            userFirstName={userDetail.firstName}
-                            userLastName={userDetail.lastName}
                             createdDate={createdDate}
                             disabledReply={true}
+                            userIdInPost={userIdInPost}
+                            userDetail={userDetail}
                         />
                     ))}
                 </div>
