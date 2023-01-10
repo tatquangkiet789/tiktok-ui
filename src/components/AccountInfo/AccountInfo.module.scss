@@ -1,9 +1,12 @@
 .container {
-    padding: 12px 32px;
     display: flex;
     justify-content: flex-start;
     align-items: center;
     width: 100%;
+
+    &.padding {
+        padding: 12px 32px;
+    }
 
     & .image {
         width: 56px;

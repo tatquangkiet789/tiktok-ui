@@ -24,11 +24,38 @@ const initialState: IPostState = {
     updateLikeStatus: false,
 };
 
-// [GET] /api/v1/posts?page=:page
-export const findAllPosts = createAsyncThunk('findAllPosts', async (page: number) => {
-    const response = await axiosClient.get(ENDPOINTS.findAllPosts(page));
-    return response.data;
-});
+interface IFindPost {
+    page: number;
+    username?: string;
+    accessToken?: string;
+}
+
+// [GET] /api/v1/posts?page=:page OR /api/v1/posts?page=:page&username=:username
+export const findAllPosts = createAsyncThunk(
+    'findAllPosts',
+    async (params: IFindPost) => {
+        const { page, username } = params;
+        const response = await axiosClient.get(ENDPOINTS.findAllPosts(page, username));
+        return response.data;
+    },
+);
+
+// [GET] /v1/posts/user?page=:page
+export const findAllPostsByCurrentUserId = createAsyncThunk(
+    'findAllPostsByCurrentUserId',
+    async (data: IFindPost) => {
+        const { page, accessToken } = data;
+        const response = await axiosClient.get(
+            ENDPOINTS.findAllPostsByCurrentUserId(page),
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            },
+        );
+        return response.data;
+    },
+);
 
 // [GET] /api/v1/posts/:id
 export const findPostByIdAPI = createAsyncThunk('findPostByIdAPI', async (id: number) => {
@@ -87,6 +114,23 @@ const postSlice = createSlice({
                 state.hasNextPage = Boolean(action.payload.content.length);
             })
             .addCase(findAllPosts.rejected, (state, action) => {
+                state.postLoading = false;
+                state.error = action.error.message!;
+
+                toast.error(state.error);
+            })
+            .addCase(findAllPostsByCurrentUserId.pending, (state) => {
+                state.postLoading = true;
+                state.error = '';
+            })
+            .addCase(findAllPostsByCurrentUserId.fulfilled, (state, action) => {
+                console.log('findAllPostsByCurrentUserId.fulfilled');
+
+                state.postLoading = false;
+                state.posts = action.payload.content;
+                state.hasNextPage = Boolean(action.payload.content.length);
+            })
+            .addCase(findAllPostsByCurrentUserId.rejected, (state, action) => {
                 state.postLoading = false;
                 state.error = action.error.message!;
 

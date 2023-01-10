@@ -37,8 +37,12 @@ const Sidebar: React.FC = () => {
 
     useEffect(() => {
         if (users.length === 0) dispatch(findTop10SuggestedUsers());
-        SetSuggestedUsers(users);
-    }, [dispatch, users]);
+        SetSuggestedUsers(() => {
+            if (currentUser)
+                return users.filter((user) => user.username !== currentUser.username);
+            return users;
+        });
+    }, [currentUser, dispatch, users]);
 
     const handleShowLessSuggestedUsers = () => {
         SetSuggestedUsers((prev) => {
@@ -90,7 +94,7 @@ const Sidebar: React.FC = () => {
                 />
             ))}
             <div className={cx('see-all-button')}>
-                {suggestedUsers.length > 4 ? (
+                {suggestedUsers.length > 5 ? (
                     <p onClick={handleShowLessSuggestedUsers}>Ẩn bớt</p>
                 ) : (
                     <p onClick={handleShowAllSuggestedUsers}>Xem tất cả</p>

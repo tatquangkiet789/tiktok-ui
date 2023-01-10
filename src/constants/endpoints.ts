@@ -11,10 +11,12 @@ const ENDPOINTS = {
         `/v1/search?q=${encodeURIComponent(keyword)}`,
 
     // Posts endpoints
-    findAllPosts: (page: number) => `/v1/posts?page=${page}`,
+    findAllPosts: (page: number, username?: string) =>
+        `/v1/posts?page=${page}${username ? `&username=${username}` : null}`,
     findPostById: (id: number) => `/v1/posts/${id}`,
     likePostById: (id: number) => `/v1/posts/${id}/like`,
     unLikePostById: (id: number) => `/v1/posts/${id}/unlike`,
+    findAllPostsByCurrentUserId: (page: number) => `/v1/posts/user?page=${page}`,
 
     // Comments endpoints
     findAllCommentsByPostId: (postId: number) => `/v1/posts/${postId}/comments`,

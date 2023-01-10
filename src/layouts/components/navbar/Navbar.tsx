@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from './Navbar.module.scss';
 import classNames from 'classnames/bind';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import Tippy from '@tippyjs/react';
 import { useAppSelector } from 'hooks/useAppSelector';
 import Search from './components/Search/Search';
@@ -28,7 +28,10 @@ const Navbar: React.FC = () => {
             <div className={cx('container')}>
                 <div className={cx('wrapper')}>
                     {/* <img src={logo} alt='TikTok' /> */}
-                    <LogoIcon />
+                    <Link to={routes.home}>
+                        <LogoIcon />
+                    </Link>
+
                     <Search />
                     <div className={cx('menu')}>
                         <Button

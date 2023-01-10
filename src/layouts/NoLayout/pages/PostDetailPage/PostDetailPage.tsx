@@ -7,7 +7,7 @@ import { Field, Formik } from 'formik';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import { INewComment } from 'models/newComment';
-import React, { MutableRefObject, useEffect, useRef, useState } from 'react';
+import React, { MutableRefObject, useEffect, useRef } from 'react';
 import ReactPlayer from 'react-player';
 import { useParams } from 'react-router-dom';
 import { createNewComment, findAllCommentsByPostId } from 'redux/reducers/commentSlice';
@@ -50,21 +50,16 @@ const PostDetailPage: React.FC = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    // useEffect(() => {
-    //     if (id === undefined) return;
+    // Update total comments in 1 post after create new comment
+    useEffect(() => {
+        if (id === undefined) return;
 
-    //     const selectedId = parseInt(id);
-    //     dispatch(findPostByIdAPI(selectedId));
-    //     // dispatch(findAllCommentsByPostId(selectedId));
-    //     setTimeout(() => {
-    //         lastCommentRef.current.scrollIntoView({ behavior: 'smooth' });
-    //     }, 100);
-    //     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [comments]);
+        const selectedId = parseInt(id);
+        dispatch(findPostByIdAPI(selectedId));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [comments]);
 
     if (!selectedPost) return <h1>Loading...</h1>;
-
-    console.log(`Replied comment: `, selectedComment);
 
     return (
         <div className={cx('container')}>
@@ -87,6 +82,7 @@ const PostDetailPage: React.FC = () => {
                     lastName={selectedPost.userDetail.lastName}
                     avatar={selectedPost.userDetail.avatar}
                     username={selectedPost.userDetail.username}
+                    padding={true}
                 />
                 <p className={cx('caption')}>{selectedPost.caption}</p>
                 <div className={cx('like-comment-container')}>

@@ -15,12 +15,12 @@ const HomePage: React.FC = () => {
     const [page, setPage] = useState(1);
 
     useEffect(() => {
-        dispatch(findAllPosts(page));
+        dispatch(findAllPosts({ page: page }));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
-        dispatch(findAllPosts(page));
+        dispatch(findAllPosts({ page: page }));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [updateLikeStatus]);
 

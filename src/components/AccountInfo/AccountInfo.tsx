@@ -11,6 +11,7 @@ interface IAccountInfoProps {
     username: string;
     createdDate?: Date;
     avatar: string;
+    padding: boolean;
 }
 
 const AccountInfo: React.FC<IAccountInfoProps> = ({
@@ -19,9 +20,14 @@ const AccountInfo: React.FC<IAccountInfoProps> = ({
     avatar,
     createdDate,
     username,
+    padding,
 }) => {
     return (
-        <div className={cx('container')}>
+        <div
+            className={cx('container', {
+                padding: padding,
+            })}
+        >
             <img className={cx('image')} src={avatar} alt={username} />
             <div className={cx('username')}>
                 <Link to={`/${username}`} className={cx('fullname')}>

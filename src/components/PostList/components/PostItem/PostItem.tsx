@@ -1,4 +1,5 @@
 import classNames from 'classnames/bind';
+import AccountInfo from 'components/AccountInfo/AccountInfo';
 import Button from 'components/Button/Button';
 import { POST_TYPE } from 'constants/constants';
 import routes from 'constants/routes';
@@ -7,6 +8,7 @@ import { useAppSelector } from 'hooks/useAppSelector';
 import { IPost } from 'models/post';
 import React, { memo, useEffect, useState } from 'react';
 import { AiOutlineComment, AiOutlineHeart } from 'react-icons/ai';
+import { FcLike } from 'react-icons/fc';
 import ReactPlayer from 'react-player';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -54,7 +56,6 @@ const PostItem: React.FC<IPostItemProps> = ({ post }) => {
 
     const handleLikeAndUnlikePost = () => {
         if (!currentUser) {
-            toast.info('Vui lòng đăng nhập để thích bài viết');
             return navigate(routes.login, {
                 replace: true,
                 state: { from: location },
@@ -72,19 +73,14 @@ const PostItem: React.FC<IPostItemProps> = ({ post }) => {
     return (
         <div className={cx('container')}>
             <div className={cx('user-container')}>
-                <div className={cx('user-info')}>
-                    <img
-                        className={cx('image')}
-                        src={userDetail.avatar}
-                        alt={`${userDetail.lastName} ${userDetail.firstName}`}
+                <div>
+                    <AccountInfo
+                        avatar={userDetail.avatar}
+                        firstName={userDetail.firstName}
+                        lastName={userDetail.lastName}
+                        username={userDetail.username}
+                        padding={false}
                     />
-                    <div className={cx('post-detail')}>
-                        <Link
-                            className={cx('username')}
-                            to={`/${userDetail.username}`}
-                        >{`${userDetail.lastName} ${userDetail.firstName}`}</Link>
-                        <span>2 giờ</span>
-                    </div>
                 </div>
                 <Button text='Kết bạn' variant='outlined' size='sm' />
             </div>
@@ -105,9 +101,7 @@ const PostItem: React.FC<IPostItemProps> = ({ post }) => {
             </div>
             <div className={cx('action-buttons')}>
                 <div className={cx('icon-button')} onClick={handleLikeAndUnlikePost}>
-                    <span className={cx('icon')}>
-                        <AiOutlineHeart size={30} color={likePost ? 'red' : ''} />
-                    </span>
+                    <AiOutlineHeart size={30} color={likePost ? 'red' : ''} />
                 </div>
                 <Link className={cx('icon-button')} to={`/post/${id}`}>
                     <span className={cx('icon')}>

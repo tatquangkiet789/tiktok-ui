@@ -12,42 +12,6 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-
-    & .user-info {
-        display: flex;
-
-        & .image {
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-        }
-
-        & .post-detail {
-            padding-left: 16px;
-            display: flex;
-            flex-direction: column;
-
-            & a {
-                font-size: 18px;
-                font-weight: bold;
-                line-height: 25px;
-
-                &:hover {
-                    opacity: 0.5;
-                }
-            }
-
-            & span {
-                font-size: 14px;
-                font-weight: 400;
-                color: var(--gray075-color);
-            }
-        }
-    }
-
-    & button {
-        height: fit-content;
-    }
 }
 
 .post-caption {
