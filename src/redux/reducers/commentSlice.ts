@@ -80,9 +80,7 @@ const commentSlice = createSlice({
             })
             .addCase(createNewComment.fulfilled, (state, action) => {
                 state.commentSubmitLoading = false;
-                console.log(`Before: ${state.comments.length}`);
                 state.comments.push(action.payload.content);
-                console.log(`After: ${state.comments.length}`);
             })
             .addCase(createNewComment.rejected, (state, action) => {
                 state.commentSubmitLoading = false;

@@ -17,6 +17,7 @@ const ENDPOINTS = {
     likePostById: (id: number) => `/v1/posts/${id}/like`,
     unLikePostById: (id: number) => `/v1/posts/${id}/unlike`,
     findAllPostsByCurrentUserId: (page: number) => `/v1/posts/user?page=${page}`,
+    createNewPost: '/v1/posts/create',
 
     // Comments endpoints
     findAllCommentsByPostId: (postId: number) => `/v1/posts/${postId}/comments`,

@@ -24,6 +24,9 @@ const RegisterPage = lazy(
 const MessagePage = lazy(
     () => import('layouts/HeaderOnlyLayout/pages/MessagePage/MessagePage'),
 );
+const UploadPage = lazy(
+    () => import('layouts/HeaderOnlyLayout/pages/UploadPage/UploadPage'),
+);
 
 const PostDetailPage = lazy(
     () => import('layouts/NoLayout/pages/PostDetailPage/PostDetailPage'),
@@ -36,7 +39,7 @@ const publicRoutes = [
     { path: routes.home, component: HomePage, layout: MainLayout },
     { path: routes.friends, component: FriendPage, layout: MainLayout },
     { path: routes.watch, component: WatchPage, layout: MainLayout },
-    { path: '/:username', component: UserDetailPage, layout: MainLayout },
+    { path: routes.userDetail, component: UserDetailPage, layout: MainLayout },
 
     { path: routes.login, component: LoginPage, layout: AuthLayout },
     { path: routes.register, component: RegisterPage, layout: AuthLayout },
@@ -48,6 +51,12 @@ const privateRoutes = [
     {
         path: routes.messages,
         component: MessagePage,
+        layout: HeaderOnlyLayout,
+        allowRoles: [ROLES.USER, ROLES.ADMIN],
+    },
+    {
+        path: routes.upload,
+        component: UploadPage,
         layout: HeaderOnlyLayout,
         allowRoles: [ROLES.USER, ROLES.ADMIN],
     },

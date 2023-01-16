@@ -38,6 +38,13 @@
     }
 
     & .fullname {
+        display: flex;
+        align-items: center;
+
+        & svg {
+            margin-left: 3px;
+        }
+
         &:hover {
             cursor: pointer;
             text-decoration: underline;

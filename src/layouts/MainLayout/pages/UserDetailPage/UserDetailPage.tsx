@@ -15,7 +15,7 @@ const UserDetailPage: React.FC = () => {
     const [author, setAuthor] = useState(false);
 
     const { postLoading, posts } = useAppSelector((state) => state.posts);
-    const { currentUser, accessToken } = useAppSelector((state) => state.auth);
+    const { currentUser } = useAppSelector((state) => state.auth);
     const dispatch = useAppDispatch();
 
     useEffect(() => {
@@ -24,7 +24,7 @@ const UserDetailPage: React.FC = () => {
         if (currentUser?.username === username) {
             setAuthor(true);
             console.log(`Current user find all posts`);
-
+            const { accessToken } = currentUser;
             dispatch(
                 findAllPostsByCurrentUserId({ page: page, accessToken: accessToken }),
             );

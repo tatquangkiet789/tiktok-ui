@@ -1,3 +1,4 @@
+import { HeartIcon } from 'assets/icons';
 import classNames from 'classnames/bind';
 import AccountInfo from 'components/AccountInfo/AccountInfo';
 import Button from 'components/Button/Button';
@@ -8,10 +9,8 @@ import { useAppSelector } from 'hooks/useAppSelector';
 import { IPost } from 'models/post';
 import React, { memo, useEffect, useState } from 'react';
 import { AiOutlineComment, AiOutlineHeart } from 'react-icons/ai';
-import { FcLike } from 'react-icons/fc';
 import ReactPlayer from 'react-player';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import { likePostById, unLikePostById } from 'redux/reducers/postSlice';
 import numberFormat from 'utils/numberFormat';
 import styles from './PostItem.module.scss';
@@ -27,14 +26,14 @@ const PostItem: React.FC<IPostItemProps> = ({ post }) => {
         id,
         caption,
         postUrl,
-        likes,
-        userDetail,
         postTypeId,
-        likeDetailList,
-        comments,
+        totalComments,
+        totalLikes,
+        userLikePostList,
+        userPostDetail,
     } = post;
 
-    const { currentUser, accessToken } = useAppSelector((state) => state.auth);
+    const { currentUser } = useAppSelector((state) => state.auth);
     const dispatch = useAppDispatch();
 
     const [likePost, setLikePost] = useState(false);
@@ -43,16 +42,20 @@ const PostItem: React.FC<IPostItemProps> = ({ post }) => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        // if user is not login then not show like status
         if (!currentUser) return;
+        // if nobody likes that post then not show like status
+        if (!userLikePostList) return;
 
-        if (!likeDetailList) return;
+        // const likeStatus = userLikePostList
+        //     .filter((status) => status.postId === id)
+        //     .find((status) => status.userLikeId === currentUser.id);
+        const currentUserLikePostDetail = userLikePostList.filter(
+            (user) => user.id === currentUser.id,
+        )[0];
 
-        const likeStatus = likeDetailList
-            .filter((status) => status.postId === id)
-            .find((status) => status.userLikeId === currentUser.id);
-
-        if (likeStatus) setLikePost(likeStatus.like);
-    }, [currentUser, id, likeDetailList]);
+        if (currentUserLikePostDetail) setLikePost(currentUserLikePostDetail.likeStatus);
+    }, [currentUser, id, userLikePostList]);
 
     const handleLikeAndUnlikePost = () => {
         if (!currentUser) {
@@ -62,10 +65,8 @@ const PostItem: React.FC<IPostItemProps> = ({ post }) => {
             });
         }
         const postId = id as number;
-        if (!likePost) {
-            dispatch(likePostById({ id: postId, accessToken }));
-            return;
-        }
+        const { accessToken } = currentUser;
+        if (!likePost) return dispatch(likePostById({ id: postId, accessToken }));
 
         dispatch(unLikePostById({ id: postId, accessToken }));
     };
@@ -75,11 +76,12 @@ const PostItem: React.FC<IPostItemProps> = ({ post }) => {
             <div className={cx('user-container')}>
                 <div>
                     <AccountInfo
-                        avatar={userDetail.avatar}
-                        firstName={userDetail.firstName}
-                        lastName={userDetail.lastName}
-                        username={userDetail.username}
+                        avatar={userPostDetail.avatar}
+                        firstName={userPostDetail.firstName}
+                        lastName={userPostDetail.lastName}
+                        username={userPostDetail.username}
                         padding={false}
+                        tick={userPostDetail.tick}
                     />
                 </div>
                 <Button text='Kết bạn' variant='outlined' size='sm' />
@@ -94,14 +96,19 @@ const PostItem: React.FC<IPostItemProps> = ({ post }) => {
                 ) : null}
             </div>
             <div className={cx('like')}>
-                <span>{numberFormat.format(likes)} lượt thích</span>
+                <span>{numberFormat.format(totalLikes)} lượt thích</span>
                 <p className={cx('comments')}>
-                    {numberFormat.format(comments)} bình luận
+                    {numberFormat.format(totalComments)} bình luận
                 </p>
             </div>
             <div className={cx('action-buttons')}>
-                <div className={cx('icon-button')} onClick={handleLikeAndUnlikePost}>
-                    <AiOutlineHeart size={30} color={likePost ? 'red' : ''} />
+                <div
+                    className={cx('icon-button', {
+                        userLikePost: likePost,
+                    })}
+                    onClick={handleLikeAndUnlikePost}
+                >
+                    <HeartIcon />
                 </div>
                 <Link className={cx('icon-button')} to={`/post/${id}`}>
                     <span className={cx('icon')}>

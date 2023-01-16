@@ -1,3 +1,4 @@
+import { TickIcon } from 'assets/icons';
 import classNames from 'classnames/bind';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
@@ -27,7 +28,7 @@ const CommentItem: React.FC<ICommentItemProps> = ({
     userIdInPost,
     userDetail,
 }) => {
-    const { avatar, lastName, firstName, id: userId, username } = userDetail;
+    const { avatar, lastName, firstName, id: userId, username, tick } = userDetail;
     const { comments } = useAppSelector((state) => state.comments);
     const dispatch = useAppDispatch();
 
@@ -53,6 +54,7 @@ const CommentItem: React.FC<ICommentItemProps> = ({
                     <Link to={`/${username}`} className={cx('username')}>
                         <p className={cx('fullname')}>
                             {lastName} {firstName}
+                            {tick ? <TickIcon /> : null}
                         </p>
                         {userId === userIdInPost ? (
                             <p className={cx('author')}>Tác giả</p>

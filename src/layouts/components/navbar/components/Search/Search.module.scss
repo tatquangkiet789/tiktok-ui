@@ -14,7 +14,8 @@
 
 .search-result {
     width: var(--search-width);
-    z-index: 10;
+    z-index: 999;
+    background-color: var(--white1-color);
 
     & .search-title {
         padding: 5px 12px;

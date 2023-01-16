@@ -9,7 +9,7 @@ import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import { Navigate } from 'react-router-dom';
 import { registerUser, resetRegisterMessage } from 'redux/reducers/authSlice';
-import { IRegisterFormValue } from 'models/register';
+// import { IRegisterFormValue } from 'models/register';
 
 const cx = classNames.bind(styles);
 
@@ -17,7 +17,8 @@ const RegisterPage: React.FC = () => {
     const { registerMessage, loading } = useAppSelector((state) => state.auth);
     const dispatch = useAppDispatch();
 
-    const initialValues: IRegisterFormValue = {
+    // const initialValues: IRegisterFormValue = {
+    const initialValues: any = {
         lastName: '',
         firstName: '',
         username: '',

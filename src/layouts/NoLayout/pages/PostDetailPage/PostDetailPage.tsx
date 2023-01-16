@@ -31,7 +31,7 @@ const PostDetailPage: React.FC = () => {
     const { comments, commentLoading, selectedComment } = useAppSelector(
         (state) => state.comments,
     );
-    const { accessToken } = useAppSelector((state) => state.auth);
+    const { currentUser } = useAppSelector((state) => state.auth);
 
     const initialValues: ICommentFormValue = {
         comment: '',
@@ -78,16 +78,17 @@ const PostDetailPage: React.FC = () => {
             )}
             <div className={cx('post-detail')}>
                 <AccountInfo
-                    firstName={selectedPost.userDetail.firstName}
-                    lastName={selectedPost.userDetail.lastName}
-                    avatar={selectedPost.userDetail.avatar}
-                    username={selectedPost.userDetail.username}
+                    firstName={selectedPost.userPostDetail.firstName}
+                    lastName={selectedPost.userPostDetail.lastName}
+                    avatar={selectedPost.userPostDetail.avatar}
+                    username={selectedPost.userPostDetail.username}
                     padding={true}
+                    tick={selectedPost.userPostDetail.tick}
                 />
                 <p className={cx('caption')}>{selectedPost.caption}</p>
                 <div className={cx('like-comment-container')}>
-                    <div>{numberFormat.format(selectedPost.likes)} lượt thích</div>
-                    <div>{numberFormat.format(selectedPost.comments)} bình luận</div>
+                    <div>{numberFormat.format(selectedPost.totalLikes)} lượt thích</div>
+                    <div>{numberFormat.format(selectedPost.totalComments)} bình luận</div>
                 </div>
                 <div className={cx('comment-list')}>
                     {commentLoading ? (
@@ -96,7 +97,7 @@ const PostDetailPage: React.FC = () => {
                         <h1>Không có bình luận</h1>
                     ) : (
                         <CommentList
-                            userIdInPost={selectedPost.userDetail.id!}
+                            userIdInPost={selectedPost.userPostDetail.id}
                             comments={comments}
                             ref={lastCommentRef}
                         />
@@ -105,6 +106,8 @@ const PostDetailPage: React.FC = () => {
                 <Formik
                     initialValues={initialValues}
                     onSubmit={(values, { resetForm }) => {
+                        const { accessToken } = currentUser;
+
                         const data: INewComment = {
                             postId: parseInt(id!),
                             content: values.comment,

@@ -4,19 +4,38 @@ import InputField from 'components/InputField/InputField';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import React from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import styles from './LoginPage.module.scss';
 import * as Yup from 'yup';
 import { Formik, Field } from 'formik';
-import { loginUser } from 'redux/reducers/authSlice';
-import { ILoginFormValue } from 'models/login';
+// import { loginUser } from 'redux/reducers/authSlice';
+// import { ILoginFormValue } from 'models/login';
 import routes from 'constants/routes';
+import { ILoginFormValue } from 'layouts/AuthLayout/models/login';
+import { loginUser } from 'layouts/AuthLayout/services/authService';
+import { useMutation } from '@tanstack/react-query';
+import { setCurrentUser } from 'redux/reducers/authSlice';
+import { toast } from 'react-toastify';
 
 const cx = classNames.bind(styles);
 
 const LoginPage: React.FC = () => {
-    const { currentUser, loading } = useAppSelector((state) => state.auth);
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+
+    const loginMutation = useMutation({
+        mutationKey: ['login'],
+        mutationFn: (data: ILoginFormValue) => {
+            return loginUser(data);
+        },
+        onSuccess: (currentUser) => {
+            dispatch(setCurrentUser(currentUser));
+            navigate(routes.home);
+        },
+        onError: (error) => {
+            toast.error((error as Error).message);
+        },
+    });
 
     const initialValues: ILoginFormValue = {
         username: '',
@@ -34,15 +53,13 @@ const LoginPage: React.FC = () => {
             .required('Mật khẩu không được để trống'),
     });
 
-    if (currentUser) return <Navigate to={routes.home} replace />;
-
     return (
         <React.Fragment>
             <h1 className={cx('login-text')}>Đăng nhập</h1>
             <Formik
                 initialValues={initialValues}
                 onSubmit={(values) => {
-                    dispatch(loginUser(values));
+                    loginMutation.mutate(values);
                 }}
                 validationSchema={validationSchema}
             >
@@ -78,7 +95,7 @@ const LoginPage: React.FC = () => {
                                 type='submit'
                                 size='lg'
                                 disabled={isSubmitting}
-                                loading={loading}
+                                loading={loginMutation.isLoading}
                             />
                         </form>
                     );

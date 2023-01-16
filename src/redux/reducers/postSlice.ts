@@ -124,8 +124,6 @@ const postSlice = createSlice({
                 state.error = '';
             })
             .addCase(findAllPostsByCurrentUserId.fulfilled, (state, action) => {
-                console.log('findAllPostsByCurrentUserId.fulfilled');
-
                 state.postLoading = false;
                 state.posts = action.payload.content;
                 state.hasNextPage = Boolean(action.payload.content.length);
@@ -158,8 +156,6 @@ const postSlice = createSlice({
             .addCase(likePostById.fulfilled, (state, action) => {
                 state.message = action.payload.message;
                 state.updateLikeStatus = !state.updateLikeStatus;
-
-                toast.success(state.message);
             })
             .addCase(likePostById.rejected, (state, action) => {
                 state.error = action.error.message!;
