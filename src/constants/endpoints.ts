@@ -12,7 +12,7 @@ const ENDPOINTS = {
 
     // Posts endpoints
     findAllPosts: (page: number, username?: string) =>
-        `/v1/posts?page=${page}${username ? `&username=${username}` : null}`,
+        `/v1/posts?page=${page}${username ? `&username=${username}` : ''}`,
     findPostById: (id: number) => `/v1/posts/${id}`,
     likePostById: (id: number) => `/v1/posts/${id}/like`,
     unLikePostById: (id: number) => `/v1/posts/${id}/unlike`,

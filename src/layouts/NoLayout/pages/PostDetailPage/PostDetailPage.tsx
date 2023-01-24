@@ -1,167 +1,123 @@
+import { HeartIcon } from 'assets/icons';
 import classNames from 'classnames/bind';
 import AccountInfo from 'components/AccountInfo/AccountInfo';
-import Button from 'components/Button/Button';
-import InputField from 'components/InputField/InputField';
-import { MAX_INPUT_LENGTH, POST_TYPE } from 'constants/constants';
-import { Field, Formik } from 'formik';
+import { POST_TYPE } from 'constants/constants';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
-import { INewComment } from 'models/newComment';
-import React, { MutableRefObject, useEffect, useRef } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
+import { AiOutlineComment } from 'react-icons/ai';
 import ReactPlayer from 'react-player';
 import { useParams } from 'react-router-dom';
-import { createNewComment, findAllCommentsByPostId } from 'redux/reducers/commentSlice';
-import { findPostById, findPostByIdAPI } from 'redux/reducers/postSlice';
+import { findPostById } from 'redux/reducers/postSlice';
 import numberFormat from 'utils/numberFormat';
+import AddComment from './components/AddComment/AddComment';
 import CommentList from './components/CommentList/CommentList';
 import styles from './PostDetailPage.module.scss';
 
 const cx = classNames.bind(styles);
 
-interface ICommentFormValue {
-    comment: string;
-}
-
 const PostDetailPage: React.FC = () => {
     const { id } = useParams();
-    const lastCommentRef = useRef() as MutableRefObject<HTMLDivElement>;
 
-    const dispatch = useAppDispatch();
-    const { selectedPost, posts } = useAppSelector((state) => state.posts);
-    const { comments, commentLoading, selectedComment } = useAppSelector(
-        (state) => state.comments,
-    );
     const { currentUser } = useAppSelector((state) => state.auth);
+    const { selectedPost, postLoading, postError } = useAppSelector(
+        (state) => state.posts,
+    );
+    const dispatch = useAppDispatch();
 
-    const initialValues: ICommentFormValue = {
-        comment: '',
-    };
+    const [userLikePostStatus, setUserLikePostStatus] = useState(false);
 
     useEffect(() => {
-        if (id === undefined) return;
+        if (!id || !currentUser) return;
 
-        const selectedId = parseInt(id);
-        if (posts.length === 0) {
-            dispatch(findPostByIdAPI(selectedId));
-        } else {
-            dispatch(findPostById(selectedId));
-        }
-        dispatch(findAllCommentsByPostId(selectedId));
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+        const postId = parseInt(id);
+        dispatch(findPostById(postId))
+            .unwrap()
+            .then((result) => {
+                const currentUserLikePost = result.userLikePostList.filter(
+                    (user) => user.id === currentUser.id,
+                )[0];
+                if (currentUserLikePost)
+                    setUserLikePostStatus(currentUserLikePost.likeStatus);
+            });
+    }, [currentUser, dispatch, id]);
 
     // Update total comments in 1 post after create new comment
-    useEffect(() => {
-        if (id === undefined) return;
+    // useEffect(() => {
+    //     if (id === undefined) return;
 
-        const selectedId = parseInt(id);
-        dispatch(findPostByIdAPI(selectedId));
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [comments]);
-
-    if (!selectedPost) return <h1>Loading...</h1>;
+    //     const selectedId = parseInt(id);
+    //     dispatch(findPostByIdAPI(selectedId));
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [comments]);
 
     return (
-        <div className={cx('container')}>
-            {selectedPost.postTypeId === POST_TYPE.TEXT ? null : (
-                <div className={cx('post-content')}>
-                    {selectedPost.postTypeId === POST_TYPE.IMAGE ? (
-                        <div
-                            className={cx('content')}
-                            style={{ backgroundImage: `url(${selectedPost.postUrl})` }}
-                        ></div>
-                    ) : null}
-                    {selectedPost.postTypeId === POST_TYPE.VIDEO ? (
-                        <ReactPlayer width='400px' url={selectedPost.postUrl} controls />
-                    ) : null}
+        <Fragment>
+            {postLoading ? (
+                <h1>Đang tải bài viết...</h1>
+            ) : postError ? (
+                <h1>{postError}</h1>
+            ) : (
+                <div className={cx('container')}>
+                    {selectedPost.postTypeId === POST_TYPE.TEXT ? null : (
+                        <div className={cx('post-content')}>
+                            {selectedPost.postTypeId === POST_TYPE.IMAGE ? (
+                                <div
+                                    className={cx('content')}
+                                    style={{
+                                        backgroundImage: `url(${selectedPost.postUrl})`,
+                                    }}
+                                ></div>
+                            ) : null}
+                            {selectedPost.postTypeId === POST_TYPE.VIDEO ? (
+                                <ReactPlayer
+                                    width='400px'
+                                    url={selectedPost.postUrl}
+                                    controls
+                                />
+                            ) : null}
+                        </div>
+                    )}
+                    <div className={cx('post-detail')}>
+                        <AccountInfo
+                            firstName={selectedPost.userPostDetail.firstName}
+                            lastName={selectedPost.userPostDetail.lastName}
+                            avatar={selectedPost.userPostDetail.avatar}
+                            username={selectedPost.userPostDetail.username}
+                            padding={true}
+                            tick={selectedPost.userPostDetail.tick}
+                        />
+                        <p className={cx('caption')}>{selectedPost.caption}</p>
+                        <div className={cx('like-comment-container')}>
+                            <div
+                                className={cx('icon-button', {
+                                    userLikePost: userLikePostStatus,
+                                })}
+                            >
+                                <HeartIcon />
+                                {numberFormat.format(selectedPost.totalLikes)} lượt thích
+                            </div>
+                            <div className={cx('icon-button')}>
+                                <AiOutlineComment />
+                                {numberFormat.format(selectedPost.totalComments)} bình
+                                luận
+                            </div>
+                        </div>
+                        <div className={cx('comment-list')}>
+                            {selectedPost.totalComments === 0 ? (
+                                <h1>Chưa có bình luận</h1>
+                            ) : (
+                                <CommentList
+                                    userIdInPost={selectedPost.userPostDetail.id}
+                                    postId={selectedPost.id}
+                                />
+                            )}
+                        </div>
+                        <AddComment postId={parseInt(id!)} />
+                    </div>
                 </div>
             )}
-            <div className={cx('post-detail')}>
-                <AccountInfo
-                    firstName={selectedPost.userPostDetail.firstName}
-                    lastName={selectedPost.userPostDetail.lastName}
-                    avatar={selectedPost.userPostDetail.avatar}
-                    username={selectedPost.userPostDetail.username}
-                    padding={true}
-                    tick={selectedPost.userPostDetail.tick}
-                />
-                <p className={cx('caption')}>{selectedPost.caption}</p>
-                <div className={cx('like-comment-container')}>
-                    <div>{numberFormat.format(selectedPost.totalLikes)} lượt thích</div>
-                    <div>{numberFormat.format(selectedPost.totalComments)} bình luận</div>
-                </div>
-                <div className={cx('comment-list')}>
-                    {commentLoading ? (
-                        <h1>Loading</h1>
-                    ) : comments.length === 0 ? (
-                        <h1>Không có bình luận</h1>
-                    ) : (
-                        <CommentList
-                            userIdInPost={selectedPost.userPostDetail.id}
-                            comments={comments}
-                            ref={lastCommentRef}
-                        />
-                    )}
-                </div>
-                <Formik
-                    initialValues={initialValues}
-                    onSubmit={(values, { resetForm }) => {
-                        const { accessToken } = currentUser;
-
-                        const data: INewComment = {
-                            postId: parseInt(id!),
-                            content: values.comment,
-                            accessToken: accessToken,
-                            parentId: selectedComment.id,
-                        };
-                        dispatch(createNewComment(data));
-                        resetForm();
-                    }}
-                >
-                    {(formikProps) => {
-                        const { values, handleChange, handleSubmit } = formikProps;
-                        return (
-                            <form className={cx('comment-input')} onSubmit={handleSubmit}>
-                                {selectedComment ? (
-                                    <p className={cx('reply-username')}>
-                                        Trả lời @{selectedComment.userDetail.lastName}{' '}
-                                        {selectedComment.userDetail.firstName}
-                                    </p>
-                                ) : null}
-                                <div className={cx('input')}>
-                                    <Field
-                                        as={InputField}
-                                        name='comment'
-                                        inputType='text'
-                                        value={values.comment}
-                                        onChangeValue={handleChange}
-                                        placeholder='Thêm bình luận'
-                                    />
-                                    <Button
-                                        text='Đăng'
-                                        disabled={Boolean(!values.comment)}
-                                        variant='base'
-                                        size='md'
-                                        type='submit'
-                                    />
-                                </div>
-                                {values.comment.length > 30 ? (
-                                    <p
-                                        className={cx('input-length', {
-                                            max:
-                                                values.comment.length ===
-                                                MAX_INPUT_LENGTH,
-                                        })}
-                                    >
-                                        {values.comment.length} / {MAX_INPUT_LENGTH}
-                                    </p>
-                                ) : null}
-                            </form>
-                        );
-                    }}
-                </Formik>
-            </div>
-        </div>
+        </Fragment>
     );
 };
 

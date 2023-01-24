@@ -1,21 +1,23 @@
 import classNames from 'classnames/bind';
 import Button from 'components/Button/Button';
 import InputField from 'components/InputField/InputField';
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect } from 'react';
 import styles from './RegisterPage.module.scss';
 import * as Yup from 'yup';
 import { Field, Formik } from 'formik';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { registerUser, resetRegisterMessage } from 'redux/reducers/authSlice';
-// import { IRegisterFormValue } from 'models/register';
+import { toast } from 'react-toastify';
 
 const cx = classNames.bind(styles);
 
 const RegisterPage: React.FC = () => {
-    const { registerMessage, loading } = useAppSelector((state) => state.auth);
+    const { registerMessage, authLoading } = useAppSelector((state) => state.auth);
     const dispatch = useAppDispatch();
+
+    const navigate = useNavigate();
 
     // const initialValues: IRegisterFormValue = {
     const initialValues: any = {
@@ -76,7 +78,14 @@ const RegisterPage: React.FC = () => {
                     formData.append('password', password);
                     formData.append('email', email);
 
-                    dispatch(registerUser(formData));
+                    dispatch(registerUser(formData))
+                        .unwrap()
+                        .then((message: string) => {
+                            toast.success(message);
+                            return navigate('/auth/login', {
+                                replace: true,
+                            });
+                        });
                 }}
                 validationSchema={validationSchema}
             >
@@ -170,7 +179,7 @@ const RegisterPage: React.FC = () => {
                             <div className={cx('register-button')}>
                                 <Button
                                     text='Đăng ký'
-                                    loading={loading}
+                                    loading={authLoading}
                                     variant='primary'
                                     size='lg'
                                     type='submit'

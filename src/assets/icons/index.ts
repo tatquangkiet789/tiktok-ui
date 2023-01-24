@@ -10,7 +10,6 @@ import { ReactComponent as ThreeDotIcon } from './threedot.svg';
 import { ReactComponent as TickIcon } from './tick.svg';
 import { ReactComponent as WatchIcon } from './watch.svg';
 import { ReactComponent as HeartIcon } from './heart.svg';
-import { ReactComponent as HeartFillIcon } from './heartFill.svg';
 
 export {
     AddIcon,
@@ -25,5 +24,4 @@ export {
     TickIcon,
     WatchIcon,
     HeartIcon,
-    HeartFillIcon,
 };

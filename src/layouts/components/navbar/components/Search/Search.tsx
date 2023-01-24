@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './Search.module.scss';
 import classNames from 'classnames/bind';
 import HeadlessTippy from '@tippyjs/react/headless';
@@ -9,30 +9,34 @@ import { CloseIcon, SearchIcon } from 'assets/icons';
 import AccountItem from 'layouts/components/components/AccoutItem/AccountItem';
 import { useQuery } from '@tanstack/react-query';
 import { findAllUsersByKeyword } from '../../services/seachServer';
+import { IUser } from 'models/user';
 
 const cx = classNames.bind(styles);
 
 const Search: React.FC = () => {
     const [searchValue, setSearchValue] = useState('');
     const [isShow, setIsShow] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [searchResult, setSearchResult] = useState<IUser[]>([]);
     const debouncedValue = useDebounce(searchValue, 500);
 
-    const { data: searchResult, isFetching } = useQuery({
-        queryKey: ['search', { debouncedValue }],
-        queryFn: () => findAllUsersByKeyword(debouncedValue),
-        enabled: !!debouncedValue,
-        onSuccess: () => {
-            setIsShow(true);
-        },
-        refetchOnWindowFocus: false,
-    });
+    useEffect(() => {
+        if (debouncedValue.trim() === '') {
+            setSearchResult([]);
+            return;
+        }
 
-    // useEffect(() => {
-    //     if (debouncedValue.trim() === '') return;
+        searchUsersByKeyword();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [debouncedValue]);
 
-    //     dispatch(searchUsersByKeyword(debouncedValue.trim()));
-    //     setIsShow(true);
-    // }, [debouncedValue, dispatch]);
+    const searchUsersByKeyword = async () => {
+        setIsLoading(true);
+        const data = await findAllUsersByKeyword(debouncedValue);
+        setSearchResult(data);
+        setIsLoading(false);
+        setIsShow(true);
+    };
 
     const handleCloseSearchWrapper = () => {
         setIsShow(false);
@@ -52,7 +56,7 @@ const Search: React.FC = () => {
                 <div tabIndex={-1} {...attrs} className={cx('search-result')}>
                     <Wrapper>
                         <h4 className={cx('search-title')}>Tài khoản</h4>
-                        {searchResult?.map(
+                        {searchResult.map(
                             ({ id, firstName, lastName, avatar, username, tick }) => (
                                 <AccountItem
                                     key={id}
@@ -76,13 +80,14 @@ const Search: React.FC = () => {
                     placeholder='Tìm kiếm tài khoản và video'
                     value={searchValue}
                     onChange={(e) => setSearchValue(e.target.value)}
+                    // onFocus={() => setIsShow(true)}
                 />
-                {searchValue && isFetching !== true ? (
+                {searchValue && isLoading !== true ? (
                     <span onClick={handleClearSearchValue}>
                         <CloseIcon />
                     </span>
                 ) : null}
-                {isFetching ? (
+                {isLoading ? (
                     <span className={cx('loading')}>
                         <AiOutlineLoading3Quarters size={16} />
                     </span>
@@ -92,7 +97,7 @@ const Search: React.FC = () => {
                     className={cx('icon', {
                         active: searchValue,
                     })}
-                    onClick={() => findAllUsersByKeyword(debouncedValue)}
+                    onClick={searchUsersByKeyword}
                 >
                     <SearchIcon />
                 </span>

@@ -9,7 +9,7 @@ import styles from './HomePage.module.scss';
 const cx = classNames.bind(styles);
 
 const HomePage: React.FC = () => {
-    const { posts, updateLikeStatus } = useAppSelector((state) => state.posts);
+    const { posts, postLoading, postError } = useAppSelector((state) => state.posts);
     const dispatch = useAppDispatch();
 
     const [page, setPage] = useState(1);
@@ -17,16 +17,17 @@ const HomePage: React.FC = () => {
     useEffect(() => {
         dispatch(findAllPosts({ page: page }));
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    useEffect(() => {
-        dispatch(findAllPosts({ page: page }));
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [updateLikeStatus]);
+    }, [dispatch]);
 
     return (
         <div className={cx('container')}>
-            <PostList posts={posts} />
+            {postLoading ? (
+                <div>Đang tải bài viết</div>
+            ) : postError ? (
+                <div>{postError}</div>
+            ) : (
+                <PostList postList={posts} />
+            )}
         </div>
     );
 };

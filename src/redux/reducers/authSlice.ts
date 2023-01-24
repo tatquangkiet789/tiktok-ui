@@ -1,100 +1,91 @@
-// import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import ENDPOINTS from 'constants/endpoints';
 import { IAuth } from 'layouts/AuthLayout/models/auth';
+import { ILoginFormValue } from 'layouts/AuthLayout/models/login';
 import axiosClient from 'libs/axiosClient';
-// import ENDPOINTS from 'constants/endpoints';
-// import axiosClient from 'libs/axiosClient';
-// import { ILoginFormValue } from 'models/login';
-// import { IUser } from 'models/user';
 import { toast } from 'react-toastify';
 
 interface IAuthState {
-    loading: boolean;
+    authLoading: boolean;
     currentUser: IAuth;
     error: string;
-    loginMessage: string;
     registerMessage: string;
 }
 
 const initialState: IAuthState = {
-    loading: false,
+    authLoading: false,
     currentUser: null as any,
     error: '',
-    loginMessage: '',
     registerMessage: '',
 };
 
 // [POST] /api/v1/auth/login
-// export const loginUser = createAsyncThunk('loginUser', async (user: ILoginFormValue) => {
-//     const { username, password } = user;
-//     const response = await axiosClient.post(ENDPOINTS.login, { username, password });
-//     return response.data;
-// });
+export const loginUser = createAsyncThunk(
+    'loginUser',
+    async (value: ILoginFormValue): Promise<IAuth> => {
+        const { username, password } = value;
+        const { data } = await axiosClient.post(ENDPOINTS.login, { username, password });
+        return data.content;
+    },
+);
 
 // [POST] /api/v1/auth/register
-export const registerUser = createAsyncThunk('registerUser', async (user: FormData) => {
-    const response = await axiosClient.post(ENDPOINTS.register, user, {
-        headers: {
-            'Content-Type': 'multipart/form-data',
-        },
-    });
-    return response.data;
-});
+export const registerUser = createAsyncThunk(
+    'registerUser',
+    async (user: FormData): Promise<string> => {
+        const { data } = await axiosClient.post(ENDPOINTS.register, user, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        return data.message;
+    },
+);
 
 const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
-        setCurrentUser: (state, action) => {
-            state.currentUser = action.payload;
-        },
         logoutUser: (state) => {
             state.currentUser = null as any;
-            toast.success('Đăng xuất thành công');
         },
         resetRegisterMessage: (state) => {
             state.registerMessage = '';
         },
     },
     extraReducers: (builder) => {
-        // builder
-        //     // Login User
-        //     .addCase(loginUser.pending, (state) => {
-        //         state.loading = true;
-        //         state.currentUser = null as any;
-        //         state.error = '';
-        //     })
-        //     .addCase(loginUser.fulfilled, (state, action) => {
-        //         state.loading = false;
-        //         state.loginMessage = action.payload.message;
-        //         state.currentUser = action.payload.content;
-        //         toast.success(state.loginMessage);
-        //     })
-        //     .addCase(loginUser.rejected, (state, action) => {
-        //         state.loading = false;
-        //         state.error = action.error.message!;
-        //         toast.error(state.error);
-        //     })
-        //     // Register User
-        //     .addCase(registerUser.pending, (state) => {
-        //         state.loading = true;
-        //         state.error = '';
-        //         state.registerMessage = '';
-        //     })
-        //     .addCase(registerUser.fulfilled, (state, action) => {
-        //         state.loading = false;
-        //         state.registerMessage = action.payload.message;
-        //         toast.success(state.registerMessage);
-        //     })
-        //     .addCase(registerUser.rejected, (state, action) => {
-        //         state.loading = false;
-        //         state.error = action.error.message!;
-        //         toast.error(state.error);
-        //     });
+        builder
+            // Login User
+            .addCase(loginUser.pending, (state) => {
+                state.authLoading = true;
+                state.currentUser = null as any;
+                state.error = '';
+            })
+            .addCase(loginUser.fulfilled, (state, action) => {
+                state.authLoading = false;
+                state.currentUser = action.payload;
+            })
+            .addCase(loginUser.rejected, (state, action) => {
+                state.authLoading = false;
+                state.error = action.error.message!;
+                toast.error(state.error);
+            })
+            // Register User
+            .addCase(registerUser.pending, (state) => {
+                state.authLoading = true;
+                state.error = '';
+            })
+            .addCase(registerUser.fulfilled, (state, action) => {
+                state.authLoading = false;
+            })
+            .addCase(registerUser.rejected, (state, action) => {
+                state.authLoading = false;
+                state.error = action.error.message!;
+                toast.error(state.error);
+            });
     },
 });
 
-export const { logoutUser, resetRegisterMessage, setCurrentUser } = authSlice.actions;
+export const { logoutUser, resetRegisterMessage } = authSlice.actions;
 
 export default authSlice.reducer;

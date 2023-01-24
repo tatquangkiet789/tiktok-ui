@@ -1,12 +1,20 @@
 import { IUser } from './user';
 
 export interface IComment {
-    id?: number;
+    id: number;
     content: string;
-    postId: number;
-    likes: number;
-    parentId?: number;
+    parentId: number;
     createdDate: Date;
-    deletedDate?: Date;
-    userDetail: IUser;
+    userCommentDetail: IUser;
+}
+
+export interface IFindComment {
+    postId: number;
+}
+
+export interface INewComment {
+    postId: number;
+    parentId?: number;
+    content: string;
+    accessToken: string;
 }

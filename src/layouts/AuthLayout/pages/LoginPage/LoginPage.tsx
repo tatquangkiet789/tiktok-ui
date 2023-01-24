@@ -4,38 +4,24 @@ import InputField from 'components/InputField/InputField';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import React from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styles from './LoginPage.module.scss';
 import * as Yup from 'yup';
 import { Formik, Field } from 'formik';
-// import { loginUser } from 'redux/reducers/authSlice';
-// import { ILoginFormValue } from 'models/login';
+import { loginUser } from 'redux/reducers/authSlice';
 import routes from 'constants/routes';
 import { ILoginFormValue } from 'layouts/AuthLayout/models/login';
-import { loginUser } from 'layouts/AuthLayout/services/authService';
-import { useMutation } from '@tanstack/react-query';
-import { setCurrentUser } from 'redux/reducers/authSlice';
+import { IAuth } from 'layouts/AuthLayout/models/auth';
+import { ROLES } from 'constants/constants';
 import { toast } from 'react-toastify';
 
 const cx = classNames.bind(styles);
 
 const LoginPage: React.FC = () => {
+    const { authLoading } = useAppSelector((state) => state.auth);
     const dispatch = useAppDispatch();
-    const navigate = useNavigate();
 
-    const loginMutation = useMutation({
-        mutationKey: ['login'],
-        mutationFn: (data: ILoginFormValue) => {
-            return loginUser(data);
-        },
-        onSuccess: (currentUser) => {
-            dispatch(setCurrentUser(currentUser));
-            navigate(routes.home);
-        },
-        onError: (error) => {
-            toast.error((error as Error).message);
-        },
-    });
+    const navigate = useNavigate();
 
     const initialValues: ILoginFormValue = {
         username: '',
@@ -59,7 +45,13 @@ const LoginPage: React.FC = () => {
             <Formik
                 initialValues={initialValues}
                 onSubmit={(values) => {
-                    loginMutation.mutate(values);
+                    dispatch(loginUser(values))
+                        .unwrap()
+                        .then((currentUser: IAuth) => {
+                            if (currentUser.userRoleId === ROLES.USER)
+                                return navigate(routes.home);
+                            toast.success('Đang chuyển về trang admin');
+                        });
                 }}
                 validationSchema={validationSchema}
             >
@@ -95,7 +87,7 @@ const LoginPage: React.FC = () => {
                                 type='submit'
                                 size='lg'
                                 disabled={isSubmitting}
-                                loading={loginMutation.isLoading}
+                                loading={authLoading}
                             />
                         </form>
                     );

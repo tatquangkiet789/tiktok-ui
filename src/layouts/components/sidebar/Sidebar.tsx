@@ -1,31 +1,26 @@
 import { FriendsIcon, HomeIcon, WatchIcon } from 'assets/icons';
 import classNames from 'classnames/bind';
 import Button from 'components/Button/Button';
-// import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import { IUser } from 'models/user';
 import React, { Fragment, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-// import { findTop10SuggestedUsers } from 'redux/reducers/userSlice';
+import { findTop10SuggestedUsers } from 'redux/reducers/userSlice';
 import styles from './Sidebar.module.scss';
 import SidebarMenu from './components/SidebarMenu/SidebarMenu';
 import routes from 'constants/routes';
 import AccountItem from '../components/AccoutItem/AccountItem';
-import { useQuery } from '@tanstack/react-query';
-import { find10SuggestedUsers } from './services/searchService';
 import AccountItemPlaceHolder from '../components/AccountItemPlaceHolder/AccountItemPlaceHolder';
+import { useAppDispatch } from 'hooks/useAppDispatch';
 
 const cx = classNames.bind(styles);
 
 const Sidebar: React.FC = () => {
     const { currentUser } = useAppSelector((state) => state.auth);
-    const [suggestedUsers, SetSuggestedUsers] = useState<IUser[]>([]);
+    const { users, loading, error } = useAppSelector((state) => state.users);
+    const dispatch = useAppDispatch();
 
-    const {
-        status,
-        error,
-        data: users,
-    } = useQuery({ queryKey: ['users'], queryFn: find10SuggestedUsers });
+    const [suggestedUsers, setSuggestedUsers] = useState<IUser[]>([]);
 
     const sidebarMenuItems = [
         { to: `${routes.home}`, text: 'Dành cho bạn', icon: <HomeIcon /> },
@@ -42,26 +37,35 @@ const Sidebar: React.FC = () => {
     ];
 
     useEffect(() => {
-        if (users) SetSuggestedUsers(users);
-    }, [users]);
+        dispatch(findTop10SuggestedUsers())
+            .unwrap()
+            .then((result) => {
+                if (currentUser)
+                    return setSuggestedUsers(
+                        result.filter((user) => user.id !== currentUser.id),
+                    );
+
+                return setSuggestedUsers(result);
+            });
+    }, [currentUser, dispatch]);
 
     const handleShowLessSuggestedUsers = () => {
-        SetSuggestedUsers((prev) => {
+        setSuggestedUsers((prev) => {
             return [...prev].slice(0, 5);
         });
     };
 
     const handleShowAllSuggestedUsers = () => {
-        SetSuggestedUsers(users!);
+        setSuggestedUsers(users!);
     };
 
     const renderSuggestedUsers = () => {
-        if (status === 'loading') return <AccountItemPlaceHolder instances={3} />;
-        if (status === 'error') return <div>{(error as Error).message}</div>;
+        if (loading) return <AccountItemPlaceHolder instances={3} />;
+        if (error) return <div>{error}</div>;
 
         return (
             <Fragment>
-                {suggestedUsers?.map(
+                {suggestedUsers.map(
                     ({ firstName, lastName, id, username, avatar, tick }) => (
                         <AccountItem
                             key={id}

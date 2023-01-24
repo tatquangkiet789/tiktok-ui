@@ -4,7 +4,7 @@ import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import { IComment } from 'models/comment';
 import { IUser } from 'models/user';
-import React, { useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { findSelectedCommentById } from 'redux/reducers/commentSlice';
 import styles from './CommentItem.module.scss';
@@ -18,6 +18,7 @@ interface ICommentItemProps {
     disabledReply?: boolean;
     userIdInPost: number;
     userDetail: IUser;
+    childComments?: IComment[];
 }
 
 const CommentItem: React.FC<ICommentItemProps> = ({
@@ -27,17 +28,11 @@ const CommentItem: React.FC<ICommentItemProps> = ({
     disabledReply,
     userIdInPost,
     userDetail,
+    childComments,
 }) => {
     const { avatar, lastName, firstName, id: userId, username, tick } = userDetail;
-    const { comments } = useAppSelector((state) => state.comments);
+
     const dispatch = useAppDispatch();
-
-    const [childComments, setChildComments] = useState<IComment[]>([]);
-
-    useEffect(() => {
-        const replyComments = [...comments].filter((comment) => comment.parentId === id);
-        setChildComments(replyComments);
-    }, [comments]);
 
     const handleSetRepliedUserFullName = () => {
         dispatch(findSelectedCommentById(id!));
@@ -74,23 +69,25 @@ const CommentItem: React.FC<ICommentItemProps> = ({
                     </div>
                 </div>
             </div>
-            {childComments.length > 0 ? (
+            {childComments ? (
                 <div className={cx('child-comment')}>
-                    {childComments.map(({ id, userDetail, content, createdDate }) => (
-                        <CommentItem
-                            key={id}
-                            id={id}
-                            content={content}
-                            createdDate={createdDate}
-                            disabledReply={true}
-                            userIdInPost={userIdInPost}
-                            userDetail={userDetail}
-                        />
-                    ))}
+                    {childComments.map(
+                        ({ id, userCommentDetail, content, createdDate }) => (
+                            <CommentItem
+                                key={id}
+                                id={id}
+                                content={content}
+                                createdDate={createdDate}
+                                disabledReply={true}
+                                userIdInPost={userIdInPost}
+                                userDetail={userCommentDetail}
+                            />
+                        ),
+                    )}
                 </div>
             ) : null}
         </div>
     );
 };
 
-export default CommentItem;
+export default memo(CommentItem);

@@ -1,19 +1,36 @@
+import { useQuery } from '@tanstack/react-query';
 import classNames from 'classnames/bind';
+import { useAppDispatch } from 'hooks/useAppDispatch';
+import { useAppSelector } from 'hooks/useAppSelector';
 import { IPost } from 'models/post';
-import React, { memo } from 'react';
+import { FC, Fragment, memo, useEffect, useState } from 'react';
 import PostItem from './components/PostItem/PostItem';
 import styles from './PostList.module.scss';
 
 const cx = classNames.bind(styles);
 
 interface IPostListProps {
-    posts: IPost[];
+    postList: IPost[];
 }
 
-const PostList: React.FC<IPostListProps> = ({ posts }) => {
+const PostList: FC<IPostListProps> = ({ postList }) => {
+    const { currentUser } = useAppSelector((state) => state.auth);
+    const dispatch = useAppDispatch();
+
+    const [author, setAuthor] = useState(false);
+    // const [accessToken, setAccessToken] = useState('');
+
+    // useEffect(() => {
+    //     if (!currentUser) return;
+    //     if (currentUser.username === username) {
+    //         setAuthor(true);
+    //         setAccessToken(currentUser.accessToken);
+    //     }
+    // }, [currentUser, username]);
+
     return (
-        <div className={cx('container')}>
-            {posts.map((post) => (
+        <div className='container'>
+            {postList.map((post) => (
                 <PostItem key={post.id} post={post} />
             ))}
         </div>

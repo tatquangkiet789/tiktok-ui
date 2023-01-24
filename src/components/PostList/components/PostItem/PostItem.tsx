@@ -8,10 +8,15 @@ import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import { IPost } from 'models/post';
 import React, { memo, useEffect, useState } from 'react';
-import { AiOutlineComment, AiOutlineHeart } from 'react-icons/ai';
+import { AiOutlineComment } from 'react-icons/ai';
 import ReactPlayer from 'react-player';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { likePostById, unLikePostById } from 'redux/reducers/postSlice';
+import {
+    likePostById,
+    unlikePostById,
+    userLikePost,
+    userUnlikePost,
+} from 'redux/reducers/postSlice';
 import numberFormat from 'utils/numberFormat';
 import styles from './PostItem.module.scss';
 
@@ -47,9 +52,6 @@ const PostItem: React.FC<IPostItemProps> = ({ post }) => {
         // if nobody likes that post then not show like status
         if (!userLikePostList) return;
 
-        // const likeStatus = userLikePostList
-        //     .filter((status) => status.postId === id)
-        //     .find((status) => status.userLikeId === currentUser.id);
         const currentUserLikePostDetail = userLikePostList.filter(
             (user) => user.id === currentUser.id,
         )[0];
@@ -66,9 +68,20 @@ const PostItem: React.FC<IPostItemProps> = ({ post }) => {
         }
         const postId = id as number;
         const { accessToken } = currentUser;
-        if (!likePost) return dispatch(likePostById({ id: postId, accessToken }));
+        if (!likePost)
+            return dispatch(likePostById({ id: postId, accessToken }))
+                .unwrap()
+                .then(() => {
+                    setLikePost(true);
+                    dispatch(userLikePost(postId));
+                });
 
-        dispatch(unLikePostById({ id: postId, accessToken }));
+        dispatch(unlikePostById({ id: postId, accessToken }))
+            .unwrap()
+            .then(() => {
+                setLikePost(false);
+                dispatch(userUnlikePost(postId));
+            });
     };
 
     return (
