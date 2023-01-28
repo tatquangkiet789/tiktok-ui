@@ -23,12 +23,13 @@ const CommentList: React.FC<ICommentListProps> = ({ userIdInPost, postId }) => {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        dispatch(findAllCommentsByPostId({ postId: postId }))
-            .unwrap()
-            .then((data: IComment[]) => {
-                setRootComments([...data].filter((comment) => comment.parentId === null));
-            });
+        dispatch(findAllCommentsByPostId({ postId: postId }));
     }, [dispatch, postId]);
+
+    // Update comments list in UI
+    useEffect(() => {
+        setRootComments([...comments].filter((comment) => comment.parentId === null));
+    }, [comments]);
 
     const getChildComments = useCallback(
         (parentId: number) => {
@@ -60,7 +61,7 @@ const CommentList: React.FC<ICommentListProps> = ({ userIdInPost, postId }) => {
                         ),
                     )}
                 </Fragment>
-            )}{' '}
+            )}
         </div>
     );
 };

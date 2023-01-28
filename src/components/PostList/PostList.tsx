@@ -14,10 +14,6 @@ interface IPostListProps {
 }
 
 const PostList: FC<IPostListProps> = ({ postList }) => {
-    const { currentUser } = useAppSelector((state) => state.auth);
-    const dispatch = useAppDispatch();
-
-    const [author, setAuthor] = useState(false);
     // const [accessToken, setAccessToken] = useState('');
 
     // useEffect(() => {

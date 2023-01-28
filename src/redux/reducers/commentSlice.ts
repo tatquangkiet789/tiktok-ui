@@ -56,12 +56,8 @@ const commentSlice = createSlice({
                 (comment) => comment.id === action.payload,
             )[0];
         },
-        setCommentList: (state, action: PayloadAction<IComment[]>) => {
-            state.comments = action.payload;
-        },
-        addNewComment: (state, action: PayloadAction<IComment>) => {
-            state.comments.push(action.payload);
-            console.log(`commentSlice:addNewComment`);
+        resetSelectedComment: (state) => {
+            state.selectedComment = null as any;
         },
     },
     extraReducers: (builder) => {
@@ -79,21 +75,17 @@ const commentSlice = createSlice({
                 state.commentError = action.error.message!;
             })
             .addCase(createNewComment.pending, (state) => {
-                state.commentLoading = true;
                 state.commentError = '';
             })
             .addCase(createNewComment.fulfilled, (state, action) => {
-                state.commentLoading = false;
                 state.comments.push(action.payload);
             })
             .addCase(createNewComment.rejected, (state, action) => {
-                state.commentLoading = false;
                 state.commentError = action.error.message!;
             });
     },
 });
 
-export const { findSelectedCommentById, setCommentList, addNewComment } =
-    commentSlice.actions;
+export const { findSelectedCommentById, resetSelectedComment } = commentSlice.actions;
 
 export default commentSlice.reducer;

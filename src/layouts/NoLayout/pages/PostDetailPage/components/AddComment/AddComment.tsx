@@ -7,7 +7,8 @@ import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import { INewComment } from 'models/newComment';
 import { FC } from 'react';
-import { createNewComment } from 'redux/reducers/commentSlice';
+import { createNewComment, resetSelectedComment } from 'redux/reducers/commentSlice';
+import { userAddNewComment } from 'redux/reducers/postSlice';
 import styles from './AddComment.module.scss';
 
 const cx = classNames.bind(styles);
@@ -42,7 +43,12 @@ const AddComment: FC<IAddCommentProps> = ({ postId }) => {
                     parentId: selectedComment?.id,
                 };
 
-                dispatch(createNewComment(data));
+                dispatch(createNewComment(data))
+                    .unwrap()
+                    .then(() => {
+                        dispatch(userAddNewComment());
+                        dispatch(resetSelectedComment());
+                    });
                 resetForm();
             }}
         >

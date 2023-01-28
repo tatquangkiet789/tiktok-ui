@@ -4,7 +4,7 @@ import AccountInfo from 'components/AccountInfo/AccountInfo';
 import { POST_TYPE } from 'constants/constants';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useLayoutEffect, useState } from 'react';
 import { AiOutlineComment } from 'react-icons/ai';
 import ReactPlayer from 'react-player';
 import { useParams } from 'react-router-dom';
@@ -20,17 +20,13 @@ const PostDetailPage: React.FC = () => {
     const { id } = useParams();
 
     const { currentUser } = useAppSelector((state) => state.auth);
-    const { selectedPost, postLoading, postError } = useAppSelector(
-        (state) => state.posts,
-    );
+    const { selectedPost, postError } = useAppSelector((state) => state.posts);
     const dispatch = useAppDispatch();
 
     const [userLikePostStatus, setUserLikePostStatus] = useState(false);
 
     useEffect(() => {
-        if (!id || !currentUser) return;
-
-        const postId = parseInt(id);
+        const postId = parseInt(id!);
         dispatch(findPostById(postId))
             .unwrap()
             .then((result) => {
@@ -40,24 +36,13 @@ const PostDetailPage: React.FC = () => {
                 if (currentUserLikePost)
                     setUserLikePostStatus(currentUserLikePost.likeStatus);
             });
-    }, [currentUser, dispatch, id]);
+    }, []);
 
-    // Update total comments in 1 post after create new comment
-    // useEffect(() => {
-    //     if (id === undefined) return;
-
-    //     const selectedId = parseInt(id);
-    //     dispatch(findPostByIdAPI(selectedId));
-    //     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [comments]);
+    if (postError) return <h1>{postError}</h1>;
 
     return (
         <Fragment>
-            {postLoading ? (
-                <h1>Đang tải bài viết...</h1>
-            ) : postError ? (
-                <h1>{postError}</h1>
-            ) : (
+            {selectedPost && (
                 <div className={cx('container')}>
                     {selectedPost.postTypeId === POST_TYPE.TEXT ? null : (
                         <div className={cx('post-content')}>

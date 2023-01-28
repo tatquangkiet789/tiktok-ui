@@ -108,6 +108,9 @@ const postSlice = createSlice({
                 return post;
             });
         },
+        userAddNewComment: (state) => {
+            state.selectedPost.totalComments = state.selectedPost.totalComments + 1;
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -151,6 +154,7 @@ const postSlice = createSlice({
             })
             .addCase(findPostById.fulfilled, (state, action) => {
                 state.postLoading = false;
+
                 state.selectedPost = action.payload;
             })
             .addCase(findPostById.rejected, (state, action) => {
@@ -183,6 +187,6 @@ const postSlice = createSlice({
     },
 });
 
-export const { userLikePost, userUnlikePost } = postSlice.actions;
+export const { userLikePost, userUnlikePost, userAddNewComment } = postSlice.actions;
 
 export default postSlice.reducer;
