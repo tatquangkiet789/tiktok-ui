@@ -3,10 +3,11 @@ const routes = {
     home: '/',
     friends: '/friends',
     watch: '/watch',
-    userDetail: '/@:username',
+    userDetail: '/:username',
 
     // HeaderOnlyLayout
     messages: '/messages',
+    upload: '/upload',
 
     // AuthLayout
     login: '/auth/login',

@@ -18,9 +18,9 @@ const initialState: IUserState = {
 // [GET] /api/v1/users/suggested
 export const findTop10SuggestedUsers = createAsyncThunk(
     'findTop10SuggestedUsers',
-    async () => {
-        const response = await axiosClient.get(ENDPOINTS.findTop10SuggestedUsers);
-        return response.data;
+    async (): Promise<IUser[]> => {
+        const { data } = await axiosClient.get(ENDPOINTS.findTop10SuggestedUsers);
+        return data.content;
     },
 );
 
@@ -37,7 +37,7 @@ const userSlice = createSlice({
             })
             .addCase(findTop10SuggestedUsers.fulfilled, (state, action) => {
                 state.loading = false;
-                state.users = action.payload.content;
+                state.users = action.payload;
             })
             .addCase(findTop10SuggestedUsers.rejected, (state, action) => {
                 state.loading = false;

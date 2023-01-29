@@ -24,6 +24,12 @@
             font-size: 18px;
             font-weight: bold;
             line-height: 25px;
+            display: flex;
+            align-items: center;
+
+            & svg {
+                margin-left: 3px;
+            }
 
             &:hover {
                 opacity: 0.7;

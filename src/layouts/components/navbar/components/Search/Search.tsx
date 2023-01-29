@@ -3,31 +3,40 @@ import styles from './Search.module.scss';
 import classNames from 'classnames/bind';
 import HeadlessTippy from '@tippyjs/react/headless';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
-import { useAppSelector } from 'hooks/useAppSelector';
-import { useAppDispatch } from 'hooks/useAppDispatch';
 import useDebounce from 'hooks/useDebounce';
-import { searchUsersByKeyword } from 'redux/reducers/searchSlice';
 import Wrapper from 'components/Wrapper/Wrapper';
 import { CloseIcon, SearchIcon } from 'assets/icons';
 import AccountItem from 'layouts/components/components/AccoutItem/AccountItem';
+import { useQuery } from '@tanstack/react-query';
+import { findAllUsersByKeyword } from '../../services/seachServer';
+import { IUser } from 'models/user';
 
 const cx = classNames.bind(styles);
 
 const Search: React.FC = () => {
-    const { result, loading } = useAppSelector((state) => state.search);
-    const dispatch = useAppDispatch();
-
-    const [search, setSearch] = useState('');
+    const [searchValue, setSearchValue] = useState('');
     const [isShow, setIsShow] = useState(false);
-
-    const debouncedValue = useDebounce(search, 500);
+    const [isLoading, setIsLoading] = useState(false);
+    const [searchResult, setSearchResult] = useState<IUser[]>([]);
+    const debouncedValue = useDebounce(searchValue, 500);
 
     useEffect(() => {
-        if (debouncedValue.trim() === '') return;
+        if (debouncedValue.trim() === '') {
+            setSearchResult([]);
+            return;
+        }
 
-        dispatch(searchUsersByKeyword(debouncedValue.trim()));
+        searchUsersByKeyword();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [debouncedValue]);
+
+    const searchUsersByKeyword = async () => {
+        setIsLoading(true);
+        const data = await findAllUsersByKeyword(debouncedValue);
+        setSearchResult(data);
+        setIsLoading(false);
         setIsShow(true);
-    }, [debouncedValue, dispatch]);
+    };
 
     const handleCloseSearchWrapper = () => {
         setIsShow(false);
@@ -35,19 +44,19 @@ const Search: React.FC = () => {
 
     const handleClearSearchValue = () => {
         setIsShow(false);
-        setSearch('');
+        setSearchValue('');
     };
 
     return (
         <HeadlessTippy
             interactive
-            visible={result.length !== 0 && isShow ? true : false}
+            visible={searchResult && isShow ? true : false}
             onClickOutside={handleCloseSearchWrapper}
             render={(attrs) => (
                 <div tabIndex={-1} {...attrs} className={cx('search-result')}>
                     <Wrapper>
                         <h4 className={cx('search-title')}>Tài khoản</h4>
-                        {result.map(
+                        {searchResult.map(
                             ({ id, firstName, lastName, avatar, username, tick }) => (
                                 <AccountItem
                                     key={id}
@@ -69,15 +78,16 @@ const Search: React.FC = () => {
                     className={cx('input')}
                     type='text'
                     placeholder='Tìm kiếm tài khoản và video'
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
+                    value={searchValue}
+                    onChange={(e) => setSearchValue(e.target.value)}
+                    // onFocus={() => setIsShow(true)}
                 />
-                {search && loading !== true ? (
+                {searchValue && isLoading !== true ? (
                     <span onClick={handleClearSearchValue}>
                         <CloseIcon />
                     </span>
                 ) : null}
-                {loading ? (
+                {isLoading ? (
                     <span className={cx('loading')}>
                         <AiOutlineLoading3Quarters size={16} />
                     </span>
@@ -85,8 +95,9 @@ const Search: React.FC = () => {
                 <span className={cx('divide')}></span>
                 <span
                     className={cx('icon', {
-                        active: search,
+                        active: searchValue,
                     })}
+                    onClick={searchUsersByKeyword}
                 >
                     <SearchIcon />
                 </span>

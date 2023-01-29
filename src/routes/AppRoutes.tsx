@@ -1,8 +1,6 @@
-import NoLayout from 'layouts/NoLayout/NoLayout';
-import PostDetailPage from 'layouts/NoLayout/pages/PostDetailPage/PostDetailPage';
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import RequiredAuth from './RequiredAuth';
+import RequiredAuth from '../guards/RequiredAuth';
 import { privateRoutes, publicRoutes } from './routes';
 
 const AppRoutes: React.FC = () => {

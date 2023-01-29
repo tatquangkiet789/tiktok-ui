@@ -8,20 +8,18 @@ interface IPostState {
     postLoading: boolean;
     posts: IPost[];
     selectedPost: IPost;
-    error: string;
+    postError: string;
     hasNextPage: boolean;
     message: string;
-    updateLikeStatus: boolean;
 }
 
 const initialState: IPostState = {
     postLoading: true,
     posts: [],
     selectedPost: null as any,
-    error: '',
+    postError: '',
     hasNextPage: false,
     message: '',
-    updateLikeStatus: false,
 };
 
 interface IFindPost {
@@ -58,10 +56,13 @@ export const findAllPostsByCurrentUserId = createAsyncThunk(
 );
 
 // [GET] /api/v1/posts/:id
-export const findPostByIdAPI = createAsyncThunk('findPostByIdAPI', async (id: number) => {
-    const response = await axiosClient.get(ENDPOINTS.findPostById(id));
-    return response.data;
-});
+export const findPostById = createAsyncThunk(
+    'findPostById',
+    async (id: number): Promise<IPost> => {
+        const { data } = await axiosClient.get(ENDPOINTS.findPostById(id));
+        return data.content;
+    },
+);
 
 // [POST] /api/v1/posts/:id/like
 export const likePostById = createAsyncThunk(
@@ -77,7 +78,7 @@ export const likePostById = createAsyncThunk(
 );
 
 // [POST] /api/v1/posts/:id/unlike
-export const unLikePostById = createAsyncThunk(
+export const unlikePostById = createAsyncThunk(
     'unLikePostById',
     async ({ id, accessToken }: { id: number; accessToken: string }) => {
         const response = await axiosClient.post(ENDPOINTS.unLikePostById(id), null, {
@@ -93,10 +94,22 @@ const postSlice = createSlice({
     name: 'posts',
     initialState,
     reducers: {
-        findPostById: (state, action: PayloadAction<number>) => {
-            state.selectedPost = state.posts.filter(
-                (post) => post.id === action.payload,
-            )[0];
+        userLikePost: (state, action: PayloadAction<number>) => {
+            state.posts = state.posts.map((post: IPost) => {
+                if (post.id === action.payload)
+                    return { ...post, totalLikes: post.totalLikes + 1 };
+                return post;
+            });
+        },
+        userUnlikePost: (state, action: PayloadAction<number>) => {
+            state.posts = state.posts.map((post: IPost) => {
+                if (post.id === action.payload)
+                    return { ...post, totalLikes: post.totalLikes - 1 };
+                return post;
+            });
+        },
+        userAddNewComment: (state) => {
+            state.selectedPost.totalComments = state.selectedPost.totalComments + 1;
         },
     },
     extraReducers: (builder) => {
@@ -104,7 +117,7 @@ const postSlice = createSlice({
             // Find All Posts
             .addCase(findAllPosts.pending, (state) => {
                 state.postLoading = true;
-                state.error = '';
+                state.postError = '';
             })
             .addCase(findAllPosts.fulfilled, (state, action) => {
                 state.postLoading = false;
@@ -115,75 +128,65 @@ const postSlice = createSlice({
             })
             .addCase(findAllPosts.rejected, (state, action) => {
                 state.postLoading = false;
-                state.error = action.error.message!;
+                state.postError = action.error.message!;
 
-                toast.error(state.error);
+                toast.error(state.postError);
             })
             .addCase(findAllPostsByCurrentUserId.pending, (state) => {
                 state.postLoading = true;
-                state.error = '';
+                state.postError = '';
             })
             .addCase(findAllPostsByCurrentUserId.fulfilled, (state, action) => {
-                console.log('findAllPostsByCurrentUserId.fulfilled');
-
                 state.postLoading = false;
                 state.posts = action.payload.content;
                 state.hasNextPage = Boolean(action.payload.content.length);
             })
             .addCase(findAllPostsByCurrentUserId.rejected, (state, action) => {
                 state.postLoading = false;
-                state.error = action.error.message!;
+                state.postError = action.error.message!;
 
-                toast.error(state.error);
+                toast.error(state.postError);
             })
             // Find Post By Id
-            .addCase(findPostByIdAPI.pending, (state) => {
+            .addCase(findPostById.pending, (state) => {
                 state.postLoading = true;
-                state.error = '';
+                state.postError = '';
             })
-            .addCase(findPostByIdAPI.fulfilled, (state, action) => {
+            .addCase(findPostById.fulfilled, (state, action) => {
                 state.postLoading = false;
-                state.selectedPost = action.payload.content;
-            })
-            .addCase(findPostByIdAPI.rejected, (state, action) => {
-                state.postLoading = false;
-                state.error = action.error.message!;
 
-                toast.error(state.error);
+                state.selectedPost = action.payload;
+            })
+            .addCase(findPostById.rejected, (state, action) => {
+                state.postLoading = false;
+                state.postError = action.error.message!;
+
+                toast.error(state.postError);
             })
             // Like Post By Id
-            .addCase(likePostById.pending, (state) => {
-                state.message = '';
-            })
+            .addCase(likePostById.pending, (state) => {})
             .addCase(likePostById.fulfilled, (state, action) => {
                 state.message = action.payload.message;
-                state.updateLikeStatus = !state.updateLikeStatus;
-
                 toast.success(state.message);
             })
             .addCase(likePostById.rejected, (state, action) => {
-                state.error = action.error.message!;
+                state.postError = action.error.message!;
 
-                toast.error(state.error);
+                toast.error(state.postError);
             })
             // Unlike Post By Id
-            .addCase(unLikePostById.pending, (state) => {
-                state.message = '';
-            })
-            .addCase(unLikePostById.fulfilled, (state, action) => {
+            .addCase(unlikePostById.pending, (state) => {})
+            .addCase(unlikePostById.fulfilled, (state, action) => {
                 state.message = action.payload.message;
-                state.updateLikeStatus = !state.updateLikeStatus;
-
-                toast.success(state.message);
             })
-            .addCase(unLikePostById.rejected, (state, action) => {
-                state.error = action.error.message!;
+            .addCase(unlikePostById.rejected, (state, action) => {
+                state.postError = action.error.message!;
 
-                toast.error(state.error);
+                toast.error(state.postError);
             });
     },
 });
 
-export const { findPostById } = postSlice.actions;
+export const { userLikePost, userUnlikePost, userAddNewComment } = postSlice.actions;
 
 export default postSlice.reducer;

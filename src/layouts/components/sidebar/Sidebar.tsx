@@ -1,25 +1,26 @@
 import { FriendsIcon, HomeIcon, WatchIcon } from 'assets/icons';
 import classNames from 'classnames/bind';
 import Button from 'components/Button/Button';
-import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import { IUser } from 'models/user';
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { findTop10SuggestedUsers } from 'redux/reducers/userSlice';
 import styles from './Sidebar.module.scss';
 import SidebarMenu from './components/SidebarMenu/SidebarMenu';
 import routes from 'constants/routes';
 import AccountItem from '../components/AccoutItem/AccountItem';
+import AccountItemPlaceHolder from '../components/AccountItemPlaceHolder/AccountItemPlaceHolder';
+import { useAppDispatch } from 'hooks/useAppDispatch';
 
 const cx = classNames.bind(styles);
 
 const Sidebar: React.FC = () => {
     const { currentUser } = useAppSelector((state) => state.auth);
-    const { users } = useAppSelector((state) => state.users);
+    const { users, loading, error } = useAppSelector((state) => state.users);
     const dispatch = useAppDispatch();
 
-    const [suggestedUsers, SetSuggestedUsers] = useState<IUser[]>([]);
+    const [suggestedUsers, setSuggestedUsers] = useState<IUser[]>([]);
 
     const sidebarMenuItems = [
         { to: `${routes.home}`, text: 'Dành cho bạn', icon: <HomeIcon /> },
@@ -36,22 +37,48 @@ const Sidebar: React.FC = () => {
     ];
 
     useEffect(() => {
-        if (users.length === 0) dispatch(findTop10SuggestedUsers());
-        SetSuggestedUsers(() => {
-            if (currentUser)
-                return users.filter((user) => user.username !== currentUser.username);
-            return users;
-        });
-    }, [currentUser, dispatch, users]);
+        dispatch(findTop10SuggestedUsers())
+            .unwrap()
+            .then((result) => {
+                if (currentUser)
+                    return setSuggestedUsers(
+                        result.filter((user) => user.id !== currentUser.id),
+                    );
+
+                return setSuggestedUsers(result);
+            });
+    }, [currentUser, dispatch]);
 
     const handleShowLessSuggestedUsers = () => {
-        SetSuggestedUsers((prev) => {
+        setSuggestedUsers((prev) => {
             return [...prev].slice(0, 5);
         });
     };
 
     const handleShowAllSuggestedUsers = () => {
-        SetSuggestedUsers(users);
+        setSuggestedUsers(users!);
+    };
+
+    const renderSuggestedUsers = () => {
+        if (loading) return <AccountItemPlaceHolder instances={3} />;
+        if (error) return <div>{error}</div>;
+
+        return (
+            <Fragment>
+                {suggestedUsers.map(
+                    ({ firstName, lastName, id, username, avatar, tick }) => (
+                        <AccountItem
+                            key={id}
+                            firstName={firstName}
+                            lastName={lastName}
+                            username={username}
+                            avatar={avatar}
+                            tick={tick}
+                        />
+                    ),
+                )}
+            </Fragment>
+        );
     };
 
     return (
@@ -83,18 +110,9 @@ const Sidebar: React.FC = () => {
                 </div>
             )}
             <p className={cx('suggested-accounts')}>Tài khoản được đề xuất</p>
-            {suggestedUsers.map(({ firstName, lastName, id, username, avatar, tick }) => (
-                <AccountItem
-                    key={id}
-                    firstName={firstName}
-                    lastName={lastName}
-                    username={username}
-                    avatar={avatar}
-                    tick={tick}
-                />
-            ))}
+            {renderSuggestedUsers()}
             <div className={cx('see-all-button')}>
-                {suggestedUsers.length > 5 ? (
+                {suggestedUsers?.length > 5 ? (
                     <p onClick={handleShowLessSuggestedUsers}>Ẩn bớt</p>
                 ) : (
                     <p onClick={handleShowAllSuggestedUsers}>Xem tất cả</p>

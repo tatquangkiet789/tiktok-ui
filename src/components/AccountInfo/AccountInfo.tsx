@@ -1,3 +1,4 @@
+import { TickIcon } from 'assets/icons';
 import classNames from 'classnames/bind';
 import React, { memo } from 'react';
 import { Link } from 'react-router-dom';
@@ -10,6 +11,7 @@ interface IAccountInfoProps {
     lastName: string;
     username: string;
     createdDate?: Date;
+    tick: boolean;
     avatar: string;
     padding: boolean;
 }
@@ -19,6 +21,7 @@ const AccountInfo: React.FC<IAccountInfoProps> = ({
     lastName,
     avatar,
     createdDate,
+    tick,
     username,
     padding,
 }) => {
@@ -32,6 +35,7 @@ const AccountInfo: React.FC<IAccountInfoProps> = ({
             <div className={cx('username')}>
                 <Link to={`/${username}`} className={cx('fullname')}>
                     {lastName} {firstName}
+                    {tick ? <TickIcon /> : null}
                 </Link>
                 <span className={cx('created-date')}>2 giờ</span>
             </div>
