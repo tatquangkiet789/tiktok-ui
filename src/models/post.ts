@@ -12,4 +12,5 @@ export interface IPost {
     userPostDetail: IUser;
     userLikePostList: IUserLikePost[];
     commentDetailList: IComment[];
+    createdDate: Date;
 }

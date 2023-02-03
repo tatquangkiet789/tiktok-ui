@@ -16,8 +16,7 @@
     font-weight: 600;
 }
 
-.input,
-.textarea {
+.input {
     border-radius: 5px;
     caret-color: var(--primary-color);
     padding: 12px;
@@ -25,10 +24,6 @@
     flex: 1;
     background-color: var(--gray006-color);
     border-color: var(--gray012-color);
-}
-
-.textarea {
-    max-height: 118px;
 }
 
 .error {

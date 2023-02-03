@@ -1,13 +1,13 @@
 import { TickIcon } from 'assets/icons';
 import classNames from 'classnames/bind';
 import { useAppDispatch } from 'hooks/useAppDispatch';
-import { useAppSelector } from 'hooks/useAppSelector';
 import { IComment } from 'models/comment';
 import { IUser } from 'models/user';
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo } from 'react';
 import { Link } from 'react-router-dom';
 import { findSelectedCommentById } from 'redux/reducers/commentSlice';
 import styles from './CommentItem.module.scss';
+import moment from 'moment';
 
 const cx = classNames.bind(styles);
 
@@ -57,7 +57,7 @@ const CommentItem: React.FC<ICommentItemProps> = ({
                     </Link>
                     <p className={cx('comment-content')}>{content}</p>
                     <div className={cx('action-container')}>
-                        <span>{createdDate}</span>
+                        <span>{moment(createdDate).fromNow()}</span>
                         {!disabledReply ? (
                             <button
                                 className={cx('reply-button')}

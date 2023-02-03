@@ -10,6 +10,7 @@ import { useAppSelector } from 'hooks/useAppSelector';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { registerUser, resetRegisterMessage } from 'redux/reducers/authSlice';
 import { toast } from 'react-toastify';
+import { IRegisterFormValue } from 'layouts/AuthLayout/models/register';
 
 const cx = classNames.bind(styles);
 
@@ -19,8 +20,7 @@ const RegisterPage: React.FC = () => {
 
     const navigate = useNavigate();
 
-    // const initialValues: IRegisterFormValue = {
-    const initialValues: any = {
+    const initialValues: IRegisterFormValue = {
         lastName: '',
         firstName: '',
         username: '',

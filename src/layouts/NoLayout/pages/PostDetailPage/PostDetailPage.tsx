@@ -1,14 +1,21 @@
-import { HeartIcon } from 'assets/icons';
+import { CloseIcon, HeartIcon } from 'assets/icons';
 import classNames from 'classnames/bind';
 import AccountInfo from 'components/AccountInfo/AccountInfo';
 import { POST_TYPE } from 'constants/constants';
+import routes from 'constants/routes';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
-import React, { Fragment, useEffect, useLayoutEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { AiOutlineComment } from 'react-icons/ai';
 import ReactPlayer from 'react-player';
-import { useParams } from 'react-router-dom';
-import { findPostById } from 'redux/reducers/postSlice';
+import { Link, useParams } from 'react-router-dom';
+import {
+    findPostById,
+    likePostById,
+    unlikePostById,
+    userLikePost,
+    userUnlikePost,
+} from 'redux/reducers/postSlice';
 import numberFormat from 'utils/numberFormat';
 import AddComment from './components/AddComment/AddComment';
 import CommentList from './components/CommentList/CommentList';
@@ -26,7 +33,9 @@ const PostDetailPage: React.FC = () => {
     const [userLikePostStatus, setUserLikePostStatus] = useState(false);
 
     useEffect(() => {
-        const postId = parseInt(id!);
+        if (!id || !currentUser) return;
+
+        const postId = parseInt(id);
         dispatch(findPostById(postId))
             .unwrap()
             .then((result) => {
@@ -36,14 +45,47 @@ const PostDetailPage: React.FC = () => {
                 if (currentUserLikePost)
                     setUserLikePostStatus(currentUserLikePost.likeStatus);
             });
-    }, []);
+    }, [currentUser, dispatch, id]);
+
+    const handleLikeAndUnlikePost = () => {
+        if (!id || !currentUser) return;
+
+        const postId = parseInt(id);
+        const { accessToken } = currentUser;
+        if (!userLikePostStatus)
+            return dispatch(likePostById({ id: postId, accessToken: accessToken }))
+                .unwrap()
+                .then(() => {
+                    setUserLikePostStatus(true);
+                    dispatch(userLikePost(postId));
+                    // socketClient.emit('sendNotification', {
+                    //     senderName: currentUser.username,
+                    //     receiverName: userPostDetail.username,
+                    // });
+                    // console.log({
+                    //     senderName: currentUser.username,
+                    //     receiverName: userPostDetail.username,
+                    // });
+                });
+
+        dispatch(unlikePostById({ id: postId, accessToken: accessToken }))
+            .unwrap()
+            .then(() => {
+                setUserLikePostStatus(false);
+                dispatch(userUnlikePost(postId));
+            });
+    };
 
     if (postError) return <h1>{postError}</h1>;
 
     return (
         <Fragment>
             {selectedPost && (
-                <div className={cx('container')}>
+                <div
+                    className={cx('container', {
+                        text: selectedPost.postTypeId === POST_TYPE.TEXT,
+                    })}
+                >
                     {selectedPost.postTypeId === POST_TYPE.TEXT ? null : (
                         <div className={cx('post-content')}>
                             {selectedPost.postTypeId === POST_TYPE.IMAGE ? (
@@ -55,15 +97,25 @@ const PostDetailPage: React.FC = () => {
                                 ></div>
                             ) : null}
                             {selectedPost.postTypeId === POST_TYPE.VIDEO ? (
-                                <ReactPlayer
-                                    width='400px'
-                                    url={selectedPost.postUrl}
-                                    controls
-                                />
+                                <div className={cx('content')}>
+                                    <ReactPlayer
+                                        width='100%'
+                                        height='100%'
+                                        url={selectedPost.postUrl}
+                                        controls
+                                    />
+                                </div>
                             ) : null}
+                            <Link to={routes.home} className={cx('close-button')}>
+                                <CloseIcon />
+                            </Link>
                         </div>
                     )}
-                    <div className={cx('post-detail')}>
+                    <div
+                        className={cx('post-detail', {
+                            text: selectedPost.postTypeId === POST_TYPE.TEXT,
+                        })}
+                    >
                         <AccountInfo
                             firstName={selectedPost.userPostDetail.firstName}
                             lastName={selectedPost.userPostDetail.lastName}
@@ -71,6 +123,7 @@ const PostDetailPage: React.FC = () => {
                             username={selectedPost.userPostDetail.username}
                             padding={true}
                             tick={selectedPost.userPostDetail.tick}
+                            createdDate={selectedPost.createdDate}
                         />
                         <p className={cx('caption')}>{selectedPost.caption}</p>
                         <div className={cx('like-comment-container')}>
@@ -78,6 +131,7 @@ const PostDetailPage: React.FC = () => {
                                 className={cx('icon-button', {
                                     userLikePost: userLikePostStatus,
                                 })}
+                                onClick={handleLikeAndUnlikePost}
                             >
                                 <HeartIcon />
                                 {numberFormat.format(selectedPost.totalLikes)} lượt thích

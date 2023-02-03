@@ -7,36 +7,34 @@ import useDebounce from 'hooks/useDebounce';
 import Wrapper from 'components/Wrapper/Wrapper';
 import { CloseIcon, SearchIcon } from 'assets/icons';
 import AccountItem from 'layouts/components/components/AccoutItem/AccountItem';
-import { useQuery } from '@tanstack/react-query';
-import { findAllUsersByKeyword } from '../../services/seachServer';
-import { IUser } from 'models/user';
+import { useAppSelector } from 'hooks/useAppSelector';
+import { useAppDispatch } from 'hooks/useAppDispatch';
+import { findAllUsersByKeyword } from 'redux/reducers/userSlice';
+import { toast } from 'react-toastify';
 
 const cx = classNames.bind(styles);
 
 const Search: React.FC = () => {
     const [searchValue, setSearchValue] = useState('');
     const [isShow, setIsShow] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
-    const [searchResult, setSearchResult] = useState<IUser[]>([]);
     const debouncedValue = useDebounce(searchValue, 500);
 
+    const {
+        searchResult,
+        loading: isLoading,
+        error,
+    } = useAppSelector((state) => state.users);
+    const dispatch = useAppDispatch();
+
     useEffect(() => {
-        if (debouncedValue.trim() === '') {
-            setSearchResult([]);
-            return;
-        }
+        if (debouncedValue.trim() === '') return;
 
-        searchUsersByKeyword();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [debouncedValue]);
-
-    const searchUsersByKeyword = async () => {
-        setIsLoading(true);
-        const data = await findAllUsersByKeyword(debouncedValue);
-        setSearchResult(data);
-        setIsLoading(false);
-        setIsShow(true);
-    };
+        dispatch(findAllUsersByKeyword(debouncedValue))
+            .unwrap()
+            .then(() => {
+                setIsShow(true);
+            });
+    }, [debouncedValue, dispatch]);
 
     const handleCloseSearchWrapper = () => {
         setIsShow(false);
@@ -46,6 +44,8 @@ const Search: React.FC = () => {
         setIsShow(false);
         setSearchValue('');
     };
+
+    if (error) toast.error(error);
 
     return (
         <HeadlessTippy
@@ -97,7 +97,13 @@ const Search: React.FC = () => {
                     className={cx('icon', {
                         active: searchValue,
                     })}
-                    onClick={searchUsersByKeyword}
+                    onClick={() =>
+                        dispatch(findAllUsersByKeyword(debouncedValue))
+                            .unwrap()
+                            .then(() => {
+                                setIsShow(true);
+                            })
+                    }
                 >
                     <SearchIcon />
                 </span>

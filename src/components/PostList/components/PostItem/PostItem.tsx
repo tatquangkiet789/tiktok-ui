@@ -6,6 +6,7 @@ import { POST_TYPE } from 'constants/constants';
 import routes from 'constants/routes';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
+import socketClient from 'libs/socketClient';
 import { IPost } from 'models/post';
 import React, { memo, useEffect, useState } from 'react';
 import { AiOutlineComment } from 'react-icons/ai';
@@ -36,6 +37,7 @@ const PostItem: React.FC<IPostItemProps> = ({ post }) => {
         totalLikes,
         userLikePostList,
         userPostDetail,
+        createdDate,
     } = post;
 
     const { currentUser } = useAppSelector((state) => state.auth);
@@ -74,6 +76,14 @@ const PostItem: React.FC<IPostItemProps> = ({ post }) => {
                 .then(() => {
                     setLikePost(true);
                     dispatch(userLikePost(postId));
+                    // socketClient.emit('sendNotification', {
+                    //     senderName: currentUser.username,
+                    //     receiverName: userPostDetail.username,
+                    // });
+                    // console.log({
+                    //     senderName: currentUser.username,
+                    //     receiverName: userPostDetail.username,
+                    // });
                 });
 
         dispatch(unlikePostById({ id: postId, accessToken }))
@@ -95,6 +105,7 @@ const PostItem: React.FC<IPostItemProps> = ({ post }) => {
                         username={userPostDetail.username}
                         padding={false}
                         tick={userPostDetail.tick}
+                        createdDate={createdDate}
                     />
                 </div>
                 <Button text='Kết bạn' variant='outlined' size='sm' />

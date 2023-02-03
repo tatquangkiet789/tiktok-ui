@@ -28,13 +28,27 @@ const CommentList: React.FC<ICommentListProps> = ({ userIdInPost, postId }) => {
 
     // Update comments list in UI
     useEffect(() => {
-        setRootComments([...comments].filter((comment) => comment.parentId === null));
+        setRootComments(
+            [...comments]
+                .filter((comment) => comment.parentId === null)
+                .sort(
+                    (a, b) =>
+                        new Date(b.createdDate).getTime() -
+                        new Date(a.createdDate).getTime(),
+                ),
+        );
     }, [comments]);
 
     const getChildComments = useCallback(
         (parentId: number) => {
             if (!comments) return;
-            return [...comments].filter((comment) => comment.parentId === parentId);
+            return [...comments]
+                .filter((comment) => comment.parentId === parentId)
+                .sort(
+                    (a, b) =>
+                        new Date(b.createdDate).getTime() -
+                        new Date(a.createdDate).getTime(),
+                );
         },
         [comments],
     );

@@ -167,7 +167,6 @@ const postSlice = createSlice({
             .addCase(likePostById.pending, (state) => {})
             .addCase(likePostById.fulfilled, (state, action) => {
                 state.message = action.payload.message;
-                toast.success(state.message);
             })
             .addCase(likePostById.rejected, (state, action) => {
                 state.postError = action.error.message!;

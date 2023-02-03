@@ -1,3 +1,4 @@
+import { CloseIcon } from 'assets/icons';
 import classNames from 'classnames/bind';
 import Button from 'components/Button/Button';
 import InputField from 'components/InputField/InputField';
@@ -57,10 +58,18 @@ const AddComment: FC<IAddCommentProps> = ({ postId }) => {
                 return (
                     <form className={cx('container')} onSubmit={handleSubmit}>
                         {selectedComment ? (
-                            <p className={cx('reply-username')}>
-                                Trả lời @{selectedComment.userCommentDetail.lastName}{' '}
-                                {selectedComment.userCommentDetail.firstName}
-                            </p>
+                            <div className={cx('reply-container')}>
+                                <p className={cx('reply-username')}>
+                                    Trả lời @{selectedComment.userCommentDetail.lastName}{' '}
+                                    {selectedComment.userCommentDetail.firstName}
+                                </p>
+                                <span
+                                    className={cx('remove-reply-button')}
+                                    onClick={() => dispatch(resetSelectedComment())}
+                                >
+                                    <CloseIcon />
+                                </span>
+                            </div>
                         ) : null}
                         <div className={cx('input')}>
                             <Field
