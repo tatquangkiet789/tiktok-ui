@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from './reducers/authSlice';
 import commentReducer from './reducers/commentSlice';
+import notificationReducer from './reducers/notificationSlice';
 import postReducer from './reducers/postSlice';
 import userReducer from './reducers/userSlice';
 
@@ -10,6 +11,7 @@ const store = configureStore({
         users: userReducer,
         posts: postReducer,
         comments: commentReducer,
+        notifications: notificationReducer,
     },
 });
 

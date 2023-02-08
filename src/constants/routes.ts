@@ -14,7 +14,7 @@ const routes = {
     register: '/auth/register',
 
     // Don't have layout
-    postDetail: '/post/:id',
+    postDetail: '/posts/:id',
     unauthorized: '/unauthorized',
 };
 

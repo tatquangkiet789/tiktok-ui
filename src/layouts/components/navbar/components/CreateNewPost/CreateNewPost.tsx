@@ -4,8 +4,11 @@ import Button from 'components/Button/Button';
 import InputField from 'components/InputField/InputField';
 import TextAreaField from 'components/TextAreaField/TextAreaField';
 import { Field, Formik } from 'formik';
+import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
-import { ChangeEvent, FC, memo, useState } from 'react';
+import { INewPost } from 'models/newPost';
+import { ChangeEvent, FC, memo } from 'react';
+import { createNewPost } from 'redux/reducers/postSlice';
 import styles from './CreateNewPost.module.scss';
 
 const cx = classNames.bind(styles);
@@ -21,8 +24,8 @@ interface INewPostValueForm {
 
 const CreateNewPost: FC<ICreateNewPostProps> = ({ onCloseCreateNewPostModal }) => {
     const { currentUser } = useAppSelector((state) => state.auth);
-
-    const [caption, setCaption] = useState('');
+    const { postLoading } = useAppSelector((state) => state.posts);
+    const dispatch = useAppDispatch();
 
     const hanldeCloseModal = () => {
         onCloseCreateNewPostModal(false);
@@ -44,13 +47,31 @@ const CreateNewPost: FC<ICreateNewPostProps> = ({ onCloseCreateNewPostModal }) =
                 </div>
                 <Formik
                     initialValues={initialValues}
-                    onSubmit={(values) => {
-                        console.log(values);
+                    onSubmit={(values, { resetForm }) => {
+                        const { caption, content } = values;
+                        const { accessToken } = currentUser;
+
+                        const formData = new FormData();
+
+                        formData.append('caption', caption);
+                        if (content) formData.append('content', content);
+
+                        const value: INewPost = {
+                            formData,
+                            accessToken: accessToken,
+                        };
+
+                        dispatch(createNewPost(value))
+                            .unwrap()
+                            .then((result) => {
+                                console.log(result);
+                                onCloseCreateNewPostModal(false);
+                            });
+                        resetForm();
                     }}
                 >
                     {(formikProps) => {
                         const {
-                            errors,
                             values,
                             handleChange,
                             handleSubmit,
@@ -78,14 +99,19 @@ const CreateNewPost: FC<ICreateNewPostProps> = ({ onCloseCreateNewPostModal }) =
                                     inputType='file'
                                     onChangeValue={(e: ChangeEvent<HTMLInputElement>) => {
                                         if (!e.currentTarget.files) return;
-                                        setFieldValue('avatar', e.currentTarget.files[0]);
+                                        setFieldValue(
+                                            'content',
+                                            e.currentTarget.files[0],
+                                        );
                                     }}
                                 />
                                 <Button
                                     size='lg'
                                     text='Đăng'
                                     variant='primary'
-                                    disabled={isSubmitting}
+                                    disabled={isSubmitting || values.caption === ''}
+                                    type='submit'
+                                    loading={postLoading}
                                 />
                             </form>
                         );

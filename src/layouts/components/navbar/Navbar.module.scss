@@ -25,11 +25,45 @@
     padding: 3px 3px 0;
     margin-left: 16px;
     cursor: pointer;
+    position: relative;
+
+    &.showTotalNotification {
+        &::before {
+            content: attr(data-count);
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            background-color: red;
+            color: white;
+        }
+    }
 
     &.active {
         & svg {
             fill: var(--primary-color);
         }
+    }
+}
+
+.notification-container {
+    width: var(--notification-modal-width);
+    max-height: var(--notification-modal-height);
+    height: 100%;
+    overflow-y: overlay;
+    box-shadow: rgb(0 0 0 / 6%) 0px 2px 8px;
+    background-color: white;
+    border-radius: 10px;
+
+    & .notification-text {
+        font-size: 20px;
+        font-weight: bold;
+        padding: 10px;
     }
 }
 

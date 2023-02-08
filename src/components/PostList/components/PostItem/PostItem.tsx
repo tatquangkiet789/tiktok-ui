@@ -27,6 +27,13 @@ interface IPostItemProps {
     post: IPost;
 }
 
+interface ISendNotification {
+    senderName: string;
+    receiverName: string;
+    notificationType: 'like' | 'comment';
+    postId: number;
+}
+
 const PostItem: React.FC<IPostItemProps> = ({ post }) => {
     const {
         id,
@@ -76,14 +83,13 @@ const PostItem: React.FC<IPostItemProps> = ({ post }) => {
                 .then(() => {
                     setLikePost(true);
                     dispatch(userLikePost(postId));
-                    // socketClient.emit('sendNotification', {
-                    //     senderName: currentUser.username,
-                    //     receiverName: userPostDetail.username,
-                    // });
-                    // console.log({
-                    //     senderName: currentUser.username,
-                    //     receiverName: userPostDetail.username,
-                    // });
+                    const notification: ISendNotification = {
+                        senderName: currentUser.username,
+                        receiverName: userPostDetail.username,
+                        notificationType: 'like',
+                        postId: postId,
+                    };
+                    socketClient.emit('sendNotification', notification);
                 });
 
         dispatch(unlikePostById({ id: postId, accessToken }))
@@ -134,7 +140,7 @@ const PostItem: React.FC<IPostItemProps> = ({ post }) => {
                 >
                     <HeartIcon />
                 </div>
-                <Link className={cx('icon-button')} to={`/post/${id}`}>
+                <Link className={cx('icon-button')} to={`/posts/${id}`}>
                     <span className={cx('icon')}>
                         <AiOutlineComment size={30} />
                     </span>

@@ -1,5 +1,4 @@
 export interface INewPost {
-    caption: string;
+    formData: FormData;
     accessToken: string;
-    content?: File;
 }

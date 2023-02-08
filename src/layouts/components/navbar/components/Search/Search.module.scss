@@ -16,6 +16,8 @@
     width: var(--search-width);
     z-index: 999;
     background-color: var(--white1-color);
+    box-shadow: var(--gray012-color) 0px 2px 12px;
+    border-radius: 10px;
 
     & .search-title {
         padding: 5px 12px;

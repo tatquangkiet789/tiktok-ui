@@ -5,7 +5,7 @@ import styles from './WatchPage.module.scss';
 const cx = classNames.bind(styles);
 
 const WatchPage: React.FC = () => {
-    return <div>WatchPage</div>;
+    return <div className={cx('container')}>WatchPage</div>;
 };
 
 export default WatchPage;

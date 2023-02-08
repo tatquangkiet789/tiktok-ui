@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import ENDPOINTS from 'constants/endpoints';
 import axiosClient from 'libs/axiosClient';
+import { INewPost } from 'models/newPost';
 import { IPost } from 'models/post';
 import { toast } from 'react-toastify';
 
@@ -90,6 +91,20 @@ export const unlikePostById = createAsyncThunk(
     },
 );
 
+// [POST] /api/v1/posts/create
+export const createNewPost = createAsyncThunk(
+    'createNewPost',
+    async (value: INewPost) => {
+        const { formData, accessToken } = value;
+        const response = await axiosClient.post(ENDPOINTS.createNewPost, formData, {
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            },
+        });
+        return response.data;
+    },
+);
+
 const postSlice = createSlice({
     name: 'posts',
     initialState,
@@ -121,9 +136,9 @@ const postSlice = createSlice({
             })
             .addCase(findAllPosts.fulfilled, (state, action) => {
                 state.postLoading = false;
-                // state.posts = state.posts.concat(action.payload.content)
                 // state.posts = [...new Set([...state.posts, ...action.payload.content])];
                 state.posts = action.payload.content;
+                // state.posts = [...state.posts, ...action.payload.content];
                 state.hasNextPage = Boolean(action.payload.content.length);
             })
             .addCase(findAllPosts.rejected, (state, action) => {
@@ -180,6 +195,23 @@ const postSlice = createSlice({
             })
             .addCase(unlikePostById.rejected, (state, action) => {
                 state.postError = action.error.message!;
+
+                toast.error(state.postError);
+            })
+            // Create New Post
+            .addCase(createNewPost.pending, (state) => {
+                state.postLoading = true;
+            })
+            .addCase(createNewPost.fulfilled, (state, action) => {
+                state.postLoading = false;
+
+                state.message = action.payload.message;
+            })
+            .addCase(createNewPost.rejected, (state, action) => {
+                state.postLoading = false;
+                state.postError = action.error.message!;
+
+                toast.error(state.postError);
 
                 toast.error(state.postError);
             });
