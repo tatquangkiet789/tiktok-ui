@@ -2,6 +2,7 @@ const ENDPOINTS = {
     // Authentication endpoints
     login: '/auth/login',
     register: '/auth/register',
+    findCurrentUserByAccessToken: '/users/current-user',
 
     // Users endpoints
     findTop10SuggestedUsers: '/users/suggested',

@@ -10,6 +10,7 @@ interface IAuthState {
     currentUser: IAuth;
     error: string;
     registerMessage: string;
+    accessToken: string;
 }
 
 const initialState: IAuthState = {
@@ -17,6 +18,7 @@ const initialState: IAuthState = {
     currentUser: null as any,
     error: '',
     registerMessage: '',
+    accessToken: '',
 };
 
 // [POST] /api/v1/auth/login
@@ -42,12 +44,26 @@ export const registerUser = createAsyncThunk(
     },
 );
 
+// [GET] /api/v1/users/current-user
+export const findCurrentUserByAccessToken = createAsyncThunk(
+    'findCurrentUserByAccessToken',
+    async (accessToken: string) => {
+        const response = await axiosClient.get(ENDPOINTS.findCurrentUserByAccessToken, {
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            },
+        });
+        return response.data;
+    },
+);
+
 const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
         logoutUser: (state) => {
             state.currentUser = null as any;
+            localStorage.removeItem('accessToken');
         },
         resetRegisterMessage: (state) => {
             state.registerMessage = '';
@@ -79,6 +95,20 @@ const authSlice = createSlice({
                 state.authLoading = false;
             })
             .addCase(registerUser.rejected, (state, action) => {
+                state.authLoading = false;
+                state.error = action.error.message!;
+                toast.error(state.error);
+            })
+            // Find Current User By Access Token
+            .addCase(findCurrentUserByAccessToken.pending, (state) => {
+                state.authLoading = true;
+                state.error = '';
+            })
+            .addCase(findCurrentUserByAccessToken.fulfilled, (state, action) => {
+                state.authLoading = false;
+                state.currentUser = action.payload.content;
+            })
+            .addCase(findCurrentUserByAccessToken.rejected, (state, action) => {
                 state.authLoading = false;
                 state.error = action.error.message!;
                 toast.error(state.error);

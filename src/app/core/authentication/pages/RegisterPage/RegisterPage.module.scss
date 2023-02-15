@@ -1,0 +1,16 @@
+.register-text {
+    text-align: center;
+    font-size: 32px;
+    padding: 16px 0;
+}
+
+.form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+
+    & .register-button {
+        margin-bottom: 9px;
+    }
+}

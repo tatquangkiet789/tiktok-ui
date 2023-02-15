@@ -24,7 +24,9 @@ const LoginPage: React.FC = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const from = (location.state as any)?.from.pathname || routes.home;
+    const from = location.state;
+
+    console.log(`From: `, from);
 
     const initialValues: ILoginFormValue = {
         username: '',
@@ -51,10 +53,8 @@ const LoginPage: React.FC = () => {
                     dispatch(loginUser(values))
                         .unwrap()
                         .then((currentUser: IAuth) => {
-                            const { accessToken } = currentUser;
-                            localStorage.setItem('accessToken', accessToken);
                             if (currentUser.userRoleId === ROLES.USER)
-                                return navigate(from);
+                                return navigate(routes.home);
                             toast.success('Đang chuyển về trang admin');
                         });
                 }}

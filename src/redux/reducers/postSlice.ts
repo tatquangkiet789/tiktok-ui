@@ -137,8 +137,7 @@ const postSlice = createSlice({
             .addCase(findAllPosts.fulfilled, (state, action) => {
                 state.postLoading = false;
                 // state.posts = [...new Set([...state.posts, ...action.payload.content])];
-                state.posts = action.payload.content;
-                // state.posts = [...state.posts, ...action.payload.content];
+                state.posts = [...state.posts, ...action.payload.content];
                 state.hasNextPage = Boolean(action.payload.content.length);
             })
             .addCase(findAllPosts.rejected, (state, action) => {

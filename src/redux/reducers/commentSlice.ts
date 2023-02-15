@@ -22,17 +22,17 @@ const initialState: ICommentState = {
 // [GET] /api/v1/posts/:id/comments
 export const findAllCommentsByPostId = createAsyncThunk(
     'findAllCommentsByPostId',
-    async (value: IFindComment): Promise<IComment[]> => {
+    async (value: IFindComment) => {
         const { postId } = value;
-        const { data } = await axiosClient.get(ENDPOINTS.findAllCommentsByPostId(postId));
-        return data.content;
+        const response = await axiosClient.get(ENDPOINTS.findAllCommentsByPostId(postId));
+        return response.data;
     },
 );
 
 // [POST] /api/v1/posts/:postId/comments/create
 export const createNewComment = createAsyncThunk(
     'createNewComment',
-    async (value: INewComment): Promise<IComment> => {
+    async (value: INewComment) => {
         const { postId, content, accessToken, parentId } = value;
         const { data } = await axiosClient.post(
             ENDPOINTS.createNewComment(postId),
@@ -68,7 +68,7 @@ const commentSlice = createSlice({
             })
             .addCase(findAllCommentsByPostId.fulfilled, (state, action) => {
                 state.commentLoading = false;
-                state.comments = action.payload;
+                state.comments = action.payload.content;
             })
             .addCase(findAllCommentsByPostId.rejected, (state, action) => {
                 state.commentLoading = false;

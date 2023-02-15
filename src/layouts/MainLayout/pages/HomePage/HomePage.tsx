@@ -13,6 +13,8 @@ const HomePage: React.FC = () => {
         (state) => state.posts,
     );
     const dispatch = useAppDispatch();
+    console.log('POST LIST: ', posts);
+    console.log(`Has Next Page: ${hasNextPage}`);
 
     const [page, setPage] = useState(1);
     const [element, setElement] = useState<HTMLDivElement | null>(null);
@@ -21,13 +23,22 @@ const HomePage: React.FC = () => {
         new IntersectionObserver((entries) => {
             const first = entries[0];
             if (first.isIntersecting) setPage((prev) => prev + 1);
-        }, {}),
+        }),
     );
 
     useEffect(() => {
+        if (posts.length !== 0) return;
+        console.log('Initial Load');
+        dispatch(findAllPosts({ page: 1 }));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    useEffect(() => {
+        if (page === 1) return;
+        console.log(`Load by page: ${page}`);
         dispatch(findAllPosts({ page: page }));
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [dispatch, page]);
+    }, [page]);
 
     useEffect(() => {
         const currentElement = element;
@@ -37,9 +48,13 @@ const HomePage: React.FC = () => {
 
         currentObserver.observe(currentElement);
 
-        if (!hasNextPage) currentObserver.unobserve(currentElement);
+        if (!hasNextPage) {
+            console.log(`Unobserve - hasNextPage: ${hasNextPage}`);
+            currentObserver.unobserve(currentElement);
+        }
 
         return () => {
+            console.log('Unobserve');
             currentObserver.unobserve(currentElement);
         };
     }, [element, hasNextPage]);
@@ -55,7 +70,7 @@ const HomePage: React.FC = () => {
                     <PostList postList={posts} />
                     <div
                         ref={setElement}
-                        style={{ width: '100%', backgroundColor: 'red' }}
+                        style={{ width: '100%', backgroundColor: 'red', padding: '20px' }}
                     >
                         End of page
                     </div>
