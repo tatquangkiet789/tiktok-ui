@@ -12,6 +12,7 @@ interface IPostState {
     postError: string;
     hasNextPage: boolean;
     message: string;
+    isNewPostList: boolean;
 }
 
 const initialState: IPostState = {
@@ -21,6 +22,7 @@ const initialState: IPostState = {
     postError: '',
     hasNextPage: false,
     message: '',
+    isNewPostList: true,
 };
 
 interface IFindPost {
@@ -126,6 +128,9 @@ const postSlice = createSlice({
         userAddNewComment: (state) => {
             state.selectedPost.totalComments = state.selectedPost.totalComments + 1;
         },
+        updateNewPostList: (state, action: PayloadAction<boolean>) => {
+            state.isNewPostList = action.payload;
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -136,8 +141,13 @@ const postSlice = createSlice({
             })
             .addCase(findAllPosts.fulfilled, (state, action) => {
                 state.postLoading = false;
-                // state.posts = [...new Set([...state.posts, ...action.payload.content])];
-                state.posts = [...state.posts, ...action.payload.content];
+                if (state.isNewPostList) {
+                    console.log(`Is new post list: ${state.isNewPostList}`);
+                    state.posts = action.payload.content;
+                } else {
+                    console.log(`Is new post list: ${state.isNewPostList}`);
+                    state.posts = [...state.posts, ...action.payload.content];
+                }
                 state.hasNextPage = Boolean(action.payload.content.length);
             })
             .addCase(findAllPosts.rejected, (state, action) => {
@@ -158,7 +168,6 @@ const postSlice = createSlice({
             .addCase(findAllPostsByCurrentUserId.rejected, (state, action) => {
                 state.postLoading = false;
                 state.postError = action.error.message!;
-
                 toast.error(state.postError);
             })
             // Find Post By Id
@@ -168,13 +177,11 @@ const postSlice = createSlice({
             })
             .addCase(findPostById.fulfilled, (state, action) => {
                 state.postLoading = false;
-
                 state.selectedPost = action.payload;
             })
             .addCase(findPostById.rejected, (state, action) => {
                 state.postLoading = false;
                 state.postError = action.error.message!;
-
                 toast.error(state.postError);
             })
             // Like Post By Id
@@ -184,7 +191,6 @@ const postSlice = createSlice({
             })
             .addCase(likePostById.rejected, (state, action) => {
                 state.postError = action.error.message!;
-
                 toast.error(state.postError);
             })
             // Unlike Post By Id
@@ -203,20 +209,17 @@ const postSlice = createSlice({
             })
             .addCase(createNewPost.fulfilled, (state, action) => {
                 state.postLoading = false;
-
                 state.message = action.payload.message;
             })
             .addCase(createNewPost.rejected, (state, action) => {
                 state.postLoading = false;
                 state.postError = action.error.message!;
-
-                toast.error(state.postError);
-
                 toast.error(state.postError);
             });
     },
 });
 
-export const { userLikePost, userUnlikePost, userAddNewComment } = postSlice.actions;
+export const { userLikePost, userUnlikePost, userAddNewComment, updateNewPostList } =
+    postSlice.actions;
 
 export default postSlice.reducer;

@@ -97,7 +97,6 @@ const PostItem: React.FC<IPostItemProps> = ({ post }) => {
     return (
         <div className={cx('container')}>
             <div className={cx('user-container')}>
-                <h1>Post Id: {id}</h1>
                 <div>
                     <AccountInfo
                         avatar={userPostDetail.avatar}
