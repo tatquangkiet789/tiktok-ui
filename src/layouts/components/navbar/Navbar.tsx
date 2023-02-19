@@ -20,7 +20,6 @@ import {
     receiveNewNotification,
     resetTotalNotification,
 } from 'redux/reducers/notificationSlice';
-import { findCurrentUserByAccessToken } from 'redux/reducers/authSlice';
 import { userLikePost } from 'redux/reducers/postSlice';
 
 const cx = classNames.bind(styles);
@@ -52,15 +51,6 @@ const Navbar: React.FC = () => {
         const { username } = currentUser;
         socketClient.emit('newUser', username);
     }, [currentUser]);
-
-    useEffect(() => {
-        if (currentUser) return;
-
-        const accessToken = localStorage.getItem('accessToken');
-        if (!accessToken) return;
-
-        dispatch(findCurrentUserByAccessToken(accessToken));
-    }, [dispatch, currentUser]);
 
     useEffect(() => {
         socketClient.on('receiveNotification', (data: IReceiveNotification) => {

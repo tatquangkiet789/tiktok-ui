@@ -3,6 +3,7 @@ const ENDPOINTS = {
     login: '/auth/login',
     register: '/auth/register',
     findCurrentUserByAccessToken: '/users/current-user',
+    refreshToken: '/auth/refresh-token',
 
     // Users endpoints
     findTop10SuggestedUsers: '/users/suggested',
@@ -19,6 +20,7 @@ const ENDPOINTS = {
     likePostById: (id: number) => `/posts/${id}/like`,
     unLikePostById: (id: number) => `/posts/${id}/unlike`,
     findAllPostsByCurrentUserId: (page: number) => `/posts/user?page=${page}`,
+    findAllPostsAreVideo: (page: number) => `/posts/video?page=${page}`,
     createNewPost: '/posts/create',
 
     // Comments endpoints

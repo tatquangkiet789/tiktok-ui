@@ -14,6 +14,7 @@ import { ILoginFormValue } from 'layouts/AuthLayout/models/login';
 import { IAuth } from 'layouts/AuthLayout/models/auth';
 import { ROLES } from 'constants/constants';
 import { toast } from 'react-toastify';
+import useLocalStorage from 'hooks/useLocalStorage';
 
 const cx = classNames.bind(styles);
 
@@ -23,6 +24,7 @@ const LoginPage: React.FC = () => {
 
     const navigate = useNavigate();
     const location = useLocation();
+    const [storageValue, setStorageValue] = useLocalStorage('accessToken', '');
 
     const from = (location.state as any)?.from.pathname || routes.home;
 
@@ -50,12 +52,13 @@ const LoginPage: React.FC = () => {
                 onSubmit={(values) => {
                     dispatch(loginUser(values))
                         .unwrap()
-                        .then((currentUser: IAuth) => {
+                        .then((data) => {
+                            const currentUser = data.content;
                             const { accessToken } = currentUser;
-                            localStorage.setItem('accessToken', accessToken);
+                            setStorageValue(accessToken);
                             if (currentUser.userRoleId === ROLES.USER)
                                 return navigate(from);
-                            toast.success('Đang chuyển về trang admin');
+                            toast.info('Đang chuyển về trang admin');
                         });
                 }}
                 validationSchema={validationSchema}
