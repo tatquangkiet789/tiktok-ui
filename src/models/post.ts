@@ -11,6 +11,6 @@ export interface IPost {
     totalComments: number;
     userPostDetail: IUser;
     userLikePostList: IUserLikePost[];
-    commentDetailList: IComment[];
+    // commentDetailList: IComment[];
     createdDate: Date;
 }

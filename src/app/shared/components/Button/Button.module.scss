@@ -1,0 +1,125 @@
+.container {
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+    &.disabled {
+        &:hover {
+            cursor: not-allowed;
+        }
+    }
+
+    &.primary {
+        &.disabled {
+            &:hover {
+                background-color: var(--primary-color);
+            }
+        }
+
+        background-color: var(--primary-color);
+        color: var(--white1-color);
+        border-radius: 4px;
+        font-weight: bolder;
+
+        &:hover {
+            background-color: var(--primary-hover-color);
+        }
+    }
+
+    &.base {
+        color: var(--primary-color);
+
+        &.disabled {
+            cursor: not-allowed;
+            color: var(--gray034-color);
+        }
+    }
+
+    &.outlined {
+        &.disabled {
+            &:hover {
+                background-color: white;
+            }
+        }
+
+        border: 1px solid var(--primary-color);
+        border-radius: 4px;
+        color: var(--primary-color);
+
+        &:hover {
+            background-color: var(--pink-hover-color);
+        }
+    }
+
+    &.default {
+        &.disabled {
+            &:hover {
+                background-color: white;
+            }
+        }
+
+        border: 1px solid var(--gray012-color);
+
+        &:hover {
+            background-color: var(--gray003-color);
+        }
+    }
+
+    &.lg {
+        width: 100%;
+        font-size: 18px;
+        height: 48px;
+        font-weight: 600;
+        line-height: 25px;
+    }
+
+    &.md {
+        padding: 6px 10px;
+    }
+
+    &.sm {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+}
+
+.icon-left {
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-right {
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loading-icon {
+    display: flex;
+    align-items: center;
+
+    animation-name: spin;
+    animation-duration: 1000ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+.text {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 24px;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}

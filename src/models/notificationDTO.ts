@@ -8,3 +8,10 @@ export interface IReceiveNotification {
     postId: number;
     senderInfo: ISenderInfo;
 }
+
+export interface ISendNotification {
+    senderName: string;
+    receiverName: string;
+    notificationType: 'like' | 'comment';
+    postId: number;
+}

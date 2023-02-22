@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import ENDPOINTS from 'constants/endpoints';
-import axiosClient from 'libs/axiosClient';
+import { publicAxios } from 'libs/axiosClient';
 import { IUser } from 'models/user';
 
 interface IUserState {
@@ -21,7 +21,7 @@ const initialState: IUserState = {
 export const findTop10SuggestedUsers = createAsyncThunk(
     'findTop10SuggestedUsers',
     async (): Promise<IUser[]> => {
-        const { data } = await axiosClient.get(ENDPOINTS.findTop10SuggestedUsers);
+        const { data } = await publicAxios.get(ENDPOINTS.findTop10SuggestedUsers);
         return data.content;
     },
 );
@@ -30,7 +30,7 @@ export const findTop10SuggestedUsers = createAsyncThunk(
 export const findAllUsersByKeyword = createAsyncThunk(
     'findAllUsersByKeyword',
     async (keyword: string): Promise<IUser[]> => {
-        const { data } = await axiosClient.get(ENDPOINTS.searchUsersByKeyword(keyword));
+        const { data } = await publicAxios.get(ENDPOINTS.searchUsersByKeyword(keyword));
         return data.content;
     },
 );

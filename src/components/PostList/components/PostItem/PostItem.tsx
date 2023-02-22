@@ -7,6 +7,7 @@ import routes from 'constants/routes';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import socketClient from 'libs/socketClient';
+import { ISendNotification } from 'models/notificationDTO';
 import { IPost } from 'models/post';
 import React, { memo, useEffect, useState } from 'react';
 import { AiOutlineComment } from 'react-icons/ai';
@@ -25,13 +26,6 @@ const cx = classNames.bind(styles);
 
 interface IPostItemProps {
     post: IPost;
-}
-
-interface ISendNotification {
-    senderName: string;
-    receiverName: string;
-    notificationType: 'like' | 'comment';
-    postId: number;
 }
 
 const PostItem: React.FC<IPostItemProps> = ({ post }) => {

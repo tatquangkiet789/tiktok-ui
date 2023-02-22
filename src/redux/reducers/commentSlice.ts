@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import ENDPOINTS from 'constants/endpoints';
-import axiosClient from 'libs/axiosClient';
+import { publicAxios } from 'libs/axiosClient';
 import { IComment, IFindComment, INewComment } from 'models/comment';
 
 interface ICommentState {
@@ -22,19 +22,19 @@ const initialState: ICommentState = {
 // [GET] /api/v1/posts/:id/comments
 export const findAllCommentsByPostId = createAsyncThunk(
     'findAllCommentsByPostId',
-    async (value: IFindComment): Promise<IComment[]> => {
+    async (value: IFindComment) => {
         const { postId } = value;
-        const { data } = await axiosClient.get(ENDPOINTS.findAllCommentsByPostId(postId));
-        return data.content;
+        const response = await publicAxios.get(ENDPOINTS.findAllCommentsByPostId(postId));
+        return response.data;
     },
 );
 
 // [POST] /api/v1/posts/:postId/comments/create
 export const createNewComment = createAsyncThunk(
     'createNewComment',
-    async (value: INewComment): Promise<IComment> => {
+    async (value: INewComment) => {
         const { postId, content, accessToken, parentId } = value;
-        const { data } = await axiosClient.post(
+        const { data } = await publicAxios.post(
             ENDPOINTS.createNewComment(postId),
             { content: content, parentId: parentId },
             {
@@ -68,7 +68,7 @@ const commentSlice = createSlice({
             })
             .addCase(findAllCommentsByPostId.fulfilled, (state, action) => {
                 state.commentLoading = false;
-                state.comments = action.payload;
+                state.comments = action.payload.content;
             })
             .addCase(findAllCommentsByPostId.rejected, (state, action) => {
                 state.commentLoading = false;

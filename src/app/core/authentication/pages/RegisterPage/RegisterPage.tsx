@@ -69,12 +69,6 @@ const RegisterPage: React.FC = () => {
                 onSubmit={(values) => {
                     const { firstName, lastName, username, password, email, avatar } =
                         values;
-
-                    if (!avatar) {
-                        toast.error('Vui lòng chọn ảnh đại diện');
-                        return;
-                    }
-
                     const formData = new FormData();
 
                     formData.append('avatar', avatar);

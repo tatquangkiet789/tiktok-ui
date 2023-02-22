@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import ENDPOINTS from 'constants/endpoints';
-import axiosClient from 'libs/axiosClient';
+import { publicAxios } from 'libs/axiosClient';
 import { INewPost } from 'models/newPost';
 import { IPost } from 'models/post';
 import { toast } from 'react-toastify';
@@ -12,6 +12,7 @@ interface IPostState {
     postError: string;
     hasNextPage: boolean;
     message: string;
+    isNewPostList: boolean;
 }
 
 const initialState: IPostState = {
@@ -21,6 +22,7 @@ const initialState: IPostState = {
     postError: '',
     hasNextPage: false,
     message: '',
+    isNewPostList: true,
 };
 
 interface IFindPost {
@@ -34,7 +36,7 @@ export const findAllPosts = createAsyncThunk(
     'findAllPosts',
     async (params: IFindPost) => {
         const { page, username } = params;
-        const response = await axiosClient.get(ENDPOINTS.findAllPosts(page, username));
+        const response = await publicAxios.get(ENDPOINTS.findAllPosts(page, username));
         return response.data;
     },
 );
@@ -44,7 +46,7 @@ export const findAllPostsByCurrentUserId = createAsyncThunk(
     'findAllPostsByCurrentUserId',
     async (data: IFindPost) => {
         const { page, accessToken } = data;
-        const response = await axiosClient.get(
+        const response = await publicAxios.get(
             ENDPOINTS.findAllPostsByCurrentUserId(page),
             {
                 headers: {
@@ -60,7 +62,7 @@ export const findAllPostsByCurrentUserId = createAsyncThunk(
 export const findPostById = createAsyncThunk(
     'findPostById',
     async (id: number): Promise<IPost> => {
-        const { data } = await axiosClient.get(ENDPOINTS.findPostById(id));
+        const { data } = await publicAxios.get(ENDPOINTS.findPostById(id));
         return data.content;
     },
 );
@@ -69,7 +71,7 @@ export const findPostById = createAsyncThunk(
 export const likePostById = createAsyncThunk(
     'likePostById',
     async ({ id, accessToken }: { id: number; accessToken: string }) => {
-        const response = await axiosClient.post(ENDPOINTS.likePostById(id), null, {
+        const response = await publicAxios.post(ENDPOINTS.likePostById(id), null, {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
             },
@@ -82,7 +84,7 @@ export const likePostById = createAsyncThunk(
 export const unlikePostById = createAsyncThunk(
     'unLikePostById',
     async ({ id, accessToken }: { id: number; accessToken: string }) => {
-        const response = await axiosClient.post(ENDPOINTS.unLikePostById(id), null, {
+        const response = await publicAxios.post(ENDPOINTS.unLikePostById(id), null, {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
             },
@@ -96,7 +98,7 @@ export const createNewPost = createAsyncThunk(
     'createNewPost',
     async (value: INewPost) => {
         const { formData, accessToken } = value;
-        const response = await axiosClient.post(ENDPOINTS.createNewPost, formData, {
+        const response = await publicAxios.post(ENDPOINTS.createNewPost, formData, {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
             },
@@ -126,6 +128,9 @@ const postSlice = createSlice({
         userAddNewComment: (state) => {
             state.selectedPost.totalComments = state.selectedPost.totalComments + 1;
         },
+        updateNewPostList: (state, action: PayloadAction<boolean>) => {
+            state.isNewPostList = action.payload;
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -136,9 +141,13 @@ const postSlice = createSlice({
             })
             .addCase(findAllPosts.fulfilled, (state, action) => {
                 state.postLoading = false;
-                // state.posts = [...new Set([...state.posts, ...action.payload.content])];
-                state.posts = action.payload.content;
-                // state.posts = [...state.posts, ...action.payload.content];
+                if (state.isNewPostList) {
+                    console.log(`Is new post list: ${state.isNewPostList}`);
+                    state.posts = action.payload.content;
+                } else {
+                    console.log(`Is new post list: ${state.isNewPostList}`);
+                    state.posts = [...state.posts, ...action.payload.content];
+                }
                 state.hasNextPage = Boolean(action.payload.content.length);
             })
             .addCase(findAllPosts.rejected, (state, action) => {
@@ -159,7 +168,6 @@ const postSlice = createSlice({
             .addCase(findAllPostsByCurrentUserId.rejected, (state, action) => {
                 state.postLoading = false;
                 state.postError = action.error.message!;
-
                 toast.error(state.postError);
             })
             // Find Post By Id
@@ -169,13 +177,11 @@ const postSlice = createSlice({
             })
             .addCase(findPostById.fulfilled, (state, action) => {
                 state.postLoading = false;
-
                 state.selectedPost = action.payload;
             })
             .addCase(findPostById.rejected, (state, action) => {
                 state.postLoading = false;
                 state.postError = action.error.message!;
-
                 toast.error(state.postError);
             })
             // Like Post By Id
@@ -185,7 +191,6 @@ const postSlice = createSlice({
             })
             .addCase(likePostById.rejected, (state, action) => {
                 state.postError = action.error.message!;
-
                 toast.error(state.postError);
             })
             // Unlike Post By Id
@@ -204,20 +209,17 @@ const postSlice = createSlice({
             })
             .addCase(createNewPost.fulfilled, (state, action) => {
                 state.postLoading = false;
-
                 state.message = action.payload.message;
             })
             .addCase(createNewPost.rejected, (state, action) => {
                 state.postLoading = false;
                 state.postError = action.error.message!;
-
-                toast.error(state.postError);
-
                 toast.error(state.postError);
             });
     },
 });
 
-export const { userLikePost, userUnlikePost, userAddNewComment } = postSlice.actions;
+export const { userLikePost, userUnlikePost, userAddNewComment, updateNewPostList } =
+    postSlice.actions;
 
 export default postSlice.reducer;

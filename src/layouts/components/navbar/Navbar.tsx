@@ -20,6 +20,7 @@ import {
     receiveNewNotification,
     resetTotalNotification,
 } from 'redux/reducers/notificationSlice';
+import { userLikePost } from 'redux/reducers/postSlice';
 
 const cx = classNames.bind(styles);
 
@@ -54,6 +55,7 @@ const Navbar: React.FC = () => {
     useEffect(() => {
         socketClient.on('receiveNotification', (data: IReceiveNotification) => {
             dispatch(receiveNewNotification(data));
+            dispatch(userLikePost(data.postId));
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [socketClient]);
