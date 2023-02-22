@@ -1,9 +1,13 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
-import ENDPOINTS from 'constants/endpoints';
 import { IAuth } from 'layouts/AuthLayout/models/auth';
 import { ILoginFormValue } from 'layouts/AuthLayout/models/login';
-import axiosClient, { privateAxios } from 'libs/axiosClient';
+import {
+    findCurrentUserByAccessTokenService,
+    loginUserService,
+    logoutUserService,
+    registerUserService,
+} from 'layouts/AuthLayout/services/authService';
 import { toast } from 'react-toastify';
 
 interface IAuthState {
@@ -23,25 +27,32 @@ const initialState: IAuthState = {
 };
 
 // [POST] /api/v1/auth/login
-export const loginUser = createAsyncThunk('loginUser', async (value: ILoginFormValue) => {
-    const { username, password } = value;
-    const response = await axiosClient.post(ENDPOINTS.login, {
-        username,
-        password,
-    });
-    return response.data;
-});
+export const loginUser = createAsyncThunk(
+    'loginUser',
+    async (value: ILoginFormValue, { rejectWithValue }) => {
+        try {
+            const data = await loginUserService(value);
+            return data;
+        } catch (error) {
+            const err = error as AxiosError;
+            if (!err.response) throw err;
+            return rejectWithValue(err.response.data);
+        }
+    },
+);
 
 // [POST] /api/v1/auth/register
 export const registerUser = createAsyncThunk(
     'registerUser',
-    async (user: FormData): Promise<string> => {
-        const { data } = await axiosClient.post(ENDPOINTS.register, user, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-        });
-        return data.message;
+    async (user: FormData, { rejectWithValue }) => {
+        try {
+            const data = await registerUserService(user);
+            return data;
+        } catch (error) {
+            const err = error as AxiosError;
+            if (!err.response) throw err;
+            return rejectWithValue(err.response.data);
+        }
     },
 );
 
@@ -50,27 +61,20 @@ export const findCurrentUserByAccessToken = createAsyncThunk(
     'findCurrentUserByAccessToken',
     async (accessToken: string, { rejectWithValue }) => {
         try {
-            const response = await privateAxios.get(
-                ENDPOINTS.findCurrentUserByAccessToken,
-                {
-                    headers: {
-                        Authorization: `Bearer ${accessToken}`,
-                    },
-                    withCredentials: true,
-                },
-            );
-            return response.data;
+            const data = await findCurrentUserByAccessTokenService(accessToken);
+            return data;
         } catch (error) {
             const err = error as AxiosError;
-            return rejectWithValue(err.response?.data);
+            if (!err.response) throw err;
+            return rejectWithValue(err.response.data);
         }
     },
 );
 
-// [POST] /api/v1/auth/refresh-token
-export const refreshToken = createAsyncThunk('refreshToken', async () => {
-    const response = await privateAxios.post(ENDPOINTS.refreshToken);
-    return response.data;
+// [POST] /api/v1/auth/logout
+export const logoutUser = createAsyncThunk('logoutUser', async () => {
+    const data = await logoutUserService();
+    return data;
 });
 
 const authSlice = createSlice({
@@ -83,9 +87,6 @@ const authSlice = createSlice({
         },
         resetRegisterMessage: (state) => {
             state.registerMessage = '';
-        },
-        updateAccessToken: (state, action: PayloadAction<string>) => {
-            state.currentUser.accessToken = action.payload;
         },
     },
     extraReducers: (builder) => {
@@ -102,9 +103,10 @@ const authSlice = createSlice({
             })
             .addCase(loginUser.rejected, (state, action) => {
                 state.authLoading = false;
-                state.error = action.error.message!;
+                state.error = (action.payload as AxiosError)
+                    ? (action.payload as AxiosError).message
+                    : action.error.message!;
                 toast.error(state.error);
-                toast.error((action.payload as AxiosError).message);
             })
             // Register User
             .addCase(registerUser.pending, (state) => {
@@ -116,7 +118,9 @@ const authSlice = createSlice({
             })
             .addCase(registerUser.rejected, (state, action) => {
                 state.authLoading = false;
-                state.error = action.error.message!;
+                state.error = (action.payload as AxiosError)
+                    ? (action.payload as AxiosError).message
+                    : action.error.message!;
                 toast.error(state.error);
             })
             // Find Current User By Access Token
@@ -130,26 +134,30 @@ const authSlice = createSlice({
             })
             .addCase(findCurrentUserByAccessToken.rejected, (state, action) => {
                 state.authLoading = false;
-                state.error = (action.payload as AxiosError).message;
+                state.error = (action.payload as AxiosError)
+                    ? (action.payload as AxiosError).message
+                    : action.error.message!;
                 toast.error(state.error);
             })
-            // Refresh token
-            .addCase(refreshToken.pending, (state) => {
+            // Logout User
+            .addCase(logoutUser.pending, (state) => {
                 state.authLoading = true;
                 state.error = '';
             })
-            .addCase(refreshToken.fulfilled, (state, action) => {
+            .addCase(logoutUser.fulfilled, (state, action) => {
                 state.authLoading = false;
-                state.currentUser.accessToken = action.payload.content;
+                toast.success(action.payload.message);
+                state.currentUser = null as any;
+                localStorage.clear();
             })
-            .addCase(refreshToken.rejected, (state, action) => {
+            .addCase(logoutUser.rejected, (state, action) => {
                 state.authLoading = false;
-                state.error = (action.payload as AxiosError).message;
+                state.error = action.error.message!;
                 toast.error(state.error);
             });
     },
 });
 
-export const { logoutUser, resetRegisterMessage, updateAccessToken } = authSlice.actions;
+export const { resetRegisterMessage } = authSlice.actions;
 
 export default authSlice.reducer;

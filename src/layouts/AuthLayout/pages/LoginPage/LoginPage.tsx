@@ -11,10 +11,8 @@ import { Formik, Field } from 'formik';
 import { loginUser } from 'redux/reducers/authSlice';
 import routes from 'constants/routes';
 import { ILoginFormValue } from 'layouts/AuthLayout/models/login';
-import { IAuth } from 'layouts/AuthLayout/models/auth';
-import { ROLES } from 'constants/constants';
+import { LOCAL_STORAGE_KEY, ROLES } from 'constants/constants';
 import { toast } from 'react-toastify';
-import useLocalStorage from 'hooks/useLocalStorage';
 
 const cx = classNames.bind(styles);
 
@@ -24,7 +22,6 @@ const LoginPage: React.FC = () => {
 
     const navigate = useNavigate();
     const location = useLocation();
-    const [storageValue, setStorageValue] = useLocalStorage('accessToken', '');
 
     const from = (location.state as any)?.from.pathname || routes.home;
 
@@ -49,13 +46,16 @@ const LoginPage: React.FC = () => {
             <h1 className={cx('login-text')}>Đăng nhập</h1>
             <Formik
                 initialValues={initialValues}
-                onSubmit={(values) => {
+                onSubmit={(values, { resetForm }) => {
                     dispatch(loginUser(values))
                         .unwrap()
                         .then((data) => {
                             const currentUser = data.content;
-                            const { accessToken } = currentUser;
-                            setStorageValue(accessToken);
+                            localStorage.setItem(
+                                LOCAL_STORAGE_KEY.ACCESS_TOKEN,
+                                currentUser.accessToken,
+                            );
+                            resetForm();
                             if (currentUser.userRoleId === ROLES.USER)
                                 return navigate(from);
                             toast.info('Đang chuyển về trang admin');
@@ -64,8 +64,7 @@ const LoginPage: React.FC = () => {
                 validationSchema={validationSchema}
             >
                 {(formikProps) => {
-                    const { errors, values, handleChange, handleSubmit, isSubmitting } =
-                        formikProps;
+                    const { errors, values, handleChange, handleSubmit } = formikProps;
                     return (
                         <form className={cx('form')} onSubmit={handleSubmit}>
                             <Field
@@ -94,7 +93,7 @@ const LoginPage: React.FC = () => {
                                 variant='primary'
                                 type='submit'
                                 size='lg'
-                                disabled={isSubmitting}
+                                disabled={authLoading}
                                 loading={authLoading}
                             />
                         </form>

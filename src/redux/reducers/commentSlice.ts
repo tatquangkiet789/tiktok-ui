@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import ENDPOINTS from 'constants/endpoints';
-import axiosClient from 'libs/axiosClient';
+import { publicAxios } from 'libs/axiosClient';
 import { IComment, IFindComment, INewComment } from 'models/comment';
 
 interface ICommentState {
@@ -24,7 +24,7 @@ export const findAllCommentsByPostId = createAsyncThunk(
     'findAllCommentsByPostId',
     async (value: IFindComment) => {
         const { postId } = value;
-        const response = await axiosClient.get(ENDPOINTS.findAllCommentsByPostId(postId));
+        const response = await publicAxios.get(ENDPOINTS.findAllCommentsByPostId(postId));
         return response.data;
     },
 );
@@ -34,7 +34,7 @@ export const createNewComment = createAsyncThunk(
     'createNewComment',
     async (value: INewComment) => {
         const { postId, content, accessToken, parentId } = value;
-        const { data } = await axiosClient.post(
+        const { data } = await publicAxios.post(
             ENDPOINTS.createNewComment(postId),
             { content: content, parentId: parentId },
             {

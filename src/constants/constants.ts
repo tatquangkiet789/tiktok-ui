@@ -14,3 +14,7 @@ export const POST_TYPE = {
 };
 
 export const MAX_INPUT_LENGTH = 150;
+
+export const LOCAL_STORAGE_KEY = {
+    ACCESS_TOKEN: 'accessToken',
+};

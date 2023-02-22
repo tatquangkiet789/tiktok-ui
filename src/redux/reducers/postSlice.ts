@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import ENDPOINTS from 'constants/endpoints';
-import axiosClient from 'libs/axiosClient';
+import { publicAxios } from 'libs/axiosClient';
 import { INewPost } from 'models/newPost';
 import { IPost } from 'models/post';
 import { toast } from 'react-toastify';
@@ -36,7 +36,7 @@ export const findAllPosts = createAsyncThunk(
     'findAllPosts',
     async (params: IFindPost) => {
         const { page, username } = params;
-        const response = await axiosClient.get(ENDPOINTS.findAllPosts(page, username));
+        const response = await publicAxios.get(ENDPOINTS.findAllPosts(page, username));
         return response.data;
     },
 );
@@ -46,7 +46,7 @@ export const findAllPostsByCurrentUserId = createAsyncThunk(
     'findAllPostsByCurrentUserId',
     async (data: IFindPost) => {
         const { page, accessToken } = data;
-        const response = await axiosClient.get(
+        const response = await publicAxios.get(
             ENDPOINTS.findAllPostsByCurrentUserId(page),
             {
                 headers: {
@@ -62,7 +62,7 @@ export const findAllPostsByCurrentUserId = createAsyncThunk(
 export const findPostById = createAsyncThunk(
     'findPostById',
     async (id: number): Promise<IPost> => {
-        const { data } = await axiosClient.get(ENDPOINTS.findPostById(id));
+        const { data } = await publicAxios.get(ENDPOINTS.findPostById(id));
         return data.content;
     },
 );
@@ -71,7 +71,7 @@ export const findPostById = createAsyncThunk(
 export const likePostById = createAsyncThunk(
     'likePostById',
     async ({ id, accessToken }: { id: number; accessToken: string }) => {
-        const response = await axiosClient.post(ENDPOINTS.likePostById(id), null, {
+        const response = await publicAxios.post(ENDPOINTS.likePostById(id), null, {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
             },
@@ -84,7 +84,7 @@ export const likePostById = createAsyncThunk(
 export const unlikePostById = createAsyncThunk(
     'unLikePostById',
     async ({ id, accessToken }: { id: number; accessToken: string }) => {
-        const response = await axiosClient.post(ENDPOINTS.unLikePostById(id), null, {
+        const response = await publicAxios.post(ENDPOINTS.unLikePostById(id), null, {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
             },
@@ -98,7 +98,7 @@ export const createNewPost = createAsyncThunk(
     'createNewPost',
     async (value: INewPost) => {
         const { formData, accessToken } = value;
-        const response = await axiosClient.post(ENDPOINTS.createNewPost, formData, {
+        const response = await publicAxios.post(ENDPOINTS.createNewPost, formData, {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
             },

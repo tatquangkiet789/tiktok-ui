@@ -4,6 +4,7 @@ const ENDPOINTS = {
     register: '/auth/register',
     findCurrentUserByAccessToken: '/users/current-user',
     refreshToken: '/auth/refresh-token',
+    logout: '/auth/logout',
 
     // Users endpoints
     findTop10SuggestedUsers: '/users/suggested',
