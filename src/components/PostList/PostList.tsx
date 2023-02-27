@@ -3,32 +3,32 @@ import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import { IPost } from 'models/post';
 import { FC, Fragment, memo, useEffect, useRef, useState } from 'react';
-import { findAllPosts, updateNewPostList } from 'redux/reducers/postSlice';
+import {
+    findAllPosts,
+    findAllPostsAreVideo,
+    updateNewPostList,
+} from 'redux/reducers/postSlice';
 import PostItem from './components/PostItem/PostItem';
 import styles from './PostList.module.scss';
 
 const cx = classNames.bind(styles);
 
 interface IPostListProps {
-    username?: string;
-    currentUsername?: string;
     page: number;
     onChangePage: (page: any) => void;
-    isChangeUsername?: boolean;
+    postList: IPost[];
+    postError: string;
+    postLoading: boolean;
+    hasNextPage: boolean;
 }
 
 const PostList: FC<IPostListProps> = ({
-    username,
-    currentUsername,
-    page,
     onChangePage,
-    isChangeUsername,
+    postList,
+    postError,
+    postLoading,
+    hasNextPage,
 }) => {
-    const { posts, hasNextPage, postError, postLoading } = useAppSelector(
-        (state) => state.posts,
-    );
-    const dispatch = useAppDispatch();
-
     const [element, setElement] = useState<HTMLDivElement | null>(null);
 
     const observer = useRef(
@@ -37,19 +37,6 @@ const PostList: FC<IPostListProps> = ({
             if (first.isIntersecting) onChangePage((prev: any) => prev + 1);
         }),
     );
-
-    useEffect(() => {
-        if (page === 1 || isChangeUsername) {
-            dispatch(updateNewPostList(true));
-            onChangePage(1);
-        } else dispatch(updateNewPostList(false));
-
-        if (username) {
-            dispatch(findAllPosts({ page: page, username: username }));
-            return;
-        }
-        dispatch(findAllPosts({ page: page }));
-    }, [dispatch, isChangeUsername, onChangePage, page, username]);
 
     useEffect(() => {
         const currentElement = element;
@@ -66,15 +53,15 @@ const PostList: FC<IPostListProps> = ({
 
     return (
         <div className={cx('container')}>
-            {posts.length === 0 && postLoading ? (
+            {postList.length === 0 && postLoading ? (
                 <div>Đang tải bài viết</div>
             ) : postError ? (
                 <div>{postError}</div>
-            ) : posts.length === 0 ? (
+            ) : postList.length === 0 ? (
                 <div>Chưa có bài viết</div>
             ) : (
                 <Fragment>
-                    {posts.map((post) => (
+                    {postList.map((post) => (
                         <PostItem key={post.id} post={post} />
                     ))}
                     <h1

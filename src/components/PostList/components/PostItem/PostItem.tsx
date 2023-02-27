@@ -2,7 +2,7 @@ import { HeartIcon } from 'assets/icons';
 import classNames from 'classnames/bind';
 import AccountInfo from 'components/AccountInfo/AccountInfo';
 import Button from 'components/Button/Button';
-import { POST_TYPE } from 'constants/constants';
+import { POST_TYPE, SOCKET_EVENT } from 'constants/constants';
 import routes from 'constants/routes';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
@@ -19,7 +19,7 @@ import {
     userLikePost,
     userUnlikePost,
 } from 'redux/reducers/postSlice';
-import numberFormat from 'utils/numberFormat';
+import { numberFormat } from 'utils/format';
 import styles from './PostItem.module.scss';
 
 const cx = classNames.bind(styles);
@@ -72,7 +72,7 @@ const PostItem: React.FC<IPostItemProps> = ({ post }) => {
         const postId = id as number;
         const { accessToken } = currentUser;
         if (!likePost)
-            return dispatch(likePostById({ id: postId, accessToken }))
+            return dispatch(likePostById({ postId: postId, accessToken }))
                 .unwrap()
                 .then(() => {
                     setLikePost(true);
@@ -83,10 +83,10 @@ const PostItem: React.FC<IPostItemProps> = ({ post }) => {
                         notificationType: 'like',
                         postId: postId,
                     };
-                    socketClient.emit('sendNotification', notification);
+                    // socketClient.emit(SOCKET_EVENT.SEND_NOTIFICATION, notification);
                 });
 
-        dispatch(unlikePostById({ id: postId, accessToken }))
+        dispatch(unlikePostById({ postId: postId, accessToken }))
             .unwrap()
             .then(() => {
                 setLikePost(false);

@@ -1,7 +1,19 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import ENDPOINTS from 'constants/endpoints';
-import { publicAxios } from 'libs/axiosClient';
-import { INewPost } from 'models/newPost';
+import { AxiosError } from 'axios';
+import {
+    ICreateNewPostDTO,
+    IPostDTO,
+    IUserLikeOrUnlikePostDTO,
+} from 'components/PostList/models/postDTO';
+import {
+    createNewPostService,
+    findAllPostsAreVideoService,
+    findAllPostsByCurrentUserIdService,
+    findAllPostsService,
+    findPostByIdService,
+    likePostByIdService,
+    unlikePostByIdService,
+} from 'components/PostList/services/postService';
 import { IPost } from 'models/post';
 import { toast } from 'react-toastify';
 
@@ -25,85 +37,108 @@ const initialState: IPostState = {
     isNewPostList: true,
 };
 
-interface IFindPost {
-    page: number;
-    username?: string;
-    accessToken?: string;
-}
-
 // [GET] /api/v1/posts?page=:page OR /api/v1/posts?page=:page&username=:username
 export const findAllPosts = createAsyncThunk(
     'findAllPosts',
-    async (params: IFindPost) => {
-        const { page, username } = params;
-        const response = await publicAxios.get(ENDPOINTS.findAllPosts(page, username));
-        return response.data;
+    async (params: IPostDTO, { rejectWithValue }) => {
+        try {
+            const data = await findAllPostsService(params);
+            return data;
+        } catch (error) {
+            const err = error as AxiosError;
+            if (!err.response) throw err;
+            return rejectWithValue(err.response.data);
+        }
     },
 );
 
 // [GET] /v1/posts/user?page=:page
 export const findAllPostsByCurrentUserId = createAsyncThunk(
     'findAllPostsByCurrentUserId',
-    async (data: IFindPost) => {
-        const { page, accessToken } = data;
-        const response = await publicAxios.get(
-            ENDPOINTS.findAllPostsByCurrentUserId(page),
-            {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                },
-            },
-        );
-        return response.data;
+    async (params: IPostDTO, { rejectWithValue }) => {
+        try {
+            const data = await findAllPostsByCurrentUserIdService(params);
+            return data;
+        } catch (error) {
+            const err = error as AxiosError;
+            if (!err.response) throw err;
+            return rejectWithValue(err.response.data);
+        }
     },
 );
 
 // [GET] /api/v1/posts/:id
 export const findPostById = createAsyncThunk(
     'findPostById',
-    async (id: number): Promise<IPost> => {
-        const { data } = await publicAxios.get(ENDPOINTS.findPostById(id));
-        return data.content;
+    async (id: number, { rejectWithValue }) => {
+        try {
+            const data = await findPostByIdService(id);
+            return data;
+        } catch (error) {
+            const err = error as AxiosError;
+            if (!err.response) throw err;
+            return rejectWithValue(err.response.data);
+        }
     },
 );
 
 // [POST] /api/v1/posts/:id/like
 export const likePostById = createAsyncThunk(
     'likePostById',
-    async ({ id, accessToken }: { id: number; accessToken: string }) => {
-        const response = await publicAxios.post(ENDPOINTS.likePostById(id), null, {
-            headers: {
-                Authorization: `Bearer ${accessToken}`,
-            },
-        });
-        return response.data;
+    async (params: IUserLikeOrUnlikePostDTO, { rejectWithValue }) => {
+        try {
+            const data = await likePostByIdService(params);
+            return data;
+        } catch (error) {
+            const err = error as AxiosError;
+            if (!err.response) throw err;
+            return rejectWithValue(err.response.data);
+        }
     },
 );
 
 // [POST] /api/v1/posts/:id/unlike
 export const unlikePostById = createAsyncThunk(
     'unLikePostById',
-    async ({ id, accessToken }: { id: number; accessToken: string }) => {
-        const response = await publicAxios.post(ENDPOINTS.unLikePostById(id), null, {
-            headers: {
-                Authorization: `Bearer ${accessToken}`,
-            },
-        });
-        return response.data;
+    async (params: IUserLikeOrUnlikePostDTO, { rejectWithValue }) => {
+        try {
+            const data = await unlikePostByIdService(params);
+            return data;
+        } catch (error) {
+            const err = error as AxiosError;
+            if (!err.response) throw err;
+            return rejectWithValue(err.response.data);
+        }
+    },
+);
+
+// [GET] /api/v1/posts/video?page=:page
+export const findAllPostsAreVideo = createAsyncThunk(
+    'findAllPostsAreVideo',
+    async (params: IPostDTO, { rejectWithValue }) => {
+        try {
+            const data = await findAllPostsAreVideoService(params);
+            return data;
+        } catch (error) {
+            const err = error as AxiosError;
+            if (!err.response) throw err;
+            return rejectWithValue(err.response.data);
+        }
     },
 );
 
 // [POST] /api/v1/posts/create
 export const createNewPost = createAsyncThunk(
     'createNewPost',
-    async (value: INewPost) => {
-        const { formData, accessToken } = value;
-        const response = await publicAxios.post(ENDPOINTS.createNewPost, formData, {
-            headers: {
-                Authorization: `Bearer ${accessToken}`,
-            },
-        });
-        return response.data;
+    async (params: ICreateNewPostDTO, { rejectWithValue }) => {
+        try {
+            const data = await createNewPostService(params);
+            return data;
+        } catch (error) {
+            const err = error as AxiosError;
+            if (!err.response) throw err;
+            return rejectWithValue(err.response.data);
+        }
     },
 );
 
@@ -141,19 +176,16 @@ const postSlice = createSlice({
             })
             .addCase(findAllPosts.fulfilled, (state, action) => {
                 state.postLoading = false;
-                if (state.isNewPostList) {
-                    console.log(`Is new post list: ${state.isNewPostList}`);
-                    state.posts = action.payload.content;
-                } else {
-                    console.log(`Is new post list: ${state.isNewPostList}`);
-                    state.posts = [...state.posts, ...action.payload.content];
-                }
+                if (state.isNewPostList) state.posts = action.payload.content;
+                else state.posts = [...state.posts, ...action.payload.content];
+
                 state.hasNextPage = Boolean(action.payload.content.length);
             })
             .addCase(findAllPosts.rejected, (state, action) => {
                 state.postLoading = false;
-                state.postError = action.error.message!;
-
+                state.postError = (action.payload as AxiosError)
+                    ? (action.payload as AxiosError).message
+                    : action.error.message!;
                 toast.error(state.postError);
             })
             .addCase(findAllPostsByCurrentUserId.pending, (state) => {
@@ -162,12 +194,16 @@ const postSlice = createSlice({
             })
             .addCase(findAllPostsByCurrentUserId.fulfilled, (state, action) => {
                 state.postLoading = false;
-                state.posts = action.payload.content;
+                if (state.isNewPostList) state.posts = action.payload.content;
+                else state.posts = [...state.posts, ...action.payload.content];
+
                 state.hasNextPage = Boolean(action.payload.content.length);
             })
             .addCase(findAllPostsByCurrentUserId.rejected, (state, action) => {
                 state.postLoading = false;
-                state.postError = action.error.message!;
+                state.postError = (action.payload as AxiosError)
+                    ? (action.payload as AxiosError).message
+                    : action.error.message!;
                 toast.error(state.postError);
             })
             // Find Post By Id
@@ -181,7 +217,9 @@ const postSlice = createSlice({
             })
             .addCase(findPostById.rejected, (state, action) => {
                 state.postLoading = false;
-                state.postError = action.error.message!;
+                state.postError = (action.payload as AxiosError)
+                    ? (action.payload as AxiosError).message
+                    : action.error.message!;
                 toast.error(state.postError);
             })
             // Like Post By Id
@@ -199,8 +237,9 @@ const postSlice = createSlice({
                 state.message = action.payload.message;
             })
             .addCase(unlikePostById.rejected, (state, action) => {
-                state.postError = action.error.message!;
-
+                state.postError = (action.payload as AxiosError)
+                    ? (action.payload as AxiosError).message
+                    : action.error.message!;
                 toast.error(state.postError);
             })
             // Create New Post
@@ -210,10 +249,33 @@ const postSlice = createSlice({
             .addCase(createNewPost.fulfilled, (state, action) => {
                 state.postLoading = false;
                 state.message = action.payload.message;
+                state.posts = [...action.payload.content, ...state.posts];
+                toast.success(state.message);
             })
             .addCase(createNewPost.rejected, (state, action) => {
                 state.postLoading = false;
-                state.postError = action.error.message!;
+                state.postError = (action.payload as AxiosError)
+                    ? (action.payload as AxiosError).message
+                    : action.error.message!;
+                toast.error(state.postError);
+            })
+            // Find All Posts Are Video
+            .addCase(findAllPostsAreVideo.pending, (state) => {
+                state.postLoading = true;
+                state.postError = '';
+            })
+            .addCase(findAllPostsAreVideo.fulfilled, (state, action) => {
+                state.postLoading = false;
+                if (state.isNewPostList) state.posts = action.payload.content;
+                else state.posts = [...state.posts, ...action.payload.content];
+
+                state.hasNextPage = Boolean(action.payload.content.length);
+            })
+            .addCase(findAllPostsAreVideo.rejected, (state, action) => {
+                state.postLoading = false;
+                state.postError = (action.payload as AxiosError)
+                    ? (action.payload as AxiosError).message
+                    : action.error.message!;
                 toast.error(state.postError);
             });
     },

@@ -20,18 +20,12 @@ privateAxios.interceptors.request.use(async (config) => {
     try {
         const currentDate = new Date();
         const accessToken = localStorage.getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
-        console.log(`Current AccessToken: ${accessToken}`);
         const decodedUser = jwt_decode<JwtPayload>(accessToken!);
 
         if (decodedUser.exp && decodedUser.exp < currentDate.getTime() / 1000) {
             const data = await refreshTokenService();
             config.headers!['Authorization'] = `Bearer ${data.content}`;
             localStorage.setItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN, data.content);
-            console.log(
-                `New AccessToken: ${localStorage.getItem(
-                    LOCAL_STORAGE_KEY.ACCESS_TOKEN,
-                )}`,
-            );
         }
         return config;
     } catch (err) {

@@ -1,14 +1,24 @@
 .container {
     display: flex;
-    background-color: aquamarine;
-    padding: 16px 24px 10px 20px;
+    background-color: var(--gray241-241-242-1-color);
+    padding: 18px;
+    width: 100%;
+    height: calc(100vh - var(--navbar-height));
+    gap: 18px;
 }
 
 .back-icon {
-    background-color: red;
+    background-color: white;
     padding: 10px;
     border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     height: fit-content;
+
+    &:hover {
+        background-color: var(--gray003-color);
+    }
 }
 
 .sidebar {
@@ -16,6 +26,8 @@
     width: var(--sidebar-width);
     box-shadow: rgb(0 0 0 / 6%) 0px 2px 8px;
     border-radius: 8px;
+    display: flex;
+    flex-direction: column;
 
     & .sidebar-header {
         display: flex;
@@ -36,10 +48,65 @@
             cursor: pointer;
         }
     }
+
+    & .search-user-container {
+        padding: 0 24px 24px 24px;
+        // border-bottom: 1px solid var(--gray034-color);
+    }
+
+    & .user-container {
+        flex: 1;
+        overflow-y: scroll;
+    }
 }
 
-.message {
-    background-color: aqua;
+.content {
+    background-color: white;
     flex: 1;
-    margin: 0 16px;
+    border-radius: 8px;
+    box-shadow: rgb(0 0 0 / 6%) 0px 2px 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    & .receiver-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 22px 8px 16px;
+        box-shadow: rgb(0 0 0 / 6%) 0px 2px 8px;
+
+        & .receiver-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px;
+            border-radius: 8px;
+
+            &:hover {
+                background-color: var(--gray006-color);
+            }
+
+            & .avatar {
+                border-radius: 50%;
+                width: 50px;
+                height: 50px;
+            }
+            & .username {
+                font-size: 18px;
+            }
+        }
+
+        & .video-call-button {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            border-radius: 8px;
+
+            &:hover {
+                background-color: var(--gray006-color);
+                cursor: pointer;
+            }
+        }
+    }
 }

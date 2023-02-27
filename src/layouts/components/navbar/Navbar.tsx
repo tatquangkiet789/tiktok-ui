@@ -21,6 +21,7 @@ import {
     resetTotalNotification,
 } from 'redux/reducers/notificationSlice';
 import { userLikePost } from 'redux/reducers/postSlice';
+import { SOCKET_EVENT } from 'constants/constants';
 
 const cx = classNames.bind(styles);
 
@@ -49,16 +50,19 @@ const Navbar: React.FC = () => {
         if (!currentUser) return;
 
         const { username } = currentUser;
-        socketClient.emit('newUser', username);
+        // socketClient.emit(SOCKET_EVENT.NEW_USER, username);
     }, [currentUser]);
 
-    useEffect(() => {
-        socketClient.on('receiveNotification', (data: IReceiveNotification) => {
-            dispatch(receiveNewNotification(data));
-            dispatch(userLikePost(data.postId));
-        });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [socketClient]);
+    // useEffect(() => {
+    //     socketClient.on(
+    //         SOCKET_EVENT.RECEIVE_NOTIFICATION,
+    //         (data: IReceiveNotification) => {
+    //             dispatch(receiveNewNotification(data));
+    //             dispatch(userLikePost(data.postId));
+    //         },
+    //     );
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [socketClient]);
 
     const handleOpenNotification = () => {
         setOpenNotification((prev) => {

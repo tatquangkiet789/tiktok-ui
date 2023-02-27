@@ -7,7 +7,6 @@ import React, { memo } from 'react';
 import { Link } from 'react-router-dom';
 import { findSelectedCommentById } from 'redux/reducers/commentSlice';
 import styles from './CommentItem.module.scss';
-import moment from 'moment';
 
 const cx = classNames.bind(styles);
 
@@ -57,7 +56,7 @@ const CommentItem: React.FC<ICommentItemProps> = ({
                     </Link>
                     <p className={cx('comment-content')}>{content}</p>
                     <div className={cx('action-container')}>
-                        <span>{moment(createdDate).fromNow()}</span>
+                        <span>{createdDate}</span>
                         {!disabledReply ? (
                             <button
                                 className={cx('reply-button')}

@@ -1,30 +1,38 @@
 import classNames from 'classnames/bind';
-import Button from 'components/Button/Button';
 import PostList from 'components/PostList/PostList';
 import { useAppDispatch } from 'hooks/useAppDispatch';
-import { refreshTokenService } from 'layouts/AuthLayout/services/authService';
-import { FC, useState } from 'react';
-import { findCurrentUserByAccessToken } from 'redux/reducers/authSlice';
+import { useAppSelector } from 'hooks/useAppSelector';
+import { FC, useEffect, useState } from 'react';
+import { findAllPosts, updateNewPostList } from 'redux/reducers/postSlice';
 import styles from './HomePage.module.scss';
 
 const cx = classNames.bind(styles);
 
 const HomePage: FC = () => {
     const [page, setPage] = useState(1);
-    const accessToken = localStorage.getItem('accessToken')!;
 
     const dispatch = useAppDispatch();
+    const { posts, postError, postLoading, hasNextPage } = useAppSelector(
+        (state) => state.posts,
+    );
+
+    useEffect(() => {
+        if (page === 1) dispatch(updateNewPostList(true));
+        else dispatch(updateNewPostList(false));
+
+        dispatch(findAllPosts({ page: page }));
+    }, [dispatch, page]);
 
     return (
         <div className={cx('container')}>
-            <Button
-                size='md'
-                text='Get current user by access token'
-                variant='outlined'
-                onClick={() => dispatch(findCurrentUserByAccessToken(accessToken))}
+            <PostList
+                page={page}
+                onChangePage={setPage}
+                postList={posts}
+                postError={postError}
+                postLoading={postLoading}
+                hasNextPage={hasNextPage}
             />
-
-            <PostList page={page} onChangePage={setPage} />
         </div>
     );
 };

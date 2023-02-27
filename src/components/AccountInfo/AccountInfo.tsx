@@ -1,6 +1,5 @@
 import { TickIcon } from 'assets/icons';
 import classNames from 'classnames/bind';
-import moment from 'moment';
 import React, { memo } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './AccountInfo.module.scss';
@@ -38,9 +37,7 @@ const AccountInfo: React.FC<IAccountInfoProps> = ({
                     {lastName} {firstName}
                     {tick ? <TickIcon /> : null}
                 </Link>
-                <span className={cx('created-date')}>
-                    {moment(new Date(createdDate).getTime()).fromNow()}
-                </span>
+                <span className={cx('created-date')}>{createdDate}</span>
             </div>
         </div>
     );

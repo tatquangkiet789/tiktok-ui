@@ -16,7 +16,7 @@ import {
     userLikePost,
     userUnlikePost,
 } from 'redux/reducers/postSlice';
-import numberFormat from 'utils/numberFormat';
+import { numberFormat } from 'utils/format';
 import AddComment from './components/AddComment/AddComment';
 import CommentList from './components/CommentList/CommentList';
 import styles from './PostDetailPage.module.scss';
@@ -40,7 +40,7 @@ const PostDetailPage: React.FC = () => {
             .unwrap()
             .then((result) => {
                 const currentUserLikePost = result.userLikePostList.filter(
-                    (user) => user.id === currentUser.id,
+                    (user: any) => user.id === currentUser.id,
                 )[0];
                 if (currentUserLikePost)
                     setUserLikePostStatus(currentUserLikePost.likeStatus);
@@ -53,7 +53,7 @@ const PostDetailPage: React.FC = () => {
         const postId = parseInt(id);
         const { accessToken } = currentUser;
         if (!userLikePostStatus)
-            return dispatch(likePostById({ id: postId, accessToken: accessToken }))
+            return dispatch(likePostById({ postId: postId, accessToken: accessToken }))
                 .unwrap()
                 .then(() => {
                     setUserLikePostStatus(true);
@@ -68,7 +68,7 @@ const PostDetailPage: React.FC = () => {
                     // });
                 });
 
-        dispatch(unlikePostById({ id: postId, accessToken: accessToken }))
+        dispatch(unlikePostById({ postId: postId, accessToken: accessToken }))
             .unwrap()
             .then(() => {
                 setUserLikePostStatus(false);

@@ -18,3 +18,11 @@ export const MAX_INPUT_LENGTH = 150;
 export const LOCAL_STORAGE_KEY = {
     ACCESS_TOKEN: 'accessToken',
 };
+
+export const SOCKET_EVENT = {
+    NEW_USER: 'newUser',
+    SEND_MESSAGE: 'sendMessage',
+    RECEIVE_MESSAGE: 'receiveMessage',
+    SEND_NOTIFICATION: 'sendNotification',
+    RECEIVE_NOTIFICATION: 'receiveNotification',
+};
