@@ -7,6 +7,7 @@ import { IoArrowBackOutline, IoVideocamOutline } from 'react-icons/io5';
 import { Link } from 'react-router-dom';
 import AddMessage from './components/AddMessage/AddMessage';
 import MessageList from './components/MessageList/MessageList';
+import SearchUser from './components/SearchUser/SearchUser';
 import UserList from './components/UserList/UserList';
 import styles from './MessagePage.module.scss';
 
@@ -30,13 +31,7 @@ const MessagePage: React.FC = () => {
                     <h3>Tin nhắn</h3>
                 </div>
                 <div className={cx('search-user-container')}>
-                    <InputField
-                        inputType='text'
-                        name='search'
-                        label='Tìm kiếm người dùng'
-                        value={userKeyword}
-                        onChangeValue={(e) => setUserKeyword(e.target.value)}
-                    />
+                    <SearchUser />
                 </div>
                 <div className={cx('user-container')}>
                     <UserList />
@@ -60,8 +55,8 @@ const MessagePage: React.FC = () => {
                 </div>
                 <div className={cx('message-container')}>
                     <MessageList />
-                    <AddMessage />
                 </div>
+                <AddMessage />
             </div>
         </div>
     );

@@ -1,13 +1,6 @@
 import classNames from 'classnames/bind';
-import { useAppDispatch } from 'hooks/useAppDispatch';
-import { useAppSelector } from 'hooks/useAppSelector';
 import { IPost } from 'models/post';
-import { FC, Fragment, memo, useEffect, useRef, useState } from 'react';
-import {
-    findAllPosts,
-    findAllPostsAreVideo,
-    updateNewPostList,
-} from 'redux/reducers/postSlice';
+import { FC, Fragment, useEffect, useRef, useState } from 'react';
 import PostItem from './components/PostItem/PostItem';
 import styles from './PostList.module.scss';
 

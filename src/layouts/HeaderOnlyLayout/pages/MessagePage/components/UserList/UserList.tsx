@@ -47,14 +47,6 @@ const UserList: FC = () => {
                     lastestMessage={lastestMessage}
                 />
             ))}
-            {userList.map(({ avatar, username, lastestMessage }, index) => (
-                <UserItem
-                    key={index}
-                    avatar={avatar}
-                    username={username}
-                    lastestMessage={lastestMessage}
-                />
-            ))}
         </div>
     );
 };
