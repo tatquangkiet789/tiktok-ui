@@ -1,17 +1,26 @@
 import classNames from 'classnames/bind';
+import { useAppDispatch } from 'hooks/useAppDispatch';
 import useDebounce from 'hooks/useDebounce';
 import React, { useEffect, useState } from 'react';
-import styles from './SearchUser.module.scss';
+import { findFriendsByKeyword, resetFriendList } from 'redux/reducers/friendSlice';
+// import { findFriendsByKeyword } from 'redux/reducers/friendSlice';
+import styles from './SearchFriend.module.scss';
 
 const cx = classNames.bind(styles);
 
-const SearchUser: React.FC = () => {
+const SearchFriend: React.FC = () => {
     const [keyword, setKeyword] = useState('');
     const debouncedValue = useDebounce(keyword, 500);
 
+    const dispatch = useAppDispatch();
+
     useEffect(() => {
-        if (!debouncedValue) return;
-    }, [debouncedValue]);
+        if (!debouncedValue) {
+            dispatch(resetFriendList());
+            return;
+        }
+        dispatch(findFriendsByKeyword(debouncedValue));
+    }, [debouncedValue, dispatch]);
 
     return (
         <div className={cx('container')}>
@@ -26,4 +35,4 @@ const SearchUser: React.FC = () => {
     );
 };
 
-export default SearchUser;
+export default SearchFriend;

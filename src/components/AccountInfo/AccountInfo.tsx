@@ -2,6 +2,7 @@ import { TickIcon } from 'assets/icons';
 import classNames from 'classnames/bind';
 import React, { memo } from 'react';
 import { Link } from 'react-router-dom';
+import { dateFormat } from 'utils/format';
 import styles from './AccountInfo.module.scss';
 
 const cx = classNames.bind(styles);
@@ -37,7 +38,10 @@ const AccountInfo: React.FC<IAccountInfoProps> = ({
                     {lastName} {firstName}
                     {tick ? <TickIcon /> : null}
                 </Link>
-                <span className={cx('created-date')}>{createdDate}</span>
+                <span className={cx('created-date')}>
+                    {/* {dateFormat.format(createdDate.getTime(), 'day')} */}
+                    {createdDate}
+                </span>
             </div>
         </div>
     );

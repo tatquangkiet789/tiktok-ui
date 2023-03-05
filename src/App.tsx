@@ -1,6 +1,7 @@
 import { LOCAL_STORAGE_KEY } from 'constants/constants';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
+import { logoutUserService } from 'layouts/AuthLayout/services/authService';
 import React, { FC, useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
 import { findCurrentUserByAccessToken } from 'redux/reducers/authSlice';

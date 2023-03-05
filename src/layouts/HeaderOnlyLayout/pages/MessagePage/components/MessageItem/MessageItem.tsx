@@ -1,27 +1,32 @@
 import classNames from 'classnames/bind';
-import React, { Fragment } from 'react';
+import { useAppSelector } from 'hooks/useAppSelector';
+import React from 'react';
 import styles from './MessageItem.module.scss';
 
 const cx = classNames.bind(styles);
 
 interface IMessageItemProps {
-    avatar: string;
     content: string;
+    senderId: number;
+    senderAvatar: string;
 }
 
-const MessageItem: React.FC<IMessageItemProps> = ({ avatar, content }) => {
-    const currentUserAvatar =
-        'https://res.cloudinary.com/dnwauajh9/image/upload/v1671507776/uolu8eprll8lk63y6xja.jpg';
+const MessageItem: React.FC<IMessageItemProps> = ({
+    content,
+    senderId,
+    senderAvatar,
+}) => {
+    const { currentUser } = useAppSelector((state) => state.auth);
 
     return (
         <div
             className={cx('container', {
-                send: currentUserAvatar === avatar,
+                send: currentUser.id === senderId,
             })}
         >
             <div
                 className={cx('avatar')}
-                style={{ backgroundImage: `url(${avatar})` }}
+                style={{ backgroundImage: `url(${senderAvatar})` }}
             ></div>
             <p className={cx('content')}>{content}</p>
         </div>

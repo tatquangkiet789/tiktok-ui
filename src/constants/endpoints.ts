@@ -9,6 +9,12 @@ const ENDPOINTS = {
     // Users endpoints
     findTop10SuggestedUsers: '/users/suggested',
 
+    // Friend endpoints
+    findAllFriends: '/users/friends',
+
+    // Message endpoints
+    findAllMessagesByUserId: (userId: number) => `/messages/${userId}`,
+
     // Search endpoints
     searchUsersByKeyword: (keyword: string) => `/search?q=${encodeURIComponent(keyword)}`,
 

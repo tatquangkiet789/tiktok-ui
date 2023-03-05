@@ -42,12 +42,6 @@ const publicRoutes = [
     { path: routes.register, component: RegisterPage, layout: AuthLayout },
 
     { path: routes.unauthorized, component: UnauthorizedPage, layout: NoLayout },
-    {
-        path: routes.messages,
-        component: MessagePage,
-        layout: HeaderOnlyLayout,
-        allowRoles: [ROLES.USER, ROLES.ADMIN],
-    },
 ];
 
 const privateRoutes = [
@@ -55,6 +49,12 @@ const privateRoutes = [
         path: routes.postDetail,
         component: PostDetailPage,
         layout: NoLayout,
+        allowRoles: [ROLES.USER, ROLES.ADMIN],
+    },
+    {
+        path: routes.messages,
+        component: MessagePage,
+        layout: HeaderOnlyLayout,
         allowRoles: [ROLES.USER, ROLES.ADMIN],
     },
 ];

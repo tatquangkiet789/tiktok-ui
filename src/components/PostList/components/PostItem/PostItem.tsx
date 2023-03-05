@@ -83,7 +83,7 @@ const PostItem: React.FC<IPostItemProps> = ({ post }) => {
                         notificationType: 'like',
                         postId: postId,
                     };
-                    // socketClient.emit(SOCKET_EVENT.SEND_NOTIFICATION, notification);
+                    socketClient.emit(SOCKET_EVENT.SEND_NOTIFICATION, notification);
                 });
 
         dispatch(unlikePostById({ postId: postId, accessToken }))
