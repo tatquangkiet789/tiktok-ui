@@ -83,7 +83,7 @@ const authSlice = createSlice({
     reducers: {
         logoutUser: (state) => {
             state.currentUser = null as any;
-            localStorage.clear();
+            sessionStorage.clear();
         },
         resetRegisterMessage: (state) => {
             state.registerMessage = '';
@@ -100,6 +100,7 @@ const authSlice = createSlice({
             .addCase(loginUser.fulfilled, (state, action) => {
                 state.authLoading = false;
                 state.currentUser = action.payload.content;
+                console.log(`Current user in loginUser.fulfilled`, state.currentUser);
             })
             .addCase(loginUser.rejected, (state, action) => {
                 state.authLoading = false;
@@ -148,7 +149,7 @@ const authSlice = createSlice({
                 state.authLoading = false;
                 toast.success(action.payload.message);
                 state.currentUser = null as any;
-                localStorage.clear();
+                sessionStorage.clear();
             })
             .addCase(logoutUser.rejected, (state, action) => {
                 state.authLoading = false;

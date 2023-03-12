@@ -1,4 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
+
 import authReducer from './reducers/authSlice';
 import commentReducer from './reducers/commentSlice';
 import friendReducer from './reducers/friendSlice';

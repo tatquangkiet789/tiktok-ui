@@ -36,7 +36,9 @@ export const findPostByIdService = async (id: number) => {
 // [POST] /api/v1/posts/:id/like
 export const likePostByIdService = async (params: IUserLikeOrUnlikePostDTO) => {
     const { postId, accessToken } = params;
-    const res = await privateAxios.post(ENDPOINTS.likePostById(postId), null, {
+    console.log(`likePostByIdService: `, params);
+
+    const res = await publicAxios.post(ENDPOINTS.likePostById(postId), null, {
         headers: {
             Authorization: `Bearer ${accessToken}`,
         },

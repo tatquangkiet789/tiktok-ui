@@ -1,13 +1,13 @@
 import classNames from 'classnames/bind';
-import { IUser } from 'models/user';
 import { FC, Fragment } from 'react';
+import { IFriendModel } from '../../models/friendDTO';
 import UserItem from '../FriendItem/FriendItem';
 import styles from './FriendList.module.scss';
 
 const cx = classNames.bind(styles);
 
 interface IFriendListProps {
-    friendList: IUser[];
+    friendList: IFriendModel[];
     loading: boolean;
     error: string;
 }
@@ -23,15 +23,17 @@ const FriendList: FC<IFriendListProps> = ({ friendList, loading, error }) => {
                 <p>{error}</p>
             ) : (
                 <Fragment>
-                    {friendList.map(({ avatar, firstName, lastName, id }) => (
-                        <UserItem
-                            key={id}
-                            avatar={avatar}
-                            userId={id}
-                            fullname={`${lastName} ${firstName}`}
-                            lastestMessage='Tin nhắn mới nhất'
-                        />
-                    ))}
+                    {friendList.map(
+                        ({ avatar, firstName, lastName, id, lastestMessage }) => (
+                            <UserItem
+                                key={id}
+                                avatar={avatar}
+                                userId={id}
+                                fullname={`${lastName} ${firstName}`}
+                                lastestMessage={lastestMessage}
+                            />
+                        ),
+                    )}
                 </Fragment>
             )}
             {/* <h1

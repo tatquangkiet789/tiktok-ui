@@ -15,14 +15,14 @@ export const POST_TYPE = {
 
 export const MAX_INPUT_LENGTH = 150;
 
-export const LOCAL_STORAGE_KEY = {
-    ACCESS_TOKEN: 'accessToken',
+export const STORAGE_KEY = {
+    ACCESS_TOKEN: 'ACCESS_TOKEN',
 };
 
 export const SOCKET_EVENT = {
-    NEW_USER: 'newUser',
-    SEND_MESSAGE: 'sendMessage',
-    RECEIVE_MESSAGE: 'receiveMessage',
-    SEND_NOTIFICATION: 'sendNotification',
-    RECEIVE_NOTIFICATION: 'receiveNotification',
+    SEND_MESSAGE: 'SEND_MESSAGE',
+    RECEIVE_MESSAGE: 'RECEIVE_MESSAGE',
+    NEW_USER: 'NEW_USER',
+    SEND_NOTIFICATION: 'SEND_NOTIFICATION',
+    RECEIVE_NOTIFICATION: 'RECEIVE_NOTIFICATION',
 };

@@ -1,4 +1,4 @@
-import { LOCAL_STORAGE_KEY } from 'constants/constants';
+import { STORAGE_KEY } from 'constants/constants';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import { logoutUserService } from 'layouts/AuthLayout/services/authService';
@@ -8,17 +8,15 @@ import { findCurrentUserByAccessToken } from 'redux/reducers/authSlice';
 import AppRoutes from './routes/AppRoutes';
 
 const App: FC = () => {
-    const { currentUser } = useAppSelector((state) => state.auth);
     const dispatch = useAppDispatch();
 
-    const accessToken = localStorage.getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
+    const accessToken = sessionStorage.getItem(STORAGE_KEY.ACCESS_TOKEN);
 
     useEffect(() => {
-        if (currentUser) return;
         if (!accessToken) return;
 
         dispatch(findCurrentUserByAccessToken(accessToken));
-    }, [dispatch, currentUser, accessToken]);
+    }, [dispatch, accessToken]);
 
     return (
         <React.Fragment>

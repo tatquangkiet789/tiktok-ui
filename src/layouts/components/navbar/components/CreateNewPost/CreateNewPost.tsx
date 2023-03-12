@@ -3,6 +3,7 @@ import classNames from 'classnames/bind';
 import Button from 'components/Button/Button';
 import InputField from 'components/InputField/InputField';
 import TextAreaField from 'components/TextAreaField/TextAreaField';
+import { STORAGE_KEY } from 'constants/constants';
 import { Field, Formik } from 'formik';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
@@ -49,8 +50,10 @@ const CreateNewPost: FC<ICreateNewPostProps> = ({ onCloseCreateNewPostModal }) =
                     initialValues={initialValues}
                     onSubmit={(values, { resetForm }) => {
                         const { caption, content } = values;
-                        const { accessToken } = currentUser;
-
+                        const accessToken = sessionStorage.getItem(
+                            STORAGE_KEY.ACCESS_TOKEN,
+                        );
+                        if (!accessToken) return;
                         const formData = new FormData();
 
                         formData.append('caption', caption);

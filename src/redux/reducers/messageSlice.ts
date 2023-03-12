@@ -1,7 +1,13 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
-import { IMessageDTO } from 'layouts/HeaderOnlyLayout/pages/MessagePage/models/messageDTO';
-import { findAllMessagesByUserIdService } from 'layouts/HeaderOnlyLayout/pages/MessagePage/services/messageService';
+import {
+    ICreateNewMessageDTO,
+    IMessageDTO,
+} from 'layouts/HeaderOnlyLayout/pages/MessagePage/models/messageDTO';
+import {
+    createNewMessageService,
+    findAllMessagesByUserIdService,
+} from 'layouts/HeaderOnlyLayout/pages/MessagePage/services/messageService';
 import { IMessage } from 'models/message';
 import { toast } from 'react-toastify';
 
@@ -32,10 +38,29 @@ export const findAllMessagesByUserId = createAsyncThunk(
     },
 );
 
+// [POST] /api/v1/messages/create
+export const createNewMessage = createAsyncThunk(
+    'createNewMessage',
+    async (params: ICreateNewMessageDTO, { rejectWithValue }) => {
+        try {
+            const data = await createNewMessageService(params);
+            return data;
+        } catch (error) {
+            const err = error as AxiosError;
+            if (!err.response) throw err;
+            return rejectWithValue(err.response.data);
+        }
+    },
+);
+
 const messageSlice = createSlice({
     name: 'messages',
     initialState,
-    reducers: {},
+    reducers: {
+        receiveNewMessageFromSocket: (state, action) => {
+            state.messageList.push(action.payload);
+        },
+    },
     extraReducers: (builder) => {
         builder
             .addCase(findAllMessagesByUserId.pending, (state) => {
@@ -53,8 +78,25 @@ const messageSlice = createSlice({
                     ? (action.payload as AxiosError).message
                     : action.error.message!;
                 toast.error(state.error);
+            })
+            .addCase(createNewMessage.pending, (state) => {
+                state.loading = true;
+                state.error = '';
+            })
+            .addCase(createNewMessage.fulfilled, (state, action) => {
+                state.loading = false;
+                state.messageList.push(action.payload.content);
+            })
+            .addCase(createNewMessage.rejected, (state, action) => {
+                state.loading = false;
+                state.error = (action.payload as AxiosError)
+                    ? (action.payload as AxiosError).message
+                    : action.error.message!;
+                toast.error(state.error);
             });
     },
 });
+
+export const { receiveNewMessageFromSocket } = messageSlice.actions;
 
 export default messageSlice.reducer;

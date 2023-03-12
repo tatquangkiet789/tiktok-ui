@@ -45,6 +45,17 @@
         border-radius: 50%;
         padding: 6px;
 
+        &.disabled {
+            &:hover {
+                cursor: not-allowed;
+                background-color: white;
+            }
+
+            & svg {
+                color: var(--gray012-color);
+            }
+        }
+
         &:hover {
             background-color: var(--gray006-color);
             cursor: pointer;

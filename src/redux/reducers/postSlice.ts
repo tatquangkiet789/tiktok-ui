@@ -87,6 +87,8 @@ export const likePostById = createAsyncThunk(
     'likePostById',
     async (params: IUserLikeOrUnlikePostDTO, { rejectWithValue }) => {
         try {
+            console.log(`likePostById: `, params);
+
             const data = await likePostByIdService(params);
             return data;
         } catch (error) {
@@ -213,7 +215,7 @@ const postSlice = createSlice({
             })
             .addCase(findPostById.fulfilled, (state, action) => {
                 state.postLoading = false;
-                state.selectedPost = action.payload;
+                state.selectedPost = action.payload.content;
             })
             .addCase(findPostById.rejected, (state, action) => {
                 state.postLoading = false;
@@ -249,7 +251,7 @@ const postSlice = createSlice({
             .addCase(createNewPost.fulfilled, (state, action) => {
                 state.postLoading = false;
                 state.message = action.payload.message;
-                state.posts = [...action.payload.content, ...state.posts];
+                state.posts = [{ ...action.payload.content }, ...state.posts];
                 toast.success(state.message);
             })
             .addCase(createNewPost.rejected, (state, action) => {

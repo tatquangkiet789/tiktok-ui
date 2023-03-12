@@ -1,10 +1,12 @@
 import { CloseIcon, HeartIcon } from 'assets/icons';
 import classNames from 'classnames/bind';
 import AccountInfo from 'components/AccountInfo/AccountInfo';
-import { POST_TYPE } from 'constants/constants';
+import { POST_TYPE, SOCKET_EVENT } from 'constants/constants';
 import routes from 'constants/routes';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
+import socketClient from 'libs/socketClient';
+import { ISendNotification } from 'models/notificationDTO';
 import React, { Fragment, useEffect, useState } from 'react';
 import { AiOutlineComment } from 'react-icons/ai';
 import ReactPlayer from 'react-player';
@@ -27,7 +29,7 @@ const PostDetailPage: React.FC = () => {
     const { id } = useParams();
 
     const { currentUser } = useAppSelector((state) => state.auth);
-    const { selectedPost, postError } = useAppSelector((state) => state.posts);
+    const { selectedPost } = useAppSelector((state) => state.posts);
     const dispatch = useAppDispatch();
 
     const [userLikePostStatus, setUserLikePostStatus] = useState(false);
@@ -58,14 +60,13 @@ const PostDetailPage: React.FC = () => {
                 .then(() => {
                     setUserLikePostStatus(true);
                     dispatch(userLikePost(postId));
-                    // socketClient.emit('sendNotification', {
-                    //     senderName: currentUser.username,
-                    //     receiverName: userPostDetail.username,
-                    // });
-                    // console.log({
-                    //     senderName: currentUser.username,
-                    //     receiverName: userPostDetail.username,
-                    // });
+                    const notification: ISendNotification = {
+                        senderName: currentUser.username,
+                        receiverName: selectedPost.userPostDetail.username,
+                        notificationType: 'like',
+                        postId: postId,
+                    };
+                    socketClient.emit(SOCKET_EVENT.SEND_NOTIFICATION, notification);
                 });
 
         dispatch(unlikePostById({ postId: postId, accessToken: accessToken }))
@@ -75,8 +76,6 @@ const PostDetailPage: React.FC = () => {
                 dispatch(userUnlikePost(postId));
             });
     };
-
-    if (postError) return <h1>{postError}</h1>;
 
     return (
         <Fragment>

@@ -21,12 +21,18 @@ const MessageList: React.FC<IMessageListProps> = ({ messageList, loading, error 
         lastestMessageRef.current.scrollIntoView();
     }, []);
 
+    useEffect(() => {
+        if (!lastestMessageRef.current) return;
+
+        lastestMessageRef.current.scrollIntoView({ behavior: 'smooth' });
+    }, [messageList]);
+
     return (
         <div className={cx('container')}>
             {messageList.length === 0 && loading ? (
                 <p>Đang tải tin nhắn</p>
             ) : messageList.length === 0 ? (
-                <p>Không tìm thấy tin nhắn</p>
+                <p>Hãy gửi tin nhắn để bắt đầu cuộc trò chuyện</p>
             ) : error ? (
                 <p>{error}</p>
             ) : (

@@ -16,7 +16,7 @@ const notificationSlice = createSlice({
     initialState,
     reducers: {
         receiveNewNotification: (state, action: PayloadAction<IReceiveNotification>) => {
-            state.notificationList.unshift(action.payload);
+            state.notificationList = [{ ...action.payload }, ...state.notificationList];
             state.totalNotifications = state.totalNotifications + 1;
         },
         resetTotalNotification: (state) => {

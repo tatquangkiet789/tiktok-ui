@@ -1,6 +1,6 @@
 import classNames from 'classnames/bind';
 import PostList from 'components/PostList/PostList';
-import { LOCAL_STORAGE_KEY } from 'constants/constants';
+import { STORAGE_KEY } from 'constants/constants';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import React, { useEffect, useRef, useState } from 'react';
@@ -37,7 +37,7 @@ const UserDetailPage: React.FC = () => {
         else dispatch(updateNewPostList(false));
 
         if (currentUser.username === username) {
-            const accessToken = localStorage.getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN)!;
+            const accessToken = sessionStorage.getItem(STORAGE_KEY.ACCESS_TOKEN)!;
             dispatch(
                 findAllPostsByCurrentUserId({ page: page, accessToken: accessToken }),
             );

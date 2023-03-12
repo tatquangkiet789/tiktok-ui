@@ -14,6 +14,7 @@ const ENDPOINTS = {
 
     // Message endpoints
     findAllMessagesByUserId: (userId: number) => `/messages/${userId}`,
+    createNewMessage: '/messages/create',
 
     // Search endpoints
     searchUsersByKeyword: (keyword: string) => `/search?q=${encodeURIComponent(keyword)}`,

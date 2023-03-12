@@ -11,7 +11,7 @@ import { Formik, Field } from 'formik';
 import { loginUser } from 'redux/reducers/authSlice';
 import routes from 'constants/routes';
 import { ILoginFormValue } from 'layouts/AuthLayout/models/login';
-import { LOCAL_STORAGE_KEY, ROLES } from 'constants/constants';
+import { STORAGE_KEY, ROLES } from 'constants/constants';
 import { toast } from 'react-toastify';
 
 const cx = classNames.bind(styles);
@@ -51,8 +51,8 @@ const LoginPage: React.FC = () => {
                         .unwrap()
                         .then((data) => {
                             const currentUser = data.content;
-                            localStorage.setItem(
-                                LOCAL_STORAGE_KEY.ACCESS_TOKEN,
+                            sessionStorage.setItem(
+                                STORAGE_KEY.ACCESS_TOKEN,
                                 currentUser.accessToken,
                             );
                             resetForm();

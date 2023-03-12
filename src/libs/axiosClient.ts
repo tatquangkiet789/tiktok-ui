@@ -1,7 +1,7 @@
 import axios from 'axios';
 import jwt_decode, { JwtPayload } from 'jwt-decode';
 import { refreshTokenService } from 'layouts/AuthLayout/services/authService';
-import { BASE_URL, LOCAL_STORAGE_KEY } from '../constants/constants';
+import { BASE_URL, STORAGE_KEY } from '../constants/constants';
 
 export const publicAxios = axios.create({
     baseURL: BASE_URL,
@@ -19,13 +19,13 @@ export const privateAxios = axios.create({
 privateAxios.interceptors.request.use(async (config) => {
     try {
         const currentDate = new Date();
-        const accessToken = localStorage.getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
+        const accessToken = sessionStorage.getItem(STORAGE_KEY.ACCESS_TOKEN);
         const decodedUser = jwt_decode<JwtPayload>(accessToken!);
 
         if (decodedUser.exp && decodedUser.exp < currentDate.getTime() / 1000) {
             const data = await refreshTokenService();
             config.headers!['Authorization'] = `Bearer ${data.content}`;
-            localStorage.setItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN, data.content);
+            sessionStorage.setItem(STORAGE_KEY.ACCESS_TOKEN, data.content);
         }
         return config;
     } catch (err) {

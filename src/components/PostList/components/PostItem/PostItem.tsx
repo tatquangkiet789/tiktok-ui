@@ -2,7 +2,7 @@ import { HeartIcon } from 'assets/icons';
 import classNames from 'classnames/bind';
 import AccountInfo from 'components/AccountInfo/AccountInfo';
 import Button from 'components/Button/Button';
-import { POST_TYPE, SOCKET_EVENT } from 'constants/constants';
+import { POST_TYPE, SOCKET_EVENT, STORAGE_KEY } from 'constants/constants';
 import routes from 'constants/routes';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
@@ -49,6 +49,8 @@ const PostItem: React.FC<IPostItemProps> = ({ post }) => {
     const location = useLocation();
     const navigate = useNavigate();
 
+    const accessToken = sessionStorage.getItem(STORAGE_KEY.ACCESS_TOKEN);
+
     useEffect(() => {
         // if user is not login then not show like status
         if (!currentUser) return;
@@ -63,16 +65,15 @@ const PostItem: React.FC<IPostItemProps> = ({ post }) => {
     }, [currentUser, id, userLikePostList]);
 
     const handleLikeAndUnlikePost = () => {
-        if (!currentUser) {
+        if (!currentUser || !accessToken) {
             return navigate(routes.login, {
                 replace: true,
                 state: { from: location },
             });
         }
         const postId = id as number;
-        const { accessToken } = currentUser;
-        if (!likePost)
-            return dispatch(likePostById({ postId: postId, accessToken }))
+        if (!likePost) {
+            dispatch(likePostById({ postId: postId, accessToken: accessToken }))
                 .unwrap()
                 .then(() => {
                     setLikePost(true);
@@ -85,8 +86,9 @@ const PostItem: React.FC<IPostItemProps> = ({ post }) => {
                     };
                     socketClient.emit(SOCKET_EVENT.SEND_NOTIFICATION, notification);
                 });
-
-        dispatch(unlikePostById({ postId: postId, accessToken }))
+            return;
+        }
+        dispatch(unlikePostById({ postId: postId, accessToken: accessToken }))
             .unwrap()
             .then(() => {
                 setLikePost(false);
@@ -108,6 +110,7 @@ const PostItem: React.FC<IPostItemProps> = ({ post }) => {
                         createdDate={createdDate}
                     />
                 </div>
+                <h3>PostId: {id}</h3>
                 <Button text='Kết bạn' variant='outlined' size='sm' />
             </div>
             <div className={cx('post-caption')}>{caption}</div>

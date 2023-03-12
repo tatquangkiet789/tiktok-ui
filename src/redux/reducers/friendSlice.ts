@@ -1,14 +1,16 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
-import { IFriendDTO } from 'layouts/HeaderOnlyLayout/pages/MessagePage/models/friendDTO';
+import {
+    IFriendDTO,
+    IFriendModel,
+} from 'layouts/HeaderOnlyLayout/pages/MessagePage/models/friendDTO';
 import { findAllFriendsService } from 'layouts/HeaderOnlyLayout/pages/MessagePage/services/friendService';
-import { IUser } from 'models/user';
 import { toast } from 'react-toastify';
 
 interface IFriendState {
-    friendList: IUser[];
-    filterList: IUser[];
-    receiverInfo: IUser;
+    friendList: IFriendModel[];
+    filterList: IFriendModel[];
+    receiverInfo: IFriendModel;
     loading: boolean;
     error: string;
 }
@@ -67,7 +69,6 @@ const friendSlice = createSlice({
                 state.loading = false;
                 state.friendList = action.payload.content;
                 state.filterList = action.payload.content;
-                state.receiverInfo = action.payload.content[0];
             })
             .addCase(findAllFriends.rejected, (state, action) => {
                 state.loading = false;

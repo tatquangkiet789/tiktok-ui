@@ -50,19 +50,19 @@ const Navbar: React.FC = () => {
         if (!currentUser) return;
 
         const { username } = currentUser;
-        // socketClient.emit(SOCKET_EVENT.NEW_USER, username);
+        socketClient.emit(SOCKET_EVENT.NEW_USER, username);
     }, [currentUser]);
 
-    // useEffect(() => {
-    //     socketClient.on(
-    //         SOCKET_EVENT.RECEIVE_NOTIFICATION,
-    //         (data: IReceiveNotification) => {
-    //             dispatch(receiveNewNotification(data));
-    //             dispatch(userLikePost(data.postId));
-    //         },
-    //     );
-    //     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [socketClient]);
+    useEffect(() => {
+        socketClient.on(
+            SOCKET_EVENT.RECEIVE_NOTIFICATION,
+            (data: IReceiveNotification) => {
+                dispatch(receiveNewNotification(data));
+                dispatch(userLikePost(data.postId));
+            },
+        );
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const handleOpenNotification = () => {
         setOpenNotification((prev) => {
