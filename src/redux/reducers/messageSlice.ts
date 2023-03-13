@@ -85,7 +85,9 @@ const messageSlice = createSlice({
             })
             .addCase(createNewMessage.fulfilled, (state, action) => {
                 state.loading = false;
-                state.messageList.push(action.payload.content);
+
+                // state.messageList.push(action.payload.content);
+                console.log(action.payload.content);
             })
             .addCase(createNewMessage.rejected, (state, action) => {
                 state.loading = false;

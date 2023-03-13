@@ -13,6 +13,7 @@ interface IFriendState {
     receiverInfo: IFriendModel;
     loading: boolean;
     error: string;
+    selectedId: number;
 }
 
 const initialState: IFriendState = {
@@ -21,6 +22,7 @@ const initialState: IFriendState = {
     loading: false,
     error: '',
     receiverInfo: null as any,
+    selectedId: 0,
 };
 
 // [GET] /api/v1/users/friends
@@ -42,6 +44,13 @@ const friendSlice = createSlice({
     name: 'friends',
     initialState,
     reducers: {
+        setLastestMessageToFriendList: (state, action) => {
+            state.filterList = [...state.filterList].map((user) => {
+                if (user.id === action.payload.senderDetail.id)
+                    return { ...user, lastestMessage: action.payload.content };
+                return user;
+            });
+        },
         findFriendsByKeyword: (state, action) => {
             state.filterList = [...state.friendList].filter(
                 (user) =>
@@ -56,6 +65,7 @@ const friendSlice = createSlice({
             state.receiverInfo = state.friendList.filter(
                 (user) => user.id === action.payload,
             )[0];
+            state.selectedId = action.payload;
         },
     },
     extraReducers: (builder) => {
@@ -69,6 +79,7 @@ const friendSlice = createSlice({
                 state.loading = false;
                 state.friendList = action.payload.content;
                 state.filterList = action.payload.content;
+                // state.receiverInfo = action.payload.content[0];
             })
             .addCase(findAllFriends.rejected, (state, action) => {
                 state.loading = false;
@@ -80,7 +91,11 @@ const friendSlice = createSlice({
     },
 });
 
-export const { findFriendsByKeyword, resetFriendList, setReceiverInfo } =
-    friendSlice.actions;
+export const {
+    findFriendsByKeyword,
+    resetFriendList,
+    setReceiverInfo,
+    setLastestMessageToFriendList,
+} = friendSlice.actions;
 
 export default friendSlice.reducer;

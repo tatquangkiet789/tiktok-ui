@@ -7,7 +7,10 @@ import React, { FormEvent, useState } from 'react';
 import { AiOutlineSend } from 'react-icons/ai';
 import { FiImage } from 'react-icons/fi';
 import { toast } from 'react-toastify';
-import { createNewMessage } from 'redux/reducers/messageSlice';
+import {
+    createNewMessage,
+    receiveNewMessageFromSocket,
+} from 'redux/reducers/messageSlice';
 import styles from './AddMessage.module.scss';
 
 const cx = classNames.bind(styles);
@@ -39,7 +42,14 @@ const AddMessage: React.FC = () => {
                 content: content,
                 accessToken: accessToken,
             }),
-        );
+        )
+            .unwrap()
+            .then((result) => {
+                const message = result.content;
+                if (message.senderDetail.id === currentUser.id)
+                    dispatch(receiveNewMessageFromSocket(message));
+            });
+
         socketClient.emit(SOCKET_EVENT.SEND_MESSAGE, {
             senderName: currentUser.username,
             receiverName: receiverInfo.username,

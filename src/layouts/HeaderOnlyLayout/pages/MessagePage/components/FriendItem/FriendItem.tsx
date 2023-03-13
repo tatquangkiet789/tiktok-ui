@@ -1,5 +1,6 @@
 import { useAppDispatch } from 'app/core/hooks/useAppDispatch';
 import classNames from 'classnames/bind';
+import { useAppSelector } from 'hooks/useAppSelector';
 import { FC } from 'react';
 import { setReceiverInfo } from 'redux/reducers/friendSlice';
 import styles from './FriendItem.module.scss';
@@ -20,13 +21,19 @@ const FriendItem: FC<IFriendItemProps> = ({
     fullname,
 }) => {
     const dispatch = useAppDispatch();
+    const { selectedId } = useAppSelector((state) => state.friends);
 
     const handleSetReceiverInfo = () => {
         dispatch(setReceiverInfo(userId));
     };
 
     return (
-        <div className={cx('container')} onClick={handleSetReceiverInfo}>
+        <div
+            className={cx('container', {
+                active: selectedId === userId,
+            })}
+            onClick={handleSetReceiverInfo}
+        >
             <img src={avatar} className={cx('avatar')} alt='Friend Avatar' />
             <div className={cx('username-container')}>
                 <span className={cx('username')}>{fullname}</span>

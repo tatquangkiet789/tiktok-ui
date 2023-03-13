@@ -74,27 +74,6 @@
         padding: 8px 22px 8px 16px;
         box-shadow: rgb(0 0 0 / 6%) 0px 2px 8px;
 
-        & .receiver-info {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 6px;
-            border-radius: 8px;
-
-            &:hover {
-                background-color: var(--gray006-color);
-            }
-
-            & .avatar {
-                border-radius: 50%;
-                width: 50px;
-                height: 50px;
-            }
-            & .username {
-                font-size: 18px;
-            }
-        }
-
         & .video-call-button {
             display: flex;
             align-items: center;

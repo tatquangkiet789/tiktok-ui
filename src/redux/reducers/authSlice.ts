@@ -100,7 +100,6 @@ const authSlice = createSlice({
             .addCase(loginUser.fulfilled, (state, action) => {
                 state.authLoading = false;
                 state.currentUser = action.payload.content;
-                console.log(`Current user in loginUser.fulfilled`, state.currentUser);
             })
             .addCase(loginUser.rejected, (state, action) => {
                 state.authLoading = false;

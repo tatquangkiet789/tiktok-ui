@@ -9,6 +9,10 @@
         background-color: var(--gray003-color);
         cursor: pointer;
     }
+
+    &.active {
+        background-color: var(--gray006-color);
+    }
 }
 
 .avatar {

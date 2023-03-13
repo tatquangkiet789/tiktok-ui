@@ -29,6 +29,7 @@ privateAxios.interceptors.request.use(async (config) => {
         }
         return config;
     } catch (err) {
+        console.error(err);
         Promise.reject(err);
     }
 });
