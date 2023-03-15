@@ -43,6 +43,10 @@
         background-color: var(--gray003-color);
         border-radius: 5px;
     }
+
+    & svg {
+        margin-left: 3px;
+    }
 }
 
 .login {

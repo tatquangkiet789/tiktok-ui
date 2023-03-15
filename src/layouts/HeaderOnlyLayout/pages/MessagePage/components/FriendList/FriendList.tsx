@@ -24,13 +24,14 @@ const FriendList: FC<IFriendListProps> = ({ friendList, loading, error }) => {
             ) : (
                 <Fragment>
                     {friendList.map(
-                        ({ avatar, firstName, lastName, id, lastestMessage }) => (
+                        ({ avatar, firstName, lastName, id, lastestMessage, tick }) => (
                             <UserItem
                                 key={id}
                                 avatar={avatar}
                                 userId={id}
                                 fullname={`${lastName} ${firstName}`}
                                 lastestMessage={lastestMessage}
+                                tick={tick}
                             />
                         ),
                     )}

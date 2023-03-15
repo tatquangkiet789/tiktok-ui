@@ -29,10 +29,19 @@
     & .username {
         font-size: 18px;
         font-weight: 500;
+
+        & svg {
+            margin-left: 3px;
+        }
     }
 
     & .lastest-message {
         font-size: 14px;
         font-weight: 300;
+
+        &.new-message {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
     }
 }

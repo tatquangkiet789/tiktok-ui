@@ -1,8 +1,9 @@
 import { useAppDispatch } from 'app/core/hooks/useAppDispatch';
+import { TickIcon } from 'assets/icons';
 import classNames from 'classnames/bind';
 import { useAppSelector } from 'hooks/useAppSelector';
 import { FC } from 'react';
-import { setReceiverInfo } from 'redux/reducers/friendSlice';
+import { resetUserReceiveNewMessage, setReceiverInfo } from 'redux/reducers/friendSlice';
 import styles from './FriendItem.module.scss';
 
 const cx = classNames.bind(styles);
@@ -12,6 +13,7 @@ interface IFriendItemProps {
     avatar: string;
     lastestMessage?: string;
     fullname: string;
+    tick: boolean;
 }
 
 const FriendItem: FC<IFriendItemProps> = ({
@@ -19,11 +21,15 @@ const FriendItem: FC<IFriendItemProps> = ({
     avatar,
     lastestMessage,
     fullname,
+    tick,
 }) => {
     const dispatch = useAppDispatch();
-    const { selectedId } = useAppSelector((state) => state.friends);
+    const { selectedId, userReceivedNewMessageId } = useAppSelector(
+        (state) => state.friends,
+    );
 
     const handleSetReceiverInfo = () => {
+        if (userId === userReceivedNewMessageId) dispatch(resetUserReceiveNewMessage());
         dispatch(setReceiverInfo(userId));
     };
 
@@ -36,8 +42,17 @@ const FriendItem: FC<IFriendItemProps> = ({
         >
             <img src={avatar} className={cx('avatar')} alt='Friend Avatar' />
             <div className={cx('username-container')}>
-                <span className={cx('username')}>{fullname}</span>
-                <p className={cx('lastest-message')}>{lastestMessage}</p>
+                <p className={cx('username')}>
+                    {fullname}
+                    {tick ? <TickIcon /> : null}
+                </p>
+                <p
+                    className={cx('lastest-message', {
+                        'new-message': userId === userReceivedNewMessageId,
+                    })}
+                >
+                    {lastestMessage}
+                </p>
             </div>
         </div>
     );

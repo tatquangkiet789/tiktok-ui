@@ -1,3 +1,4 @@
+import { TickIcon } from 'assets/icons';
 import classNames from 'classnames/bind';
 import { SOCKET_EVENT } from 'constants/constants';
 import { useAppDispatch } from 'hooks/useAppDispatch';
@@ -26,19 +27,27 @@ const ReceiverInfo: FC<IReceiverInfoProps> = ({ receiverInfo, loading, error }) 
     const dispatch = useAppDispatch();
 
     useEffect(() => {
+        if (!receiverInfo) {
+            toast.error('Vui lòng chọn người để nhắn tin');
+            return;
+        }
+
         socketClient.on(SOCKET_EVENT.RECEIVE_MESSAGE, (value: IReceiveMessageDTO) => {
-            // if (value.senderDetail.id === receiverInfo.id) {
-            //     dispatch(receiveNewMessageFromSocket(value));
-            //     return;
-            // }
-
-            // dispatch(setLastestMessageToFriendList(value));
-            console.log('ReceiverInfo in useEffect', receiverInfo);
+            if (value.senderDetail.id === receiverInfo.id) {
+                dispatch(receiveNewMessageFromSocket(value));
+                console.log('In the same conversation');
+            } else {
+                dispatch(setLastestMessageToFriendList(value));
+                console.log('Not in the same conversation');
+                console.log('ReceiverInfo in useEffect', receiverInfo.id);
+            }
         });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [socketClient]);
 
-    console.log('ReceiverInfo Id: ', receiverInfo?.id);
+        return () => {
+            socketClient.removeListener();
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [socketClient, receiverInfo]);
 
     if (error) toast.error(error);
 
@@ -57,6 +66,7 @@ const ReceiverInfo: FC<IReceiverInfoProps> = ({ receiverInfo, loading, error }) 
                     />
                     <p className={cx('username')}>
                         {receiverInfo.lastName} {receiverInfo.firstName}
+                        {receiverInfo.tick ? <TickIcon /> : null}
                     </p>
                 </Fragment>
             )}

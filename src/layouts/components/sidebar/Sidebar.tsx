@@ -1,4 +1,4 @@
-import { FriendsIcon, HomeIcon, WatchIcon } from 'assets/icons';
+import { FriendsIcon, HomeIcon, TickIcon, WatchIcon } from 'assets/icons';
 import classNames from 'classnames/bind';
 import Button from 'components/Button/Button';
 import { useAppSelector } from 'hooks/useAppSelector';
@@ -93,6 +93,7 @@ const Sidebar: React.FC = () => {
                     <p>
                         {currentUser.lastName} {currentUser.firstName}
                     </p>
+                    {currentUser.tick ? <TickIcon /> : null}
                 </Link>
             ) : null}
             {sidebarMenuItems.map((item, index) => (

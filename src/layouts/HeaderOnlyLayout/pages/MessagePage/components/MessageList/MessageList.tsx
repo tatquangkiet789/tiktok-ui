@@ -15,16 +15,16 @@ interface IMessageListProps {
 const MessageList: React.FC<IMessageListProps> = ({ messageList, loading, error }) => {
     const lastestMessageRef = useRef<HTMLDivElement>(null);
 
+    // useEffect(() => {
+    //     if (!lastestMessageRef.current) return;
+
+    //     lastestMessageRef.current.scrollIntoView();
+    // }, []);
+
     useEffect(() => {
         if (!lastestMessageRef.current) return;
 
         lastestMessageRef.current.scrollIntoView();
-    }, []);
-
-    useEffect(() => {
-        if (!lastestMessageRef.current) return;
-
-        lastestMessageRef.current.scrollIntoView({ behavior: 'smooth' });
     }, [messageList]);
 
     return (

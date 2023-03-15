@@ -51,6 +51,10 @@ const Navbar: React.FC = () => {
 
         const { username } = currentUser;
         socketClient.emit(SOCKET_EVENT.NEW_USER, username);
+
+        return () => {
+            socketClient.removeListener();
+        };
     }, [currentUser]);
 
     useEffect(() => {
@@ -61,8 +65,12 @@ const Navbar: React.FC = () => {
                 dispatch(userLikePost(data.postId));
             },
         );
+
+        return () => {
+            socketClient.removeListener();
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [dispatch, socketClient]);
 
     const handleOpenNotification = () => {
         setOpenNotification((prev) => {

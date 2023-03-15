@@ -7,4 +7,5 @@ export interface IAuth {
     userRoleId: number;
     avatar: string;
     accessToken: string;
+    tick: boolean;
 }
