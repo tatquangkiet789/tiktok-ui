@@ -27,9 +27,9 @@ privateAxios.interceptors.request.use(async (config) => {
             config.headers!['Authorization'] = `Bearer ${data.content}`;
             sessionStorage.setItem(STORAGE_KEY.ACCESS_TOKEN, data.content);
         }
+
         return config;
     } catch (err) {
         console.error(err);
-        Promise.reject(err);
     }
 });

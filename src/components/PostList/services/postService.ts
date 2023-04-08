@@ -36,9 +36,7 @@ export const findPostByIdService = async (id: number) => {
 // [POST] /api/v1/posts/:id/like
 export const likePostByIdService = async (params: IUserLikeOrUnlikePostDTO) => {
     const { postId, accessToken } = params;
-    console.log(`likePostByIdService: `, params);
-
-    const res = await publicAxios.post(ENDPOINTS.likePostById(postId), null, {
+    const res = await privateAxios.get(ENDPOINTS.likePostById(postId), {
         headers: {
             Authorization: `Bearer ${accessToken}`,
         },
@@ -49,7 +47,7 @@ export const likePostByIdService = async (params: IUserLikeOrUnlikePostDTO) => {
 // [POST] /api/v1/posts/:id/unlike
 export const unlikePostByIdService = async (params: IUserLikeOrUnlikePostDTO) => {
     const { postId, accessToken } = params;
-    const res = await privateAxios.post(ENDPOINTS.unLikePostById(postId), null, {
+    const res = await privateAxios.get(ENDPOINTS.unLikePostById(postId), {
         headers: {
             Authorization: `Bearer ${accessToken}`,
         },

@@ -87,8 +87,6 @@ export const likePostById = createAsyncThunk(
     'likePostById',
     async (params: IUserLikeOrUnlikePostDTO, { rejectWithValue }) => {
         try {
-            console.log(`likePostById: `, params);
-
             const data = await likePostByIdService(params);
             return data;
         } catch (error) {
@@ -114,12 +112,12 @@ export const unlikePostById = createAsyncThunk(
     },
 );
 
-// [GET] /api/v1/posts/video?page=:page
-export const findAllPostsAreVideo = createAsyncThunk(
-    'findAllPostsAreVideo',
-    async (params: IPostDTO, { rejectWithValue }) => {
+// [POST] /api/v1/posts/create
+export const createNewPost = createAsyncThunk(
+    'createNewPost',
+    async (params: ICreateNewPostDTO, { rejectWithValue }) => {
         try {
-            const data = await findAllPostsAreVideoService(params);
+            const data = await createNewPostService(params);
             return data;
         } catch (error) {
             const err = error as AxiosError;
@@ -129,12 +127,12 @@ export const findAllPostsAreVideo = createAsyncThunk(
     },
 );
 
-// [POST] /api/v1/posts/create
-export const createNewPost = createAsyncThunk(
-    'createNewPost',
-    async (params: ICreateNewPostDTO, { rejectWithValue }) => {
+// [GET] /api/v1/posts/video?page=:page
+export const findAllPostsAreVideo = createAsyncThunk(
+    'findAllPostsAreVideo',
+    async (params: IPostDTO, { rejectWithValue }) => {
         try {
-            const data = await createNewPostService(params);
+            const data = await findAllPostsAreVideoService(params);
             return data;
         } catch (error) {
             const err = error as AxiosError;

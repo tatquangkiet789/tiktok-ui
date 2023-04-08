@@ -73,7 +73,12 @@ const PostItem: React.FC<IPostItemProps> = ({ post }) => {
         }
         const postId = id as number;
         if (!likePost) {
-            dispatch(likePostById({ postId: postId, accessToken: accessToken }))
+            dispatch(
+                likePostById({
+                    postId: postId,
+                    accessToken: accessToken,
+                }),
+            )
                 .unwrap()
                 .then(() => {
                     setLikePost(true);
@@ -88,7 +93,12 @@ const PostItem: React.FC<IPostItemProps> = ({ post }) => {
                 });
             return;
         }
-        dispatch(unlikePostById({ postId: postId, accessToken: accessToken }))
+        dispatch(
+            unlikePostById({
+                postId: postId,
+                accessToken: accessToken,
+            }),
+        )
             .unwrap()
             .then(() => {
                 setLikePost(false);
