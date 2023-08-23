@@ -1,89 +1,92 @@
-import React, { useEffect, useState } from 'react';
+import React, { FC, Fragment, useEffect, useState } from 'react';
 import styles from './Navbar.module.scss';
 import classNames from 'classnames/bind';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import Tippy from '@tippyjs/react';
-import { useAppSelector } from 'hooks/useAppSelector';
-import Search from './components/Search/Search';
+// import { useAppSelector } from 'hooks/useAppSelector';
+// import Search from './components/Search/Search';
 import { AddIcon, LogoIcon, MessageIcon, NotificationIcon } from 'assets/icons';
-import Button from 'components/Button/Button';
-import Menu from './components/Menu/Menu';
-import routes from 'constants/routes';
-import CreateNewPost from './components/CreateNewPost/CreateNewPost';
-import socketClient from 'libs/socketClient';
-import HeadlessTippy from '@tippyjs/react/headless';
-import Wrapper from 'components/Wrapper/Wrapper';
-import NotificationList from './components/NotificationList/NotificationList';
-import { IReceiveNotification } from 'models/notificationDTO';
+// import Button from 'components/Button/Button';
+// import Menu from './components/Menu/Menu';
+// import routes from 'constants/routes';
+// import CreateNewPost from './components/CreateNewPost/CreateNewPost';
+// import socketClient from 'libs/socketClient';
+// import HeadlessTippy from '@tippyjs/react/headless';
+import Search from './components/Search/Search';
+import { ROUTES } from 'constants/api';
+import Button from 'components/ui/Button/Button';
+// import NotificationList from './components/NotificationList/NotificationList';
+// import { IReceiveNotification } from 'models/notificationDTO';
 import { useAppDispatch } from 'hooks/useAppDispatch';
-import {
-    receiveNewNotification,
-    resetTotalNotification,
-} from 'redux/reducers/notificationSlice';
-import { userLikePost } from 'redux/reducers/postSlice';
-import { SOCKET_EVENT } from 'constants/constants';
+import { useAppSelector } from 'hooks/useAppSelector';
+// import {
+//     receiveNewNotification,
+//     resetTotalNotification,
+// } from 'redux/reducers/notificationSlice';
+// import { userLikePost } from 'redux/reducers/postSlice';
+// import { SOCKET_EVENT } from 'constants/constants';
 
 const cx = classNames.bind(styles);
 
-const Navbar: React.FC = () => {
+const Navbar: FC = () => {
     const { currentUser } = useAppSelector((state) => state.auth);
-    const { notificationList, totalNotifications } = useAppSelector(
-        (state) => state.notifications,
-    );
+    // const { notificationList, totalNotifications } = useAppSelector(
+    //     (state) => state.notifications,
+    // );
     const dispatch = useAppDispatch();
 
-    const [openNotification, setOpenNotification] = useState(false);
-    const [openCreateNewPost, setOpenCreateNewPost] = useState(false);
+    // const [openNotification, setOpenNotification] = useState(false);
+    // const [openCreateNewPost, setOpenCreateNewPost] = useState(false);
 
     const navigate = useNavigate();
 
-    const handleOpenCreateNewPostModal = () => {
-        if (!currentUser) {
-            return navigate(routes.login, {
-                replace: true,
-            });
-        }
-        setOpenCreateNewPost(true);
-    };
+    // const handleOpenCreateNewPostModal = () => {
+    //     if (!currentUser) {
+    //         return navigate(routes.login, {
+    //             replace: true,
+    //         });
+    //     }
+    //     setOpenCreateNewPost(true);
+    // };
 
-    useEffect(() => {
-        if (!currentUser) return;
+    // useEffect(() => {
+    //     if (!currentUser) return;
 
-        const { username } = currentUser;
-        socketClient.emit(SOCKET_EVENT.NEW_USER, username);
+    //     const { username } = currentUser;
+    //     socketClient.emit(SOCKET_EVENT.NEW_USER, username);
 
-        return () => {
-            socketClient.removeListener();
-        };
-    }, [currentUser]);
+    //     return () => {
+    //         socketClient.removeListener();
+    //     };
+    // }, [currentUser]);
 
-    useEffect(() => {
-        socketClient.on(
-            SOCKET_EVENT.RECEIVE_NOTIFICATION,
-            (data: IReceiveNotification) => {
-                dispatch(receiveNewNotification(data));
-                dispatch(userLikePost(data.postId));
-            },
-        );
+    // useEffect(() => {
+    //     socketClient.on(
+    //         SOCKET_EVENT.RECEIVE_NOTIFICATION,
+    //         (data: IReceiveNotification) => {
+    //             dispatch(receiveNewNotification(data));
+    //             dispatch(userLikePost(data.postId));
+    //         },
+    //     );
 
-        return () => {
-            socketClient.removeListener();
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [dispatch, socketClient]);
+    //     return () => {
+    //         socketClient.removeListener();
+    //     };
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [dispatch, socketClient]);
 
-    const handleOpenNotification = () => {
-        setOpenNotification((prev) => {
-            return !prev;
-        });
-        dispatch(resetTotalNotification());
-    };
+    // const handleOpenNotification = () => {
+    //     setOpenNotification((prev) => {
+    //         return !prev;
+    //     });
+    //     dispatch(resetTotalNotification());
+    // };
 
     return (
-        <React.Fragment>
+        <Fragment>
             <div className={cx('container')}>
                 <div className={cx('wrapper')}>
-                    <Link to={routes.home}>
+                    <Link to={ROUTES.home}>
                         <LogoIcon />
                     </Link>
 
@@ -94,14 +97,14 @@ const Navbar: React.FC = () => {
                             variant='default'
                             iconLeft={<AddIcon />}
                             size='md'
-                            onClick={handleOpenCreateNewPostModal}
+                            // onClick={handleOpenCreateNewPostModal}
                         />
                         {currentUser ? (
-                            <React.Fragment>
-                                <Tippy content='Tin nhắn'>
+                            <Fragment>
+                                {/* <Tippy content='Tin nhắn'>
                                     <NavLink
                                         data-count={totalNotifications}
-                                        to={routes.messages}
+                                        to={ROUTES.messages}
                                         className={(nav) =>
                                             cx('message', {
                                                 active: nav.isActive,
@@ -145,7 +148,7 @@ const Navbar: React.FC = () => {
                                     >
                                         <NotificationIcon />
                                     </div>
-                                </HeadlessTippy>
+                                </HeadlessTippy> */}
                                 <Tippy content='Tài khoản'>
                                     <div
                                         className={cx('user')}
@@ -154,27 +157,27 @@ const Navbar: React.FC = () => {
                                         }}
                                     ></div>
                                 </Tippy>
-                            </React.Fragment>
+                            </Fragment>
                         ) : (
-                            <React.Fragment>
+                            <Fragment>
                                 <span className={cx('auth-button')}>
                                     <Button
                                         text='Đăng nhập'
                                         variant='primary'
                                         size='md'
-                                        to={`${routes.login}`}
+                                        to={`/${ROUTES.auth}/${ROUTES.login}`}
                                     />
                                 </span>
-                            </React.Fragment>
+                            </Fragment>
                         )}
-                        <Menu />
+                        {/* <Menu /> */}
                     </div>
                 </div>
             </div>
-            {openCreateNewPost ? (
+            {/* {openCreateNewPost ? (
                 <CreateNewPost onCloseCreateNewPostModal={setOpenCreateNewPost} />
-            ) : null}
-        </React.Fragment>
+            ) : null} */}
+        </Fragment>
     );
 };
 

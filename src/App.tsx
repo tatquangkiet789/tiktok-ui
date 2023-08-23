@@ -1,25 +1,20 @@
-import { STORAGE_KEY } from 'constants/constants';
-import { useAppDispatch } from 'hooks/useAppDispatch';
-import { useAppSelector } from 'hooks/useAppSelector';
-import { logoutUserService } from 'layouts/AuthLayout/services/authService';
-import React, { FC, useEffect } from 'react';
+import { FC, Fragment } from 'react';
+import AppRoutes from 'routes/AppRoutes';
 import { ToastContainer } from 'react-toastify';
-import { findCurrentUserByAccessToken } from 'redux/reducers/authSlice';
-import AppRoutes from './routes/AppRoutes';
 
 const App: FC = () => {
-    const dispatch = useAppDispatch();
+    // const dispatch = useAppDispatch();
 
-    const accessToken = sessionStorage.getItem(STORAGE_KEY.ACCESS_TOKEN);
+    // const accessToken = sessionStorage.getItem(STORAGE_KEY.ACCESS_TOKEN);
 
-    useEffect(() => {
-        if (!accessToken) return;
+    // useEffect(() => {
+    //     if (!accessToken) return;
 
-        dispatch(findCurrentUserByAccessToken(accessToken));
-    }, [dispatch, accessToken]);
+    //     dispatch(findCurrentUserByAccessToken(accessToken));
+    // }, [dispatch, accessToken]);
 
     return (
-        <React.Fragment>
+        <Fragment>
             <AppRoutes />
             <ToastContainer
                 position='bottom-right'
@@ -27,7 +22,7 @@ const App: FC = () => {
                 hideProgressBar={false}
                 closeOnClick={true}
             />
-        </React.Fragment>
+        </Fragment>
     );
 };
 

@@ -1,45 +1,23 @@
-import React from 'react';
+import { ROUTES } from 'constants/api';
+import AuthLayout from 'layouts/AuthLayout/AuthLayout';
+import MainLayout from 'layouts/MainLayout/MainLayout';
+import Home from 'pages/Home/Home';
+import Login from 'pages/Login/Login';
+import { FC } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import RequiredAuth from '../guards/RequiredAuth';
-import { privateRoutes, publicRoutes } from './routes';
 
-const AppRoutes: React.FC = () => {
+const AppRoutes: FC = () => {
     return (
         <BrowserRouter>
-            <React.Suspense fallback={<h1>Loading components...</h1>}>
-                <Routes>
-                    {/* Public Routes */}
-                    {publicRoutes.map(({ path, component, layout }, index) => {
-                        const Page = component;
-                        const Layout = layout;
+            <Routes>
+                <Route path={ROUTES.home} element={<MainLayout />}>
+                    <Route path={ROUTES.home} element={<Home />} />
+                </Route>
 
-                        return (
-                            <Route key={index} element={<Layout />}>
-                                <Route path={path} element={<Page />} />
-                            </Route>
-                        );
-                    })}
-
-                    {/* Private Routes */}
-                    {privateRoutes.map(
-                        ({ path, component, layout, allowRoles }, index) => {
-                            const Page = component;
-                            const Layout = layout;
-
-                            return (
-                                <Route
-                                    key={index}
-                                    element={<RequiredAuth allowedRoles={allowRoles} />}
-                                >
-                                    <Route element={<Layout />}>
-                                        <Route path={path} element={<Page />} />
-                                    </Route>
-                                </Route>
-                            );
-                        },
-                    )}
-                </Routes>
-            </React.Suspense>
+                <Route path={ROUTES.auth} element={<AuthLayout />}>
+                    <Route path={ROUTES.login} element={<Login />} />
+                </Route>
+            </Routes>
         </BrowserRouter>
     );
 };

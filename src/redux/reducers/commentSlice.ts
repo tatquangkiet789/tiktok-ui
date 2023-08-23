@@ -1,91 +1,93 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import ENDPOINTS from 'constants/endpoints';
-import { publicAxios } from 'libs/axiosClient';
-import { IComment, IFindComment, INewComment } from 'models/comment';
+// import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+// import ENDPOINTS from 'constants/endpoints';
+// import { publicAxios } from 'libs/axiosClient';
+// import { IComment, IFindComment, INewComment } from 'models/comment';
 
-interface ICommentState {
-    commentLoading: boolean;
-    comments: IComment[];
-    commentError: string;
-    commentSubmitLoading: boolean;
-    selectedComment: IComment;
-}
+import { createSlice } from '@reduxjs/toolkit';
 
-const initialState: ICommentState = {
-    commentLoading: false,
-    comments: [],
-    commentError: '',
-    commentSubmitLoading: false,
-    selectedComment: null as any,
-};
+// interface ICommentState {
+//     commentLoading: boolean;
+//     comments: IComment[];
+//     commentError: string;
+//     commentSubmitLoading: boolean;
+//     selectedComment: IComment;
+// }
 
-// [GET] /api/v1/posts/:id/comments
-export const findAllCommentsByPostId = createAsyncThunk(
-    'findAllCommentsByPostId',
-    async (value: IFindComment) => {
-        const { postId } = value;
-        const response = await publicAxios.get(ENDPOINTS.findAllCommentsByPostId(postId));
-        return response.data;
-    },
-);
+// const initialState: ICommentState = {
+//     commentLoading: false,
+//     comments: [],
+//     commentError: '',
+//     commentSubmitLoading: false,
+//     selectedComment: null as any,
+// };
 
-// [POST] /api/v1/posts/:postId/comments/create
-export const createNewComment = createAsyncThunk(
-    'createNewComment',
-    async (value: INewComment) => {
-        const { postId, content, accessToken, parentId } = value;
-        const { data } = await publicAxios.post(
-            ENDPOINTS.createNewComment(postId),
-            { content: content, parentId: parentId },
-            {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                },
-            },
-        );
-        return data.content;
-    },
-);
+// // [GET] /api/v1/posts/:id/comments
+// export const findAllCommentsByPostId = createAsyncThunk(
+//     'findAllCommentsByPostId',
+//     async (value: IFindComment) => {
+//         const { postId } = value;
+//         const response = await publicAxios.get(ENDPOINTS.findAllCommentsByPostId(postId));
+//         return response.data;
+//     },
+// );
+
+// // [POST] /api/v1/posts/:postId/comments/create
+// export const createNewComment = createAsyncThunk(
+//     'createNewComment',
+//     async (value: INewComment) => {
+//         const { postId, content, accessToken, parentId } = value;
+//         const { data } = await publicAxios.post(
+//             ENDPOINTS.createNewComment(postId),
+//             { content: content, parentId: parentId },
+//             {
+//                 headers: {
+//                     Authorization: `Bearer ${accessToken}`,
+//                 },
+//             },
+//         );
+//         return data.content;
+//     },
+// );
 
 const commentSlice = createSlice({
     name: 'comments',
-    initialState,
+    initialState: null,
     reducers: {
-        findSelectedCommentById: (state, action: PayloadAction<number>) => {
-            state.selectedComment = state.comments.filter(
-                (comment) => comment.id === action.payload,
-            )[0];
-        },
-        resetSelectedComment: (state) => {
-            state.selectedComment = null as any;
-        },
+        // findSelectedCommentById: (state, action: PayloadAction<number>) => {
+        //     state.selectedComment = state.comments.filter(
+        //         (comment) => comment.id === action.payload,
+        //     )[0];
+        // },
+        // resetSelectedComment: (state) => {
+        //     state.selectedComment = null as any;
+        // },
     },
     extraReducers: (builder) => {
-        builder
-            .addCase(findAllCommentsByPostId.pending, (state) => {
-                state.commentLoading = true;
-                state.commentError = '';
-            })
-            .addCase(findAllCommentsByPostId.fulfilled, (state, action) => {
-                state.commentLoading = false;
-                state.comments = action.payload.content;
-            })
-            .addCase(findAllCommentsByPostId.rejected, (state, action) => {
-                state.commentLoading = false;
-                state.commentError = action.error.message!;
-            })
-            .addCase(createNewComment.pending, (state) => {
-                state.commentError = '';
-            })
-            .addCase(createNewComment.fulfilled, (state, action) => {
-                state.comments.push(action.payload);
-            })
-            .addCase(createNewComment.rejected, (state, action) => {
-                state.commentError = action.error.message!;
-            });
+        // builder
+        //     .addCase(findAllCommentsByPostId.pending, (state) => {
+        //         state.commentLoading = true;
+        //         state.commentError = '';
+        //     })
+        //     .addCase(findAllCommentsByPostId.fulfilled, (state, action) => {
+        //         state.commentLoading = false;
+        //         state.comments = action.payload.content;
+        //     })
+        //     .addCase(findAllCommentsByPostId.rejected, (state, action) => {
+        //         state.commentLoading = false;
+        //         state.commentError = action.error.message!;
+        //     })
+        //     .addCase(createNewComment.pending, (state) => {
+        //         state.commentError = '';
+        //     })
+        //     .addCase(createNewComment.fulfilled, (state, action) => {
+        //         state.comments.push(action.payload);
+        //     })
+        //     .addCase(createNewComment.rejected, (state, action) => {
+        //         state.commentError = action.error.message!;
+        //     });
     },
 });
 
-export const { findSelectedCommentById, resetSelectedComment } = commentSlice.actions;
+// export const { findSelectedCommentById, resetSelectedComment } = commentSlice.actions;
 
 export default commentSlice.reducer;

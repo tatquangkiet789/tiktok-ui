@@ -1,31 +1,39 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IReceiveNotification } from 'models/notificationDTO';
+// import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+// import { IReceiveNotification } from 'models/notificationDTO';
 
-interface INotificationState {
-    notificationList: IReceiveNotification[];
-    totalNotifications: number;
-}
+// interface INotificationState {
+//     notificationList: IReceiveNotification[];
+//     totalNotifications: number;
+// }
 
-const initialState: INotificationState = {
-    notificationList: [],
-    totalNotifications: 0,
-};
+// const initialState: INotificationState = {
+//     notificationList: [],
+//     totalNotifications: 0,
+// };
 
-const notificationSlice = createSlice({
-    name: 'notifications',
-    initialState,
-    reducers: {
-        receiveNewNotification: (state, action: PayloadAction<IReceiveNotification>) => {
-            state.notificationList = [{ ...action.payload }, ...state.notificationList];
-            state.totalNotifications = state.totalNotifications + 1;
-        },
-        resetTotalNotification: (state) => {
-            state.totalNotifications = 0;
-        },
-    },
+// const notificationSlice = createSlice({
+//     name: 'notifications',
+//     initialState,
+//     reducers: {
+//         receiveNewNotification: (state, action: PayloadAction<IReceiveNotification>) => {
+//             state.notificationList = [{ ...action.payload }, ...state.notificationList];
+//             state.totalNotifications = state.totalNotifications + 1;
+//         },
+//         resetTotalNotification: (state) => {
+//             state.totalNotifications = 0;
+//         },
+//     },
+// });
+
+// export const { receiveNewNotification, resetTotalNotification } =
+//     notificationSlice.actions;
+
+// export default notificationSlice.reducer;
+import { createSlice } from '@reduxjs/toolkit';
+const commentSlice = createSlice({
+    name: 'comments',
+    initialState: null,
+    reducers: {},
+    extraReducers: (builder) => {},
 });
-
-export const { receiveNewNotification, resetTotalNotification } =
-    notificationSlice.actions;
-
-export default notificationSlice.reducer;
+export default commentSlice.reducer;
