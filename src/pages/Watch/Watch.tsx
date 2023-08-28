@@ -2,13 +2,13 @@ import classNames from 'classnames/bind';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import { FC, useEffect, useState } from 'react';
-import { findAllPosts, updateNewPostList } from 'redux/reducers/postSlice';
-import styles from './Home.module.scss';
+import { updateNewPostList, findAllPostsAreVideo } from 'redux/reducers/postSlice';
+import styles from './Watch.module.scss';
 import PostList from 'modules/post/components/PostList/PostList';
 
 const cx = classNames.bind(styles);
 
-const Home: FC = () => {
+const Watch: FC = () => {
     const [page, setPage] = useState(1);
 
     const dispatch = useAppDispatch();
@@ -22,8 +22,9 @@ const Home: FC = () => {
     useEffect(() => {
         if (page === 1) dispatch(updateNewPostList(true));
         else dispatch(updateNewPostList(false));
+        console.log('UseEffect Watch');
 
-        dispatch(findAllPosts({ page: page }));
+        dispatch(findAllPostsAreVideo({ page: page }));
     }, [dispatch, page]);
 
     return (
@@ -40,4 +41,4 @@ const Home: FC = () => {
     );
 };
 
-export default Home;
+export default Watch;

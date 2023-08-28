@@ -4,50 +4,47 @@ import classNames from 'classnames/bind';
 import HeadlessTippy from '@tippyjs/react/headless';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import useDebounce from 'hooks/useDebounce';
-// import Wrapper from 'components/Wrapper/Wrapper';
 import { CloseIcon, SearchIcon } from 'assets/icons';
-// import AccountItem from 'layouts/components/components/AccoutItem/AccountItem';
 import { toast } from 'react-toastify';
 import { AxiosError } from 'axios';
 import Wrapper from 'components/ui/Wrapper/Wrapper';
 import AccountItem from 'components/ui/AccoutItem/AccountItem';
+import { IUser } from 'modules/user/models/userModel';
+import { findAllUsersByKeywordService } from 'modules/user/services/userService';
 
 const cx = classNames.bind(styles);
 
 const Search: React.FC = () => {
     const [searchValue, setSearchValue] = useState('');
-    // const [searchResult, setSearchResult] = useState<IUser[]>([]);
-    const [searchResult, setSearchResult] = useState<any>([]);
+    const [searchResult, setSearchResult] = useState<IUser[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [isShow, setIsShow] = useState(false);
     const debouncedValue = useDebounce(searchValue, 500);
 
-    // useEffect(() => {
-    //     if (debouncedValue.trim() === '') {
-    //         setSearchResult([]);
-    //         return;
-    //     }
+    useEffect(() => {
+        if (debouncedValue.trim() === '') {
+            setSearchResult([]);
+            return;
+        }
 
-    //     const findAllUsersByKeyword = async () => {
-    //         try {
-    //             setIsLoading(true);
-    //             const response = await publicAxios.get(
-    //                 ENDPOINTS.searchUsersByKeyword(debouncedValue),
-    //             );
+        const findAllUsersByKeyword = async () => {
+            try {
+                setIsLoading(true);
+                const data = await findAllUsersByKeywordService(debouncedValue);
 
-    //             setSearchResult(response.data.content);
-    //             setIsLoading(false);
-    //             setIsShow(true);
-    //         } catch (error) {
-    //             const err = error as AxiosError;
-    //             if (err.response) toast.error((err.response.data as any).message);
-    //             else toast.error(err.message);
-    //             return Promise.reject();
-    //         }
-    //     };
+                setSearchResult(data.content);
+                setIsLoading(false);
+                setIsShow(true);
+            } catch (error) {
+                const err = error as AxiosError;
+                if (err.response) toast.error((err.response.data as any).message);
+                else toast.error(err.message);
+                return Promise.reject();
+            }
+        };
 
-    //     findAllUsersByKeyword();
-    // }, [debouncedValue]);
+        findAllUsersByKeyword();
+    }, [debouncedValue]);
 
     const handleCloseSearchWrapper = () => {
         setIsShow(false);
@@ -67,7 +64,7 @@ const Search: React.FC = () => {
                 <div tabIndex={-1} {...attrs} className={cx('search-result')}>
                     <Wrapper>
                         <h4 className={cx('search-title')}>Tài khoản</h4>
-                        {/* {searchResult.map(
+                        {searchResult.map(
                             ({ id, firstName, lastName, avatar, username, tick }) => (
                                 <AccountItem
                                     key={id}
@@ -79,7 +76,7 @@ const Search: React.FC = () => {
                                     size='md'
                                 />
                             ),
-                        )} */}
+                        )}
                     </Wrapper>
                 </div>
             )}

@@ -21,7 +21,8 @@ export const ENDPOINTS = {
     createNewMessage: '/messages/create',
 
     // Search endpoints
-    searchUsersByKeyword: (keyword: string) => `/search?q=${encodeURIComponent(keyword)}`,
+    findAllUsersByKeyword: (keyword: string) =>
+        `/search?q=${encodeURIComponent(keyword)}`,
 
     // Posts endpoints
     findAllPosts: (page: number, username?: string) =>

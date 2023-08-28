@@ -1,4 +1,4 @@
-import React, { FC, Fragment, useEffect, useState } from 'react';
+import { FC, Fragment, useEffect, useState } from 'react';
 import styles from './Navbar.module.scss';
 import classNames from 'classnames/bind';
 import { Link, NavLink, useNavigate } from 'react-router-dom';

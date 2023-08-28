@@ -10,14 +10,14 @@ import { loginUser } from 'redux/reducers/authSlice';
 import { toast } from 'react-toastify';
 import { ROUTES } from 'constants/api';
 import { ROLES, STORAGE_KEY } from 'constants/constants';
-import { ILogin } from 'modules/auth/model/authModel';
+import { ILogin } from 'modules/auth/models/authModel';
 import InputField from 'components/form/InputField/InputField';
 import Button from 'components/ui/Button/Button';
 
 const cx = classNames.bind(styles);
 
 const Login: FC = () => {
-    const { authLoading } = useAppSelector((state) => state.auth);
+    const { loading: authLoading } = useAppSelector((state) => state.auth);
     const dispatch = useAppDispatch();
 
     const navigate = useNavigate();
