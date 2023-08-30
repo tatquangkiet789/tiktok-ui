@@ -1,30 +1,31 @@
 import classNames from 'classnames/bind';
-import { useAppDispatch } from 'hooks/useAppDispatch';
-import { useAppSelector } from 'hooks/useAppSelector';
 import { FC, useEffect, useState } from 'react';
-import { updateNewPostList, findAllPostsAreVideo } from 'redux/reducers/postSlice';
-import styles from './Watch.module.scss';
+import styles from './Friend.module.scss';
+import { useAppSelector } from 'hooks/useAppSelector';
+import { useAppDispatch } from 'hooks/useAppDispatch';
+import { findAllPostsFromFriends, updateNewPostList } from 'redux/reducers/postSlice';
+import { STORAGE_KEY } from 'constants/constants';
 import PostList from 'modules/post/components/PostList/PostList';
 
 const cx = classNames.bind(styles);
 
-const Watch: FC = () => {
+const Friend: FC = () => {
     const [page, setPage] = useState(1);
-
-    const dispatch = useAppDispatch();
     const {
-        posts,
         error: postError,
         loading: postLoading,
+        posts,
         hasNextPage,
     } = useAppSelector((state) => state.posts);
+    const dispatch = useAppDispatch();
+    const accessToken = sessionStorage.getItem(STORAGE_KEY.ACCESS_TOKEN);
 
     useEffect(() => {
         if (page === 1) dispatch(updateNewPostList(true));
         else dispatch(updateNewPostList(false));
 
-        dispatch(findAllPostsAreVideo({ page: page }));
-    }, [dispatch, page]);
+        dispatch(findAllPostsFromFriends({ page: page, accessToken: accessToken! }));
+    }, [accessToken, dispatch, page]);
 
     return (
         <div className={cx('container')}>
@@ -40,4 +41,4 @@ const Watch: FC = () => {
     );
 };
 
-export default Watch;
+export default Friend;

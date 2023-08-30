@@ -21,8 +21,6 @@ export const findTop10SuggestedUsers = createAsyncThunk(
     'findTop10SuggestedUsers',
     async (): Promise<IUser[]> => {
         const data = await findTop10SuggestedUsersService();
-        console.log(data);
-
         return data.content;
     },
 );

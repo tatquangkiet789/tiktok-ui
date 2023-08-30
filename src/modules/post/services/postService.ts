@@ -66,3 +66,14 @@ export const createNewPostService = async (value: INewPost) => {
     });
     return res.data;
 };
+
+// [GET] /api/v1/posts/friends?page=:page
+export const findAllPostsFromFriendsService = async (params: IFindPost) => {
+    const { page, accessToken } = params;
+    const res = await privateAxios.get(ENDPOINTS.findAllPostsFromFriends(page!), {
+        headers: {
+            Authorization: `Bearer ${accessToken}`,
+        },
+    });
+    return res.data;
+};

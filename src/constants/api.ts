@@ -12,17 +12,13 @@ export const ENDPOINTS = {
 
     // Users endpoints
     findTop10SuggestedUsers: '/users/suggested',
-
-    // Friend endpoints
     findAllFriends: '/users/friends',
+    findAllUsersByKeyword: (keyword: string) =>
+        `/users/search?q=${encodeURIComponent(keyword)}`,
 
     // Message endpoints
     findAllMessagesByUserId: (userId: number) => `/messages/${userId}`,
     createNewMessage: '/messages/create',
-
-    // Search endpoints
-    findAllUsersByKeyword: (keyword: string) =>
-        `/search?q=${encodeURIComponent(keyword)}`,
 
     // Posts endpoints
     findAllPosts: (page: number, username?: string) =>
@@ -35,7 +31,7 @@ export const ENDPOINTS = {
     findAllPostsByCurrentUserId: (page: number) => `/posts/user?page=${page}`,
     findAllPostsAreVideo: (page: number) => `/posts/video?page=${page}`,
     createNewPost: '/posts/create',
-
+    findAllPostsFromFriends: (page: number) => `/posts/friends?page=${page}`,
     // Comments endpoints
     findAllCommentsByPostId: (postId: number) => `/posts/${postId}/comments`,
     createNewComment: (postId: number) => `/posts/${postId}/comments/create`,
@@ -53,9 +49,8 @@ export const ROUTES = {
     upload: '/upload',
 
     // AuthLayout
-    auth: 'auth',
-    login: 'login',
-    register: 'register',
+    login: '/auth/login',
+    register: '/auth/register',
 
     // Don't have layout
     postDetail: '/posts/:id',

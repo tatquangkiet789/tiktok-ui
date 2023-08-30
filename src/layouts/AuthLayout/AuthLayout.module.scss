@@ -1,14 +1,37 @@
+@use '../../mixin' as mixin;
+
 .container {
-    width: 100%;
+    width: 100vw;
     height: 100vh;
-    position: fixed;
     z-index: 100;
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.background {
     background-repeat: repeat-x;
-    position: absolute;
     background-size: cover;
+    position: absolute;
+    width: 200vw;
+    height: 100%;
+    left: 0;
+
+    @include mixin.keyframes(wave) {
+        0% {
+            transform: translateX(0);
+        }
+        50% {
+            transform: translateX(-50%);
+        }
+        100% {
+            transform: translateX(0);
+        }
+    }
+
+    @include mixin.animate(wave 12s linear infinite);
 }
 
 .wrapper {

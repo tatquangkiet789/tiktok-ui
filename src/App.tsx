@@ -3,16 +3,6 @@ import AppRoutes from 'routes/AppRoutes';
 import { ToastContainer } from 'react-toastify';
 
 const App: FC = () => {
-    // const dispatch = useAppDispatch();
-
-    // const accessToken = sessionStorage.getItem(STORAGE_KEY.ACCESS_TOKEN);
-
-    // useEffect(() => {
-    //     if (!accessToken) return;
-
-    //     dispatch(findCurrentUserByAccessToken(accessToken));
-    // }, [dispatch, accessToken]);
-
     return (
         <Fragment>
             <AppRoutes />

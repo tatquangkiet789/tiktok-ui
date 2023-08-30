@@ -10,6 +10,7 @@ import {
     createNewPostService,
     findAllPostsAreVideoService,
     findAllPostsByCurrentUserIdService,
+    findAllPostsFromFriendsService,
     findAllPostsService,
     findPostByIdService,
     likePostByIdService,
@@ -133,6 +134,21 @@ export const findAllPostsAreVideo = createAsyncThunk(
     async (params: IFindPost, { rejectWithValue }) => {
         try {
             const data = await findAllPostsAreVideoService(params);
+            return data;
+        } catch (error) {
+            const err = error as AxiosError;
+            if (!err.response) throw err;
+            return rejectWithValue(err.response.data);
+        }
+    },
+);
+
+// [GET] /api/v1/posts/friends?page=:page
+export const findAllPostsFromFriends = createAsyncThunk(
+    'findAllPostsFromFriends',
+    async (params: IFindPost, { rejectWithValue }) => {
+        try {
+            const data = await findAllPostsFromFriendsService(params);
             return data;
         } catch (error) {
             const err = error as AxiosError;
@@ -272,6 +288,25 @@ const postSlice = createSlice({
                 state.hasNextPage = Boolean(action.payload.content.length);
             })
             .addCase(findAllPostsAreVideo.rejected, (state, action) => {
+                state.loading = false;
+                state.error = (action.payload as AxiosError)
+                    ? (action.payload as AxiosError).message
+                    : action.error.message!;
+                toast.error(state.error);
+            })
+            // Find All Posts From Friends
+            .addCase(findAllPostsFromFriends.pending, (state) => {
+                state.loading = true;
+                state.error = '';
+            })
+            .addCase(findAllPostsFromFriends.fulfilled, (state, action) => {
+                state.loading = false;
+                if (state.isNewPostList) state.posts = action.payload.content;
+                else state.posts = [...state.posts, ...action.payload.content];
+
+                state.hasNextPage = Boolean(action.payload.content.length);
+            })
+            .addCase(findAllPostsFromFriends.rejected, (state, action) => {
                 state.loading = false;
                 state.error = (action.payload as AxiosError)
                     ? (action.payload as AxiosError).message

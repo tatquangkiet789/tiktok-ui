@@ -1,0 +1,9 @@
+@mixin animate($str) {
+    animation: #{$str};
+}
+
+@mixin keyframes($animation-name) {
+    @keyframes #{$animation-name} {
+        @content;
+    }
+}

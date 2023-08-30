@@ -12,12 +12,10 @@ export interface IPost {
     createdDate: Date;
 }
 
-// export interface IPostDTO {
-//     postId?: number;
-//     page: number;
-//     username?: string;
-//     accessToken?: string;
-// }
+export interface INewPostForm {
+    caption: string;
+    content?: File;
+}
 
 export interface IUserLikeOrUnlikePost {
     postId: number;

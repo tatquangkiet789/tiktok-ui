@@ -18,6 +18,9 @@ import {
     userUnlikePost,
 } from 'redux/reducers/postSlice';
 import { ROUTES } from 'constants/api';
+import { ISendNotification } from 'modules/notification/models/notificationModel';
+import SOCKET_EVENT from 'constants/socket';
+import socketClient from 'lib/socketClient';
 
 const cx = classNames.bind(styles);
 
@@ -80,13 +83,13 @@ const PostItem: React.FC<IPostItemProps> = ({ post }) => {
                 .then(() => {
                     setLikePost(true);
                     dispatch(userLikePost(postId));
-                    // const notification: ISendNotification = {
-                    //     senderName: currentUser.username,
-                    //     receiverName: userPostDetail.username,
-                    //     notificationType: 'like',
-                    //     postId: postId,
-                    // };
-                    // socketClient.emit(SOCKET_EVENT.SEND_NOTIFICATION, notification);
+                    const notification: ISendNotification = {
+                        senderName: currentUser.username,
+                        receiverName: userPostDetail.username,
+                        notificationType: 'like',
+                        postId: postId,
+                    };
+                    socketClient.emit(SOCKET_EVENT.SEND_NOTIFICATION, notification);
                 });
             return;
         }

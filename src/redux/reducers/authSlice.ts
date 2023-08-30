@@ -14,7 +14,6 @@ interface IAuthState {
     currentUser: IAuth;
     error: string;
     registerMessage: string;
-    accessToken: string;
 }
 
 const initialState: IAuthState = {
@@ -22,7 +21,6 @@ const initialState: IAuthState = {
     currentUser: null as any,
     error: '',
     registerMessage: '',
-    accessToken: '',
 };
 
 // [POST] /api/v1/auth/login

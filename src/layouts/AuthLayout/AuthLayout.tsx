@@ -12,7 +12,11 @@ const AuthLayout: FC = () => {
     const { pathname } = useLocation();
 
     return (
-        <div className={cx('container')} style={{ backgroundImage: `url(${waves})` }}>
+        <div className={cx('container')}>
+            <div
+                style={{ backgroundImage: `url(${waves})` }}
+                className={cx('background')}
+            ></div>
             <div className={cx('wrapper')}>
                 <Link to={ROUTES.home} className={cx('close')}>
                     <IoMdClose size={24} />
@@ -20,7 +24,7 @@ const AuthLayout: FC = () => {
                 <div className={cx('content')}>
                     <Outlet />
                 </div>
-                {/* {pathname === '/auth/login' ? (
+                {pathname === '/auth/login' ? (
                     <div className={cx('bottom-info')}>
                         Bạn không có tài khoản?
                         <Link className={cx('bottom-link')} to={ROUTES.register}>
@@ -35,7 +39,7 @@ const AuthLayout: FC = () => {
                             Đăng nhập
                         </Link>
                     </div>
-                ) : null} */}
+                ) : null}
             </div>
         </div>
     );
