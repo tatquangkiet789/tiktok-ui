@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 
 import authReducer from './reducers/authSlice';
-// import commentReducer from './reducers/commentSlice';
+import commentReducer from './reducers/commentSlice';
 // import friendReducer from './reducers/friendSlice';
 // import messageReducer from './reducers/messageSlice';
 import notificationReducer from './reducers/notificationSlice';
@@ -13,7 +13,7 @@ const store = configureStore({
         auth: authReducer,
         users: userReducer,
         posts: postReducer,
-        // comments: commentReducer,
+        comments: commentReducer,
         notifications: notificationReducer,
         // friends: friendReducer,
         // messages: messageReducer,

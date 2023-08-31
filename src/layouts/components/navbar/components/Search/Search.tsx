@@ -9,8 +9,8 @@ import { toast } from 'react-toastify';
 import { AxiosError } from 'axios';
 import Wrapper from 'components/ui/Wrapper/Wrapper';
 import AccountItem from 'components/ui/AccoutItem/AccountItem';
-import { IUser } from 'modules/user/models/userModel';
-import { findAllUsersByKeywordService } from 'modules/user/services/userService';
+import { IUser } from 'modules/users/models/userModel';
+import { findAllUsersByKeywordService } from 'modules/users/services/userService';
 
 const cx = classNames.bind(styles);
 

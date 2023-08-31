@@ -1,0 +1,24 @@
+.receiver-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px;
+    border-radius: 8px;
+
+    &:hover {
+        background-color: var(--gray006-color);
+    }
+
+    & .avatar {
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+    }
+    & .username {
+        font-size: 18px;
+
+        & svg {
+            margin-left: 3px;
+        }
+    }
+}

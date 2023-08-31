@@ -5,7 +5,7 @@ import { useAppSelector } from 'hooks/useAppSelector';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { findAllPostsFromFriends, updateNewPostList } from 'redux/reducers/postSlice';
 import { STORAGE_KEY } from 'constants/constants';
-import PostList from 'modules/post/components/PostList/PostList';
+import PostList from 'modules/posts/components/PostList/PostList';
 
 const cx = classNames.bind(styles);
 

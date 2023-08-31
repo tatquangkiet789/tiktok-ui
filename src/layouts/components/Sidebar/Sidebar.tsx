@@ -10,7 +10,7 @@ import { useAppDispatch } from 'hooks/useAppDispatch';
 import AccountItemPlaceHolder from 'components/ui/AccountItemPlaceHolder/AccountItemPlaceHolder';
 import AccountItem from 'components/ui/AccoutItem/AccountItem';
 import Button from 'components/ui/Button/Button';
-import { IUser } from 'modules/user/models/userModel';
+import { IUser } from 'modules/users/models/userModel';
 import { ROUTES } from 'constants/api';
 
 const cx = classNames.bind(styles);

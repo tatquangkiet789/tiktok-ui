@@ -1,93 +1,111 @@
-// import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-// import ENDPOINTS from 'constants/endpoints';
-// import { publicAxios } from 'libs/axiosClient';
-// import { IComment, IFindComment, INewComment } from 'models/comment';
+import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { AxiosError } from 'axios';
+import {
+    IComment,
+    IFindComment,
+    INewComment,
+} from 'modules/comments/models/commentModel';
+import {
+    createNewCommentService,
+    findAllCommentsByPostIdService,
+} from 'modules/comments/services/commentService';
+import { toast } from 'react-toastify';
 
-import { createSlice } from '@reduxjs/toolkit';
+interface ICommentState {
+    loading: boolean;
+    comments: IComment[];
+    error: string;
+    commentSubmitLoading: boolean;
+    selectedComment: IComment;
+}
 
-// interface ICommentState {
-//     commentLoading: boolean;
-//     comments: IComment[];
-//     commentError: string;
-//     commentSubmitLoading: boolean;
-//     selectedComment: IComment;
-// }
-
-// const initialState: ICommentState = {
-//     commentLoading: false,
-//     comments: [],
-//     commentError: '',
-//     commentSubmitLoading: false,
-//     selectedComment: null as any,
-// };
+const initialState: ICommentState = {
+    loading: false,
+    comments: [],
+    error: '',
+    commentSubmitLoading: false,
+    selectedComment: null as any,
+};
 
 // // [GET] /api/v1/posts/:id/comments
-// export const findAllCommentsByPostId = createAsyncThunk(
-//     'findAllCommentsByPostId',
-//     async (value: IFindComment) => {
-//         const { postId } = value;
-//         const response = await publicAxios.get(ENDPOINTS.findAllCommentsByPostId(postId));
-//         return response.data;
-//     },
-// );
+export const findAllCommentsByPostId = createAsyncThunk(
+    'findAllCommentsByPostId',
+    async (params: IFindComment, { rejectWithValue }) => {
+        try {
+            const data = await findAllCommentsByPostIdService(params);
+            return data;
+        } catch (error) {
+            const err = error as AxiosError;
+            if (!err.response) throw err;
+            return rejectWithValue(err.response.data);
+        }
+    },
+);
 
 // // [POST] /api/v1/posts/:postId/comments/create
-// export const createNewComment = createAsyncThunk(
-//     'createNewComment',
-//     async (value: INewComment) => {
-//         const { postId, content, accessToken, parentId } = value;
-//         const { data } = await publicAxios.post(
-//             ENDPOINTS.createNewComment(postId),
-//             { content: content, parentId: parentId },
-//             {
-//                 headers: {
-//                     Authorization: `Bearer ${accessToken}`,
-//                 },
-//             },
-//         );
-//         return data.content;
-//     },
-// );
+export const createNewComment = createAsyncThunk(
+    'createNewComment',
+    async (params: INewComment, { rejectWithValue }) => {
+        try {
+            const data = await createNewCommentService(params);
+            return data;
+        } catch (error) {
+            const err = error as AxiosError;
+            if (!err.response) throw err;
+            return rejectWithValue(err.response.data);
+        }
+    },
+);
 
 const commentSlice = createSlice({
     name: 'comments',
-    initialState: null,
+    initialState,
     reducers: {
-        // findSelectedCommentById: (state, action: PayloadAction<number>) => {
-        //     state.selectedComment = state.comments.filter(
-        //         (comment) => comment.id === action.payload,
-        //     )[0];
-        // },
-        // resetSelectedComment: (state) => {
-        //     state.selectedComment = null as any;
-        // },
+        findSelectedCommentById: (state, action: PayloadAction<number>) => {
+            state.selectedComment = state.comments.filter(
+                (comment) => comment.id === action.payload,
+            )[0];
+        },
+        resetSelectedComment: (state) => {
+            state.selectedComment = null as any;
+        },
     },
     extraReducers: (builder) => {
-        // builder
-        //     .addCase(findAllCommentsByPostId.pending, (state) => {
-        //         state.commentLoading = true;
-        //         state.commentError = '';
-        //     })
-        //     .addCase(findAllCommentsByPostId.fulfilled, (state, action) => {
-        //         state.commentLoading = false;
-        //         state.comments = action.payload.content;
-        //     })
-        //     .addCase(findAllCommentsByPostId.rejected, (state, action) => {
-        //         state.commentLoading = false;
-        //         state.commentError = action.error.message!;
-        //     })
-        //     .addCase(createNewComment.pending, (state) => {
-        //         state.commentError = '';
-        //     })
-        //     .addCase(createNewComment.fulfilled, (state, action) => {
-        //         state.comments.push(action.payload);
-        //     })
-        //     .addCase(createNewComment.rejected, (state, action) => {
-        //         state.commentError = action.error.message!;
-        //     });
+        builder
+            // Find All Comments By Post Id
+            .addCase(findAllCommentsByPostId.pending, (state) => {
+                state.loading = true;
+                state.error = '';
+            })
+            .addCase(findAllCommentsByPostId.fulfilled, (state, action) => {
+                state.loading = false;
+                state.comments = action.payload.content;
+            })
+            .addCase(findAllCommentsByPostId.rejected, (state, action) => {
+                state.loading = false;
+                state.error = (action.payload as AxiosError)
+                    ? (action.payload as AxiosError).message
+                    : action.error.message!;
+                toast.error(state.error);
+            })
+            .addCase(createNewComment.pending, (state) => {
+                state.loading = true;
+                state.error = '';
+            })
+            .addCase(createNewComment.fulfilled, (state, action) => {
+                state.loading = false;
+                state.comments = [...state.comments, action.payload.content];
+            })
+            .addCase(createNewComment.rejected, (state, action) => {
+                state.loading = false;
+                state.error = (action.payload as AxiosError)
+                    ? (action.payload as AxiosError).message
+                    : action.error.message!;
+                toast.error(state.error);
+            });
     },
 });
 
-// export const { findSelectedCommentById, resetSelectedComment } = commentSlice.actions;
+export const { findSelectedCommentById, resetSelectedComment } = commentSlice.actions;
 
 export default commentSlice.reducer;

@@ -1,0 +1,75 @@
+.container {
+    max-width: var(--post-width);
+    width: 100%;
+    background-color: white;
+    box-shadow: rgb(0 0 0 / 6%) 0px 2px 8px;
+    border-radius: 8px;
+    margin-bottom: 25px;
+}
+
+.user-container {
+    padding: 12px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.post-caption {
+    padding: 0 16px 0 16px;
+    word-wrap: break-word;
+}
+
+.post-content-container {
+    max-width: var(--post-width);
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding-top: 12px;
+}
+
+.post-content {
+    max-width: var(--post-width);
+    width: 100%;
+    max-height: --post-width;
+    object-fit: cover;
+}
+
+.like {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin: 0 16px;
+    padding: 12px 0;
+    color: var(--gray075-color);
+
+    & .comments {
+        padding: 0 16px;
+    }
+}
+
+.action-buttons {
+    padding: 6px 16px 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    & .icon-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        padding: 8px;
+
+        &.userLikePost {
+            & svg {
+                fill: var(--primary-color);
+                stroke: var(--primary-color);
+            }
+        }
+
+        &:hover {
+            cursor: pointer;
+            background-color: var(--gray003-color);
+        }
+    }
+}

@@ -1,0 +1,11 @@
+.container {
+    background-color: var(--gray248-248-248-color);
+}
+
+.wrapper {
+    width: 100%;
+    margin-top: var(--navbar-height);
+    height: calc(100vh - var(--navbar-height));
+    margin-left: auto;
+    margin-right: auto;
+}

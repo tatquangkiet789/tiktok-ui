@@ -1,0 +1,69 @@
+.container {
+    display: flex;
+    align-items: center;
+    padding: 8px 6px 8px 8px;
+}
+
+@keyframes skeleton-loading {
+    0% {
+        background-color: #eee;
+    }
+
+    100% {
+        background-color: #dddbdd;
+    }
+}
+
+.image {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #dddbdd;
+    animation: skeleton-loading 1s linear infinite alternate;
+}
+
+.wrapper {
+    flex: 1;
+    margin-left: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    & .name {
+        display: flex;
+        align-items: center;
+        background-color: #dddbdd;
+        height: 14px;
+        border-radius: 2px;
+        animation: skeleton-loading 1s linear infinite alternate;
+    }
+
+    & .username {
+        height: 14px;
+        background-color: #dddbdd;
+        width: 40%;
+        border-radius: 2px;
+        animation: skeleton-loading 1s linear infinite alternate;
+    }
+}
+
+@keyframes shine {
+    to {
+        background-position-x: -200%;
+    }
+}
+
+.container {
+    &.md {
+        & .image {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        & .username {
+            color: var(--gray05-color);
+            font-size: 16px;
+        }
+    }
+}

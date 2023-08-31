@@ -7,7 +7,7 @@ import { STORAGE_KEY } from 'constants/constants';
 import { Field, Formik } from 'formik';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
-import { INewPost, INewPostForm } from 'modules/post/models/postModel';
+import { INewPost, INewPostForm } from 'modules/posts/models/postModel';
 import { ChangeEvent, FC } from 'react';
 import { createNewPost } from 'redux/reducers/postSlice';
 import styles from './CreateNewPost.module.scss';

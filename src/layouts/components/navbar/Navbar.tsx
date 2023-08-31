@@ -12,10 +12,10 @@ import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
 import CreateNewPost from './components/CreateNewPost/CreateNewPost';
 import Wrapper from 'components/ui/Wrapper/Wrapper';
-import NotificationList from 'modules/notification/components/NotificationList/NotificationList';
+import NotificationList from 'modules/notifications/components/NotificationList/NotificationList';
 import socketClient from 'lib/socketClient';
 import SOCKET_EVENT from 'constants/socket';
-import { IReceiveNotification } from 'modules/notification/models/notificationModel';
+import { IReceiveNotification } from 'modules/notifications/models/notificationModel';
 import {
     receiveNewNotification,
     resetTotalNotification,

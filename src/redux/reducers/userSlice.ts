@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { IUser } from 'modules/user/models/userModel';
-import { findTop10SuggestedUsersService } from 'modules/user/services/userService';
+import { IUser } from 'modules/users/models/userModel';
+import { findTop10SuggestedUsersService } from 'modules/users/services/userService';
 
 interface IUserState {
     loading: boolean;

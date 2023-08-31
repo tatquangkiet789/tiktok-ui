@@ -4,7 +4,7 @@ import { useAppSelector } from 'hooks/useAppSelector';
 import { FC, useEffect, useState } from 'react';
 import { findAllPosts, updateNewPostList } from 'redux/reducers/postSlice';
 import styles from './Home.module.scss';
-import PostList from 'modules/post/components/PostList/PostList';
+import PostList from 'modules/posts/components/PostList/PostList';
 
 const cx = classNames.bind(styles);
 

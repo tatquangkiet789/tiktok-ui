@@ -2,7 +2,7 @@ import classNames from 'classnames/bind';
 import { STORAGE_KEY } from 'constants/constants';
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { useAppSelector } from 'hooks/useAppSelector';
-import PostList from 'modules/post/components/PostList/PostList';
+import PostList from 'modules/posts/components/PostList/PostList';
 import { FC, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import {

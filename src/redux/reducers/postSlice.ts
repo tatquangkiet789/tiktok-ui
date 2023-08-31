@@ -5,7 +5,7 @@ import {
     INewPost,
     IPost,
     IUserLikeOrUnlikePost,
-} from 'modules/post/models/postModel';
+} from 'modules/posts/models/postModel';
 import {
     createNewPostService,
     findAllPostsAreVideoService,
@@ -15,7 +15,7 @@ import {
     findPostByIdService,
     likePostByIdService,
     unlikePostByIdService,
-} from 'modules/post/services/postService';
+} from 'modules/posts/services/postService';
 import { toast } from 'react-toastify';
 
 interface IPostState {
@@ -228,8 +228,8 @@ const postSlice = createSlice({
                 state.error = '';
             })
             .addCase(findPostById.fulfilled, (state, action) => {
-                state.loading = false;
                 state.selectedPost = action.payload.content;
+                state.loading = false;
             })
             .addCase(findPostById.rejected, (state, action) => {
                 state.loading = false;

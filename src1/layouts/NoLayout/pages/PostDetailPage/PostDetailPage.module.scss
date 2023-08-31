@@ -1,0 +1,101 @@
+.container {
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    background-color: rgba(243, 243, 244, 0.9);
+
+    &.text {
+        padding: 40px 0;
+    }
+}
+
+.post-content {
+    background-color: var(--gray248-248-248-color);
+    display: flex;
+    justify-content: center;
+    flex: 1;
+    position: relative;
+
+    & .content {
+        width: 100%;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+    & .close-button {
+        position: absolute;
+        left: 0;
+        top: 10px;
+        cursor: pointer;
+
+        & svg {
+            width: 40px;
+            height: 40px;
+            z-index: 10px;
+        }
+    }
+}
+
+.post-detail {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    border: 2px solid var(--gray006-color);
+    box-shadow: 1px 1px 1px var(--gray012-color);
+    background-color: white;
+
+    &.text {
+        width: 60%;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    }
+}
+
+.caption {
+    padding: 0 12px 12px 32px;
+    font-size: 18px;
+    font-weight: 500;
+    max-height: 20%;
+    overflow-y: overlay;
+}
+
+.like-comment-container {
+    display: flex;
+    align-items: center;
+    padding-left: 32px;
+    padding-bottom: 12px;
+    gap: 14px;
+
+    & .icon-button {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+
+        &.userLikePost {
+            & svg {
+                fill: var(--primary-color);
+                stroke: var(--primary-color);
+            }
+        }
+
+        & svg {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+    }
+}
+
+.comment-list {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--gray03-color);
+    border-bottom: 1px solid var(--gray03-color);
+    overflow-y: overlay;
+    background-color: var(--gray241-241-242-1-color);
+    height: 50%;
+    padding: 24px 32px 0 32px;
+}
