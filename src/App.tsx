@@ -1,6 +1,6 @@
 import { FC, Fragment } from 'react';
-import AppRoutes from 'routes/AppRoutes';
 import { ToastContainer } from 'react-toastify';
+import AppRoutes from 'routes/AppRoutes';
 
 const App: FC = () => {
     return (

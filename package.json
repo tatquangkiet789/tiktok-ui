@@ -16,6 +16,7 @@
         "@types/socket.io-client": "^3.0.0",
         "axios": "^0.27.2",
         "classnames": "^2.3.2",
+        "clsx": "^2.0.0",
         "dotenv": "^16.0.1",
         "formik": "^2.2.9",
         "i18next": "^21.8.14",
@@ -59,6 +60,6 @@
         "autoprefixer": "^10.4.7",
         "postcss": "^8.4.14",
         "sass": "^1.56.1",
-        "tailwindcss": "^3.1.6"
+        "tailwindcss": "^3.3.6"
     }
 }

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IReceiveNotification } from 'modules/notifications/models/notificationModel';
+import { IReceiveNotification } from 'features/notifications/models/notificationModel';
 
 interface INotificationState {
     notificationList: IReceiveNotification[];

@@ -1,21 +1,21 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
 import {
-    IFindPost,
-    INewPost,
     IPost,
+    IFindPost,
     IUserLikeOrUnlikePost,
-} from 'modules/posts/models/postModel';
+    INewPost,
+} from 'features/posts/models/postModel';
 import {
-    createNewPostService,
-    findAllPostsAreVideoService,
-    findAllPostsByCurrentUserIdService,
-    findAllPostsFromFriendsService,
     findAllPostsService,
+    findAllPostsByCurrentUserIdService,
     findPostByIdService,
     likePostByIdService,
     unlikePostByIdService,
-} from 'modules/posts/services/postService';
+    createNewPostService,
+    findAllPostsAreVideoService,
+    findAllPostsFromFriendsService,
+} from 'features/posts/services/postService';
 import { toast } from 'react-toastify';
 
 interface IPostState {

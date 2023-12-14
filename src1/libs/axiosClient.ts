@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 import jwt_decode, { JwtPayload } from 'jwt-decode';
 import { refreshTokenService } from 'layouts/AuthLayout/services/authService';
 import { BASE_URL, STORAGE_KEY } from '../constants/constants';

@@ -4,11 +4,11 @@ import {
     IComment,
     IFindComment,
     INewComment,
-} from 'modules/comments/models/commentModel';
+} from 'features/comments/models/commentModel';
 import {
-    createNewCommentService,
     findAllCommentsByPostIdService,
-} from 'modules/comments/services/commentService';
+    createNewCommentService,
+} from 'features/comments/services/commentService';
 import { toast } from 'react-toastify';
 
 interface ICommentState {

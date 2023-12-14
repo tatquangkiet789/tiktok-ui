@@ -36,23 +36,3 @@ export const ENDPOINTS = {
     findAllCommentsByPostId: (postId: number) => `/posts/${postId}/comments`,
     createNewComment: (postId: number) => `/posts/${postId}/comments/create`,
 };
-
-export const ROUTES = {
-    // MainLayout
-    home: '/',
-    friends: '/friends',
-    watch: '/watch',
-    userDetail: '/:username',
-
-    // HeaderOnlyLayout
-    messages: '/messages',
-    upload: '/upload',
-
-    // AuthLayout
-    login: '/auth/login',
-    register: '/auth/register',
-
-    // Don't have layout
-    postDetail: '/posts/:id',
-    unauthorized: '/unauthorized',
-};

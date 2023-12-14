@@ -1,31 +1,23 @@
-import { ROUTES } from 'constants/api';
 import { ROLES } from 'constants/constants';
 import RequiredAuth from 'guards/RequiredAuth';
-import AuthLayout from 'layouts/AuthLayout/AuthLayout';
-import MainLayout from 'layouts/MainLayout/MainLayout';
-import NoLayout from 'layouts/NoLayout/NoLayout';
-import Friend from 'pages/Friend/Friend';
-import Home from 'pages/Home/Home';
-import Login from 'pages/Login/Login';
-import PostDetail from 'pages/PostDetail/PostDetail';
-import Register from 'pages/Register/Register';
-import UserDetail from 'pages/UserDetail/UserDetail';
-import Watch from 'pages/Watch/Watch';
+import MainLayout from 'layouts/MainLayout';
+import HomePage from 'pages/HomePage';
 import { FC } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { APP_ROUTES } from './routes';
 
 const AppRoutes: FC = () => {
     const publicRoutes = [
         // MAIN LAYOUT
-        { path: ROUTES.home, component: Home, layout: MainLayout },
-        { path: ROUTES.friends, component: Friend, layout: MainLayout },
-        { path: ROUTES.watch, component: Watch, layout: MainLayout },
-        { path: ROUTES.userDetail, component: UserDetail, layout: MainLayout },
-        // AUTH LAYOUT
-        { path: ROUTES.login, component: Login, layout: AuthLayout },
-        { path: ROUTES.register, component: Register, layout: AuthLayout },
-        // NO LAYOUT
-        { path: ROUTES.postDetail, component: PostDetail, layout: NoLayout },
+        { path: APP_ROUTES.HOME, component: HomePage, layout: MainLayout },
+        // { path: APP_ROUTES.FRIENDS, component: Friend, layout: MainLayout },
+        // { path: APP_ROUTES.WATCH, component: Watch, layout: MainLayout },
+        // { path: APP_ROUTES.USER_DETAIL, component: UserDetail, layout: MainLayout },
+        // // AUTH LAYOUT
+        // { path: APP_ROUTES.LOGIN, component: Login, layout: AuthLayout },
+        // { path: APP_ROUTES.REGISTER, component: Register, layout: AuthLayout },
+        // // NO LAYOUT
+        // { path: APP_ROUTES.POST_DETAIL, component: PostDetail, layout: NoLayout },
     ];
 
     // const privateRoutes = [
