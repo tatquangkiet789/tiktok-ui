@@ -1,11 +1,12 @@
-export interface IUser {
+export type User = {
     id: number;
     firstName: string;
     lastName: string;
     username: string;
     avatar: string;
-    tick: boolean;
-}
+    isVerified: boolean;
+    userRole: string;
+};
 
 export interface IUserLikePost {
     id: number;

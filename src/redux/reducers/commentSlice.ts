@@ -11,15 +11,15 @@ import {
 } from 'features/comments/services/commentService';
 import { toast } from 'react-toastify';
 
-interface ICommentState {
+type CommentState = {
     loading: boolean;
     comments: IComment[];
     error: string;
     commentSubmitLoading: boolean;
     selectedComment: IComment;
-}
+};
 
-const initialState: ICommentState = {
+const initialState: CommentState = {
     loading: false,
     comments: [],
     error: '',

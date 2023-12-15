@@ -46,6 +46,7 @@ const Button = memo(function Button({
 
     return (
         <Element
+            {...props}
             className={cn(
                 'flex items-center justify-center hover:cursor-pointer disabled:hover:cursor-not-allowed',
                 {

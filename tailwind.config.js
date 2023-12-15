@@ -39,9 +39,18 @@ module.exports = {
                         transform: 'translateX(0)',
                     },
                 },
+                skeleton: {
+                    '0%': {
+                        backgroundColor: '#eee',
+                    },
+                    '100%': {
+                        backgroundColor: '#dddbdd',
+                    },
+                },
             },
             animation: {
                 wave: 'wave 12s linear infinite',
+                skeleton: 'skeleton 1s linear infinite alternate',
             },
         },
     },

@@ -28,6 +28,7 @@ const HomePage = () => {
                 postLoading={postLoading}
                 hasNextPage={hasNextPage}
             /> */}
+            HomePage
         </div>
     );
 };

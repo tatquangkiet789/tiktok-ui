@@ -5,6 +5,9 @@ import HomePage from 'pages/HomePage';
 import { FC } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { APP_ROUTES } from './routes';
+import LoginPage from 'pages/LoginPage';
+import RegisterPage from 'pages/Register';
+import AuthLayout from 'layouts/AuthLayout';
 
 const AppRoutes: FC = () => {
     const publicRoutes = [
@@ -14,8 +17,8 @@ const AppRoutes: FC = () => {
         // { path: APP_ROUTES.WATCH, component: Watch, layout: MainLayout },
         // { path: APP_ROUTES.USER_DETAIL, component: UserDetail, layout: MainLayout },
         // // AUTH LAYOUT
-        // { path: APP_ROUTES.LOGIN, component: Login, layout: AuthLayout },
-        // { path: APP_ROUTES.REGISTER, component: Register, layout: AuthLayout },
+        { path: APP_ROUTES.LOGIN, component: LoginPage, layout: AuthLayout },
+        { path: APP_ROUTES.REGISTER, component: RegisterPage, layout: AuthLayout },
         // // NO LAYOUT
         // { path: APP_ROUTES.POST_DETAIL, component: PostDetail, layout: NoLayout },
     ];
@@ -50,7 +53,7 @@ const AppRoutes: FC = () => {
                 })}
 
                 {/* PRIVATE ROUTES */}
-                <Route element={<RequiredAuth allowedRoles={[ROLES.USER]} />}></Route>
+                {/* <Route element={<RequiredAuth allowedRoles={[ROLES.USER]} />}></Route> */}
             </Routes>
         </BrowserRouter>
     );

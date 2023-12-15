@@ -1,45 +1,41 @@
 import { TickIcon } from 'assets/icons';
-import classNames from 'classnames/bind';
-import { FC } from 'react';
+import { memo } from 'react';
 import { Link } from 'react-router-dom';
-import styles from './AccountItem.module.scss';
 
-const cx = classNames.bind(styles);
-
-interface IAccountItemProps {
+type AccountItemProps = {
     firstName: string;
     lastName: string;
     username: string;
     avatar: string;
-    tick?: boolean;
-    size?: string;
-}
+    isVerified: boolean;
+};
 
-const AccountItem: FC<IAccountItemProps> = ({
+const AccountItem = memo(function AccountItem({
     firstName,
     lastName,
     username,
     avatar,
-    tick,
-    size,
-}) => {
+    isVerified,
+}: AccountItemProps) {
     return (
         <Link
-            className={cx('container', {
-                [`${size}`]: true,
-            })}
+            className='flex items-center cursor-pointer py-2 pr-[6px] pl-2 hover:bg-gray003'
             to={`/${username}`}
         >
-            <img src={avatar} alt={`${lastName} ${firstName}`} className={cx('image')} />
-            <div className={cx('wrapper')}>
-                <p className={cx('name')}>
+            <img
+                src={avatar}
+                alt={`${lastName} ${firstName}`}
+                className='w-9 h-9 rounded-full'
+            />
+            <div className='flex-1 ml-3'>
+                <p className='flex items-center text-lg font-bold [&_svg]:ml-[3px]'>
                     {lastName} {firstName}
-                    {tick ? <TickIcon /> : null}
+                    {isVerified ? <TickIcon /> : null}
                 </p>
-                <p className={cx('username')}>{username}</p>
+                <p className='text-gray05 text-base'>{username}</p>
             </div>
         </Link>
     );
-};
+});
 
 export default AccountItem;

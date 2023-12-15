@@ -1,4 +1,4 @@
-import { IUser, IUserLikePost } from 'features/users/models/userModel';
+import { User, IUserLikePost } from 'features/users/models/userModel';
 
 export interface IPost {
     id: number;
@@ -7,7 +7,7 @@ export interface IPost {
     postUrl: string;
     totalLikes: number;
     totalComments: number;
-    userPostDetail: IUser;
+    userPostDetail: User;
     userLikePostList: IUserLikePost[];
     createdDate: Date;
 }

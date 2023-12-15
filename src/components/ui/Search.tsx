@@ -83,11 +83,11 @@ const Search = () => {
                 </div>
             )}
         >
-            <div className='flex items-center w-[361px] h-[46px] bg-gray241_241_242_1 border border-transparent focus-within:border-gray03'>
+            <div className='flex items-center w-[361px] h-[46px] bg-gray241_241_242_1 border border-transparent focus-within:border-gray03 rounded-full'>
                 <input
                     className='flex-1 bg-transparent caret-primary text-base rounded-l-[92px] pl-5 pr-3 placeholder:text-gray06 focus:outline-none'
                     type='text'
-                    placeholder='Tìm kiếm tài khoản và video'
+                    placeholder='Tìm kiếm tài khoản'
                     value={searchValue}
                     onChange={(e) => setSearchValue(e.target.value)}
                 />

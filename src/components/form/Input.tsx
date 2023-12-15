@@ -33,7 +33,7 @@ const Input = memo(function Input({
                 type={inputType}
                 className={`caret-primary text-base flex-1 border-2 border-gray012 bg-gray006 ${
                     error && 'border border-red'
-                }`}
+                } p-3 rounded-md focus:outline-none`}
                 placeholder={placeholder}
                 value={value}
                 onChange={onChangeValue}

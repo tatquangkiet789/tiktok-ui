@@ -1,29 +1,20 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { IUser } from 'features/users/models/userModel';
-import { findTop10SuggestedUsersService } from 'features/users/services/userService';
+import { createSlice } from '@reduxjs/toolkit';
+import { User } from 'features/users/models/userModel';
+import { findTop10SuggestedUsers } from 'features/users/services/userThunk';
 
-interface IUserState {
+type UserState = {
     loading: boolean;
-    users: IUser[];
+    users: User[];
     error: string;
-    searchResult: IUser[];
-}
+    searchResult: User[];
+};
 
-const initialState: IUserState = {
+const initialState: UserState = {
     loading: true,
     users: [],
     error: '',
     searchResult: [],
 };
-
-// [GET] /api/v1/users/suggested
-export const findTop10SuggestedUsers = createAsyncThunk(
-    'findTop10SuggestedUsers',
-    async (): Promise<IUser[]> => {
-        const data = await findTop10SuggestedUsersService();
-        return data.content;
-    },
-);
 
 const userSlice = createSlice({
     name: 'users',
@@ -47,4 +38,6 @@ const userSlice = createSlice({
     },
 });
 
-export default userSlice.reducer;
+const userReducer = userSlice.reducer;
+
+export default userReducer;

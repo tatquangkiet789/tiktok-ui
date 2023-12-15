@@ -4,11 +4,11 @@ import { Outlet } from 'react-router-dom';
 
 const MainLayout = () => {
     return (
-        <div className='bg-gray248_248_248 overflow-y-scroll'>
+        <div className='bg-gray248_248_248'>
             <Navbar />
-            <div className='flex p-[18px] w-full gap-[18px] h-[calc(100vh-60px)] bg-gray241_241_242_1'>
+            <div className='flex w-[1150px] p-[18px] gap-[18px] h-[calc(100vh-60px)] mx-auto overflow-y-auto'>
                 <Sidebar />
-                <div className='h-[cal(100vh-60px)] ml-[358px]'>
+                <div className='h-[cal(100vh-60px)] ml-[358px] bg-red-200'>
                     <Outlet />
                 </div>
             </div>

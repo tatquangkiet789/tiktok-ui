@@ -4,14 +4,14 @@ import { Auth } from 'features/auth/models/authModel';
 import { loginUser, registerUser } from 'features/auth/services/authThunk';
 import { toast } from 'react-toastify';
 
-interface IAuthState {
+type AuthState = {
     isLoading: boolean;
     currentUser: Auth;
     error: string;
     registerMessage: string;
-}
+};
 
-const initialState: IAuthState = {
+const initialState: AuthState = {
     isLoading: false,
     currentUser: null as any,
     error: '',
