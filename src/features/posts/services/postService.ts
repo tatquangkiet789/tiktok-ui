@@ -4,8 +4,13 @@ import { IFindPost, INewPost, IUserLikeOrUnlikePost } from '../models/postModel'
 
 // [GET] /api/v1/posts?page=:page
 // [GET] /api/v1/posts?page=:page&username=:username
-export const findAllPostsService = async (params: IFindPost) => {
-    const { page, username } = params;
+export const findAllPostsService = async ({
+    page,
+    username,
+}: {
+    page: number;
+    username?: string;
+}) => {
     const res = await publicAxios.get(ENDPOINTS.findAllPosts(page!, username));
     return res.data;
 };

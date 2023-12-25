@@ -8,7 +8,7 @@ import { FC } from 'react';
 import { createNewComment, resetSelectedComment } from 'redux/reducers/commentSlice';
 import { userAddNewComment } from 'redux/reducers/postSlice';
 import styles from './AddComment.module.scss';
-import InputField from 'components/form/Input';
+import InputField from 'components/ui/Input';
 import Button from 'components/ui/Button';
 
 const cx = classNames.bind(styles);

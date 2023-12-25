@@ -1,15 +1,10 @@
-import { useState } from 'react';
+import PostList from 'features/posts/components/PostList';
+import usePost from 'features/posts/hooks/usePost';
+import { Suspense, useState } from 'react';
 
 const HomePage = () => {
     const [page, setPage] = useState(1);
-
-    // const dispatch = useAppDispatch();
-    // const {
-    //     posts,
-    //     error: postError,
-    //     loading: postLoading,
-    //     hasNextPage,
-    // } = useAppSelector((state) => state.posts);
+    const { posts, isLastPage } = usePost({ page });
 
     // useEffect(() => {
     //     if (page === 1) dispatch(updateNewPostList(true));
@@ -20,15 +15,9 @@ const HomePage = () => {
 
     return (
         <div className='w-full h-full py-6 pl-0 pr-4'>
-            {/* <PostList
-                page={page}
-                onChangePage={setPage}
-                postList={posts}
-                postError={postError}
-                postLoading={postLoading}
-                hasNextPage={hasNextPage}
-            /> */}
-            HomePage
+            <Suspense fallback={<div>Loading...</div>}>
+                <PostList posts={posts} isLastPage page={page} onChangePage={setPage} />
+            </Suspense>
         </div>
     );
 };

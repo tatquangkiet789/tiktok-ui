@@ -1,4 +1,4 @@
-import Input from 'components/form/Input';
+import Input from 'components/ui/Input';
 import Button from 'components/ui/Button';
 import { Login } from 'features/auth/models/authModel';
 import { loginUser } from 'features/auth/services/authThunk';

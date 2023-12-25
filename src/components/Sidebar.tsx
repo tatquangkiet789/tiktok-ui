@@ -1,16 +1,20 @@
-import useAuth from 'hooks/useAuth';
+import useAuth from 'features/auth/hooks/useAuth';
 import NavLinks from './NavLinks';
 import Button from './ui/Button';
 import { APP_ROUTES } from 'routes/routes';
 import SuggestedUsers from 'features/users/components/SuggestedUsers';
+import { Suspense } from 'react';
+import AccountItemSkeleton from './AccountItemSkeleton';
+import useUser from 'features/users/hooks/useUser';
 
 const Sidebar = () => {
     const { isAuthenticated } = useAuth();
+    const { suggestedUsers } = useUser();
 
     return (
         <div
             className='fixed max-w-[358px] w-full h-[calc(100vh-60px)] pt-5 pl-2 pb-[26px] pr-[18px] 
-            overflow-hidden hover:overflow-y-scroll'
+            overflow-hidden hover:overflow-y-auto'
         >
             <NavLinks />
             {!isAuthenticated ? (
@@ -26,7 +30,9 @@ const Sidebar = () => {
                     />
                 </div>
             ) : null}
-            <SuggestedUsers />
+            <Suspense fallback={<AccountItemSkeleton />}>
+                <SuggestedUsers suggestedUsers={suggestedUsers} />
+            </Suspense>
         </div>
     );
     //             {currentUser ? (

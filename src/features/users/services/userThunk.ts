@@ -8,7 +8,7 @@ export const findTop10SuggestedUsers = createAsyncThunk(
     async (_, { rejectWithValue }) => {
         try {
             const data = await findTop10SuggestedUsersService();
-            return data.content;
+            return data;
         } catch (error) {
             const err = error as AxiosError;
             if (!err.response) throw err;

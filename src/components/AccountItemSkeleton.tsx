@@ -1,16 +1,8 @@
-import { memo } from 'react';
-
-interface AccountItemSkeletonProps {
-    instances: number;
-}
-
-const AccountItemSkeleton = memo(function AccountItemSkeleton({
-    instances,
-}: AccountItemSkeletonProps) {
+const AccountItemSkeleton = () => {
     return (
         <>
-            {Array(instances)
-                .fill(instances)
+            {Array(3)
+                .fill(3)
                 .map((_, index) => (
                     <div key={index} className='flex items-center py-2 pr-[6px] pl-2'>
                         <div className='w-9 h-9 rounded-full bg-[#dddbdd] animate-skeleton' />
@@ -22,6 +14,6 @@ const AccountItemSkeleton = memo(function AccountItemSkeleton({
                 ))}
         </>
     );
-});
+};
 
 export default AccountItemSkeleton;

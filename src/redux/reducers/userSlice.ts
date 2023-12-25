@@ -1,16 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { User } from 'features/users/models/userModel';
+import { AxiosError } from 'axios';
+import { User } from 'features/users/models/user';
 import { findTop10SuggestedUsers } from 'features/users/services/userThunk';
 
 type UserState = {
-    loading: boolean;
+    isLoading: boolean;
     users: User[];
     error: string;
     searchResult: User[];
 };
 
 const initialState: UserState = {
-    loading: true,
+    isLoading: true,
     users: [],
     error: '',
     searchResult: [],
@@ -24,16 +25,18 @@ const userSlice = createSlice({
         builder
             // Find 10 Suggested Users
             .addCase(findTop10SuggestedUsers.pending, (state) => {
-                state.loading = true;
+                state.isLoading = true;
                 state.error = '';
             })
             .addCase(findTop10SuggestedUsers.fulfilled, (state, action) => {
-                state.loading = false;
-                state.users = action.payload;
+                state.isLoading = false;
+                state.users = action.payload.content;
             })
             .addCase(findTop10SuggestedUsers.rejected, (state, action) => {
-                state.loading = false;
-                state.error = action.error.message!;
+                state.isLoading = false;
+                state.error = (action.payload as AxiosError)
+                    ? (action.payload as AxiosError).message
+                    : action.error.message!;
             });
     },
 });

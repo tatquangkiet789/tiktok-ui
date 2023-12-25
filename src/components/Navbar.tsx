@@ -64,7 +64,7 @@ const Navbar = () => {
 
     return (
         <>
-            <div className='w-screen h-[60px] shadow-[0_1px_1px_rgba(22, 24, 35, 0.12)] z-10 bg-white'>
+            <div className='w-screen h-[60px] shadow-[0_1px_1px_rgba(22, 24, 35, 0.12)] z-10 bg-white fixed'>
                 <div className='h-[60px] w-full lg:w-[1150px] mx-auto flex justify-between items-center pl-5 pr-6'>
                     <Link to={APP_ROUTES.HOME}>
                         <LogoIcon />

@@ -1,38 +1,35 @@
 import AccountItem from 'components/AccountItem';
 import AccountItemSkeleton from 'components/AccountItemSkeleton';
-import useUser from 'hooks/useUser';
+import useUser from 'features/users/hooks/useUser';
+import { Suspense, memo } from 'react';
+import { User } from '../models/user';
 
-const SuggestedUsers = () => {
-    const { suggestedUsers, isLoading } = useUser();
+type SuggestedUsersProps = {
+    suggestedUsers: User[];
+};
 
-    const renderContent = () => {
-        if (isLoading) return <AccountItemSkeleton instances={3} />;
-        return (
-            <>
-                {suggestedUsers.map(
-                    ({ firstName, lastName, id, isVerified, avatar, username }) => (
-                        <AccountItem
-                            key={id}
-                            firstName={firstName}
-                            lastName={lastName}
-                            avatar={avatar}
-                            username={username}
-                            isVerified={isVerified}
-                        />
-                    ),
-                )}
-            </>
-        );
-    };
-
+const SuggestedUsers = memo(function SuggestedUsers({
+    suggestedUsers,
+}: SuggestedUsersProps) {
     return (
         <>
             <p className='text-gray075 text-sm font-semibold px-2 mt-[14px] mb-[10px]'>
                 Tài khoản được đề xuất
             </p>
-            {renderContent()}
+            {suggestedUsers.map(
+                ({ firstName, lastName, id, isVerified, avatar, username }) => (
+                    <AccountItem
+                        key={id}
+                        firstName={firstName}
+                        lastName={lastName}
+                        avatar={avatar}
+                        username={username}
+                        isVerified={isVerified}
+                    />
+                ),
+            )}
         </>
     );
-};
+});
 
 export default SuggestedUsers;

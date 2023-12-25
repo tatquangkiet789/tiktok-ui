@@ -22,6 +22,16 @@
 // import SOCKET_EVENT from 'constants/socket';
 // import socketClient from 'lib/socketClient';
 
+import { memo } from 'react';
+import { Post } from '../models/post';
+import AccountInfo from 'components/AccountInfo';
+import { PostType } from '../models/postType.enum';
+import ReactPlayer from 'react-player';
+import { numberFormat } from 'utils/format';
+import { HeartIcon } from 'assets/icons';
+import { Link } from 'react-router-dom';
+import { AiOutlineComment } from 'react-icons/ai';
+
 // const cx = classNames.bind(styles);
 
 // interface IPostItemProps {
@@ -37,7 +47,7 @@
 //         totalComments,
 //         totalLikes,
 //         userLikePostList,
-//         userPostDetail,
+//         authorDetail,
 //         createdDate,
 //     } = post;
 
@@ -106,57 +116,68 @@
 //             });
 //     };
 
-//     return (
-//         <div className={cx('container')}>
-//             <div className={cx('user-container')}>
-//                 <div>
-//                     <AccountInfo
-//                         avatar={userPostDetail.avatar}
-//                         firstName={userPostDetail.firstName}
-//                         lastName={userPostDetail.lastName}
-//                         username={userPostDetail.username}
-//                         padding={false}
-//                         tick={userPostDetail.tick}
-//                         createdDate={createdDate}
-//                     />
-//                 </div>
-//                 {/* <Button text='Kết bạn' variant='outlined' size='sm' /> */}
-//             </div>
-//             <div className={cx('post-caption')}>{caption}</div>
-//             <div className={cx('post-content-container')}>
-//                 {postTypeId === POST_TYPE.IMAGE ? (
-//                     <img className={cx('post-content')} src={postUrl} alt='Post URL' />
-//                 ) : null}
-//                 {postTypeId === POST_TYPE.VIDEO ? (
-//                     <ReactPlayer width='400px' url={postUrl} controls />
-//                 ) : null}
-//             </div>
-//             <div className={cx('like')}>
-//                 <span>{numberFormat.format(totalLikes)} lượt thích</span>
-//                 <p className={cx('comments')}>
-//                     {numberFormat.format(totalComments)} bình luận
-//                 </p>
-//             </div>
-//             <div className={cx('action-buttons')}>
-//                 <div
-//                     className={cx('icon-button', {
-//                         userLikePost: likePost,
-//                     })}
-//                     onClick={handleLikeAndUnlikePost}
-//                 >
-//                     <HeartIcon />
-//                 </div>
-//                 <Link className={cx('icon-button')} to={`/posts/${id}`}>
-//                     <span className={cx('icon')}>
-//                         <AiOutlineComment size={30} />
-//                     </span>
-//                 </Link>
-//             </div>
-//         </div>
-//     );
-// };
+type PostItemProps = {
+    post: Post;
+};
 
-// export default memo(PostItem);
-export default function PostItem() {
-    return <h1>PostItem</h1>;
-}
+const PostItem = memo(function PostItem({ post }: PostItemProps) {
+    const {
+        caption,
+        authorDetail,
+        postTypeName,
+        postUrl,
+        totalComments,
+        totalLikes,
+        createdDate,
+        id,
+    } = post;
+
+    return (
+        <div className={`w-full max-w-[600px] bg-white_1 shadow-md rounded-lg mb-6`}>
+            <div className={`py-3 px-4 flex items-center justify-between`}>
+                <div>
+                    <AccountInfo
+                        avatar={authorDetail.avatar}
+                        firstName={authorDetail.firstName}
+                        lastName={authorDetail.lastName}
+                        username={authorDetail.username}
+                        isVerified={authorDetail.isVerified}
+                        postCreatedDate={createdDate}
+                    />
+                </div>
+            </div>
+            <div className={`px-4 break-keep`}>{caption}</div>
+            <div className={`w-full max-w-[600px] flex justify-center pt-3`}>
+                {postTypeName === PostType.Image ? (
+                    <div
+                        className={`w-[600px] h-[600px] bg-center bg-cover bg-no-repeat`}
+                        style={{ backgroundImage: `url(${postUrl})` }}
+                    ></div>
+                ) : null}
+                {postTypeName === PostType.Video ? (
+                    <ReactPlayer width='400px' url={postUrl} controls />
+                ) : null}
+            </div>
+            <div className={`flex items-center justify-end py-4 mx-3 text-gray075`}>
+                <span>{numberFormat.format(totalLikes)} lượt thích</span>
+                <p className={`px-4`}>{numberFormat.format(totalComments)} bình luận</p>
+            </div>
+
+            <div className={`flex items-center justify-end px-4 pt-[6px] pb-3`}>
+                <div
+                    className={`flex items-center justify-center rounded-lg p-2 hover:bg-gray003 hover:cursor-pointer`}
+                >
+                    <HeartIcon />
+                </div>
+                <Link
+                    className={`flex items-center justify-center rounded-lg p-2 hover:bg-gray003 hover:cursor-pointer`}
+                    to={`/posts/${id}`}
+                >
+                    <AiOutlineComment size={30} />
+                </Link>
+            </div>
+        </div>
+    );
+});
+
+export default PostItem;

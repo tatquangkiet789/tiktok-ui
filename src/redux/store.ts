@@ -5,14 +5,14 @@ import authReducer from './reducers/authSlice';
 // import friendReducer from './reducers/friendSlice';
 // import messageReducer from './reducers/messageSlice';
 // import notificationReducer from './reducers/notificationSlice';
-// import postReducer from './reducers/postSlice';
-// import userReducer from './reducers/userSlice';
+import postReducer from './reducers/postSlice';
+import userReducer from './reducers/userSlice';
 
 const store = configureStore({
     reducer: {
         auth: authReducer,
-        // users: userReducer,
-        // posts: postReducer,
+        posts: postReducer,
+        users: userReducer,
         // comments: commentReducer,
         // notifications: notificationReducer,
         // friends: friendReducer,

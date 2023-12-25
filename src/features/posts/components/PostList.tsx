@@ -4,45 +4,9 @@
 // import { IPost } from 'modules/posts/models/postModel';
 // import PostItem from '../PostItem/PostItem';
 
-// const cx = classNames.bind(styles);
-
-// interface IPostListProps {
-//     page: number;
-//     onChangePage: (page: any) => void;
-//     postList: IPost[];
-//     postError: string;
-//     postLoading: boolean;
-//     hasNextPage: boolean;
-// }
-
-// const PostList: FC<IPostListProps> = ({
-//     onChangePage,
-//     postList,
-//     postError,
-//     postLoading,
-//     hasNextPage,
-// }) => {
-//     const [element, setElement] = useState<HTMLDivElement | null>(null);
-
-//     const observer = useRef(
-//         new IntersectionObserver((entries) => {
-//             const first = entries[0];
-//             if (first.isIntersecting) onChangePage((prev: any) => prev + 1);
-//         }),
-//     );
-
-//     useEffect(() => {
-//         const currentElement = element;
-//         const currentObserver = observer.current;
-
-//         if (!currentElement) return;
-
-//         currentObserver.observe(currentElement);
-
-//         if (!hasNextPage) currentObserver.unobserve(currentElement);
-
-//         return () => currentObserver.unobserve(currentElement);
-//     }, [element, hasNextPage]);
+import { Post } from 'features/posts/models/post';
+import { memo } from 'react';
+import PostItem from './PostItem';
 
 //     return (
 //         <div className={cx('container')}>
@@ -73,7 +37,26 @@
 //     );
 // };
 
-// export default PostList;
-export default function PostList() {
-    return <h1>PostList</h1>;
-}
+type PostListProps = {
+    posts: Post[];
+    isLastPage: boolean;
+    page: number;
+    onChangePage: (page: any) => void;
+};
+
+const PostList = memo(function PostList({
+    posts,
+    isLastPage,
+    page,
+    onChangePage,
+}: PostListProps) {
+    return (
+        <div className={`flex flex-col items-center`}>
+            {posts.map((post) => (
+                <PostItem key={post.id} post={post} />
+            ))}
+        </div>
+    );
+});
+
+export default PostList;
